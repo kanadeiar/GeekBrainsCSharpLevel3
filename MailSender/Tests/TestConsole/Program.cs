@@ -12,19 +12,23 @@ namespace TestConsole
             Console.OutputEncoding = System.Text.Encoding.UTF8;
 
             ///////////////////////////////////////////////////////////////////////////////
-            var from = new MailAddress("kanadeiar@yandex.ru", "Андрей");
-            var to = new MailAddress("kanadeiar@gmail.com", "Андрей");
+            //var from = new MailAddress("kanadeiar@yandex.ru", "Андрей");
+            //var to = new MailAddress("kanadeiar@gmail.com", "Андрей");
+            var from = new MailAddress("kanadeiar@gmail.com", "Андрей");
+            var to = new MailAddress("kanadeiar@yandex.ru", "Андрей");
             var message = new MailMessage(from, to);
             message.Subject = "Заголовок";
             message.Body = "Текст письма";
 
             ///////////////////////////////////////////////////////////////////////////////
-            var client = new SmtpClient("smtp.yandex.ru", 587);
+            //var client = new SmtpClient("smtp.yandex.ru", 587);
+            var client = new SmtpClient("smtp.gmail.com", 587);
             client.EnableSsl = true;
             
             client.Credentials = new NetworkCredential
             {
-                UserName = "kanadeiar@yandex.ru",
+                //UserName = "kanadeiar@yandex.ru",
+                UserName = "kanadeiar@gmail.com",
                 Password = "*",
             };
             try
