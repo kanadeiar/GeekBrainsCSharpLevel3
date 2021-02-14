@@ -5,8 +5,49 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TestWPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="452" Width="802" ResizeMode="CanResizeWithGrip">
     <Grid>
+        <Button Name="ButtonSend" Content="Отправить" Margin="355,313,322,77" Click="ButtonSend_Click"/>
+        <TextBlock Text="Логин" Width="200" Height="20" Margin="94,167,506,247" RenderTransformOrigin="0.5,0.5">
+            <TextBlock.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform AngleX="-43.822"/>
+                    <RotateTransform Angle="12.613"/>
+                    <TranslateTransform X="-9.365" Y="-2.096"/>
+                </TransformGroup>
+            </TextBlock.RenderTransform>
+        </TextBlock>
+        <TextBox Name="TextBoxLogin" Text="kanadeiar@gmail.com"  Margin="66,191,544,220" RenderTransformOrigin="0.5,0.5">
+            <TextBox.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform AngleX="28.537"/>
+                    <RotateTransform Angle="13.355"/>
+                    <TranslateTransform X="7.367" Y="1.748"/>
+                </TransformGroup>
+            </TextBox.RenderTransform>
+        </TextBox>
+        <TextBlock Text="Пароль" Height="20" Margin="515,163,123,251" RenderTransformOrigin="0.5,0.5">
+            <TextBlock.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform AngleX="36.686"/>
+                    <RotateTransform Angle="-8.132"/>
+                    <TranslateTransform X="7.375" Y="-1.054"/>
+                </TransformGroup>
+            </TextBlock.RenderTransform>
+        </TextBlock>
+        <PasswordBox Name="PasswordBoxPassword" Width="200" Height="26" Margin="498,197,102,197" RenderTransformOrigin="0.5,0.5">
+            <PasswordBox.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform AngleX="-27.534"/>
+                    <RotateTransform Angle="-8.255"/>
+                    <TranslateTransform X="-6.707" Y="0.973"/>
+                </TransformGroup>
+            </PasswordBox.RenderTransform>
+        </PasswordBox>
 
     </Grid>
 </Window>

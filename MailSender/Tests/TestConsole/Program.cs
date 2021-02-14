@@ -37,7 +37,7 @@ namespace TestConsole
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Ошибка: {ex.Message}");
+                Console.WriteLine($"Ошибка отправки письма:\n{ex.Message}");
             }
             
 
