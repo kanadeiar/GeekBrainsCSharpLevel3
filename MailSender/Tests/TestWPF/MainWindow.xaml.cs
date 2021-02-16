@@ -5,9 +5,7 @@ using System.Windows;
 
 namespace TestWPF
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+    ///<summary>  Interaction logic for MainWindow.xaml </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
@@ -24,7 +22,6 @@ namespace TestWPF
             message.Body = "Текст письма";
             var client = new SmtpClient("smtp.gmail.com", 587);
             client.EnableSsl = true;
-            client.Timeout = 1000;
 
             client.Credentials = new NetworkCredential
             {

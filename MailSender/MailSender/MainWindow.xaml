@@ -5,8 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MailSender"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="Рассыльщик" Height="450" Width="800" WindowStartupLocation="CenterScreen" Icon="/Avatar.ico">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Файл">
+                <MenuItem Name="ItemExit" Header="Выход"/>
+            </MenuItem>
+            <MenuItem Header="Помощь">
+                <MenuItem Name="ItemHelp" Header="Справка"/>
+            </MenuItem>
+        </Menu>
+        <Grid>
 
-    </Grid>
+        </Grid>
+    </DockPanel>
 </Window>

@@ -4,6 +4,15 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>Avatar.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Avatar.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Avatar.ico" />
+  </ItemGroup>
 
 </Project>
