@@ -15,4 +15,11 @@
     <Resource Include="Avatar.ico" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="WindowSuccessSend - Копировать.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>WindowSuccessSend.xaml.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
 </Project>

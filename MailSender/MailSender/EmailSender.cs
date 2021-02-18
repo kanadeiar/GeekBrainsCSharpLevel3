@@ -32,9 +32,17 @@ namespace MailSender
                 using (SmtpClient client = new SmtpClient(nameServer, port))
                 {
                     client.EnableSsl = enableSsl;
-                    client.Credentials = new NetworkCredential(_login, _password);
-                    client.Send(myMessage);
-                    return 0;
+                    try
+                    {
+                        client.Credentials = new NetworkCredential(_login, _password);
+                        client.Send(myMessage);
+                        return 0;
+                    }
+                    catch (Exception ex)
+                    {
+                        return 1;
+                    }
+
                 }
             }
         }

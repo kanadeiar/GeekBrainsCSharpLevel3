@@ -21,9 +21,15 @@ namespace MailSender
             var message = TextBoxMessage.Text;
             var enableSsl = CheckBoxSSL.IsChecked == true;
             if (mySender.SendMail(from, to, subject, message, server, port, enableSsl) == 0)
-                MessageBox.Show("Сообщение успешно отправлено", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
+            {
+                var window = new WindowSuccessSend {Owner = this};
+                window.ShowDialog();
+            }
             else
-                MessageBox.Show("Облом отправки сообщения", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            {
+                var window = new WindowErrorSend { Owner = this };
+                window.ShowDialog();
+            }
         }
         private void ButtonClear_OnClick(object sender, RoutedEventArgs e)
         {
