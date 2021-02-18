@@ -4,9 +4,9 @@ using System.Windows;
 namespace MailSender
 {
     /// <summary> Interaction logic for MainWindow.xaml </summary>
-    public partial class MainWindow : Window
+    public partial class WpfMailSender : Window
     {
-        public MainWindow()
+        public WpfMailSender()
         {
             InitializeComponent();
         }

@@ -42,7 +42,6 @@ namespace MailSender
                     {
                         return 1;
                     }
-
                 }
             }
         }
