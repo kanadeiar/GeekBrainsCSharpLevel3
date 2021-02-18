@@ -7,6 +7,11 @@
         mc:Ignorable="d"
         Title="Рассыльщик" Height="500" Width="800" WindowStartupLocation="CenterScreen" Icon="/Avatar.ico">
     <DockPanel>
+        <DockPanel.Resources>
+            <Style TargetType="TextBlock">
+                <Setter Property="Foreground" Value="Black"/>
+            </Style>
+        </DockPanel.Resources>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Файл">
                 <MenuItem Name="ItemExit" Header="Выход" Click="ItemExit_OnClick"/>
@@ -25,7 +30,7 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition/>
-                <RowDefinition Height="5*"/>
+                <RowDefinition Height="4*"/>
             </Grid.RowDefinitions>
             <GroupBox Grid.Row="0" Header="Параметры связи с почтовым сервером">
                 <Grid>
