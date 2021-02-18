@@ -5,18 +5,86 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MailSender"
         mc:Ignorable="d"
-        Title="Рассыльщик" Height="450" Width="800" WindowStartupLocation="CenterScreen" Icon="/Avatar.ico">
+        Title="Рассыльщик" Height="500" Width="800" WindowStartupLocation="CenterScreen" Icon="/Avatar.ico">
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Файл">
-                <MenuItem Name="ItemExit" Header="Выход"/>
+                <MenuItem Name="ItemExit" Header="Выход" Click="ItemExit_OnClick"/>
+            </MenuItem>
+            <MenuItem Header="Сервис">
+                <MenuItem Name="ItemSettings" Header="Параметры"/>
             </MenuItem>
             <MenuItem Header="Помощь">
                 <MenuItem Name="ItemHelp" Header="Справка"/>
             </MenuItem>
         </Menu>
+        <Grid DockPanel.Dock="Top" Background="PaleVioletRed">
+            <TextBlock Text="{StaticResource NameApplication}" FontSize="18" Height="28" 
+                       VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5"/>
+        </Grid>
         <Grid>
-
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="5*"/>
+            </Grid.RowDefinitions>
+            <GroupBox Grid.Row="0" Header="Параметры связи с почтовым сервером">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="SMTP Сервер:" VerticalAlignment="Center" Margin="2" HorizontalAlignment="Right"/>
+                    <TextBox Name="TextBoxServer" Text="smtp.gmail.com" Grid.Row="0" Grid.Column="1" Margin="2"/>
+                    <StackPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center">
+                        <TextBlock Text="Порт:" Margin="2" VerticalAlignment="Center"/>
+                        <TextBox Name="TextBoxPort" Margin="2" Width="40" VerticalAlignment="Center" Text="587"/>
+                        <TextBlock Text="Шифрование SSL:" Margin="2" VerticalAlignment="Center"/>
+                        <CheckBox Name="CheckBoxSSL" Margin="2" VerticalAlignment="Center" IsChecked="True"/>
+                    </StackPanel>
+                    <TextBlock Grid.Row="0" Grid.Column="2" Text="Логин:" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <TextBox Grid.Row="0" Grid.Column="3" Name="TextBoxLogin" Text="kanadeiar@gmail.com" Margin="2"/>
+                    <TextBlock Grid.Column="2" Grid.Row="1" Text="Пароль:" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <PasswordBox Grid.Row="1" Grid.Column="3" Name="PasswordBoxPassword" Margin="2"/>
+                </Grid>
+            </GroupBox>
+            <GroupBox Grid.Row="1" Header="Мое письмо электронной почты">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal">
+                        <TextBlock Text="Адрес отправителя:" Margin="5" VerticalAlignment="Center"/>
+                        <TextBox Name="TextBoxFrom" Width="200" Margin="5" Text="kanadeiar@gmail.com" Height="30" VerticalContentAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal">
+                        <TextBlock Text="Адрес получателя:" Margin="5" VerticalAlignment="Center"/>
+                        <TextBox Name="TextBoxTo" Width="200" Margin="5" Text="kanadei@mail.ru" Height="30" VerticalContentAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="0" Grid.Row="2" Orientation="Horizontal">
+                        <TextBlock Text="Тема сообщения:" Margin="5" VerticalAlignment="Center"/>
+                        <TextBox Name="TextBoxSubject" Width="200" Margin="5" Text="Заголовок сообщения" Height="30" VerticalContentAlignment="Center"/>
+                    </StackPanel>
+                    <DockPanel Grid.Column="0" Grid.Row="3">
+                        <TextBlock Text="Сообщение:" Margin="5" DockPanel.Dock="Top"/>
+                        <TextBox Name="TextBoxMessage" Text="Текст сообщения" Margin="5" VerticalScrollBarVisibility="Visible" TextWrapping="Wrap"/>
+                    </DockPanel>
+                    <StackPanel Grid.Column="0" Grid.Row="4" Orientation="Horizontal">
+                        <Button Name="ButtonSend" Content="Отправить письмо" Margin="5" Width="100" Click="ButtonSend_OnClick" Height="30"/>
+                        <Button Name="ButtonClear" Content="Сброс письма" Margin="5" Width="100" Click="ButtonClear_OnClick" Height="30"/>
+                    </StackPanel>
+                </Grid>
+            </GroupBox>
         </Grid>
     </DockPanel>
 </Window>

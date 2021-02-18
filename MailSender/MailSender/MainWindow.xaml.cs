@@ -1,28 +1,37 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace MailSender
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+    /// <summary> Interaction logic for MainWindow.xaml </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
+        }
+        private void ButtonSend_OnClick(object sender, RoutedEventArgs e)
+        {
+            EmailSender mySender = new EmailSender(TextBoxLogin.Text, PasswordBoxPassword.SecurePassword);
+            var server = TextBoxServer.Text;
+            var port = Int32.Parse(TextBoxPort.Text);
+            var from = TextBoxFrom.Text;
+            var to = TextBoxTo.Text;
+            var subject = TextBoxSubject.Text;
+            var message = TextBoxMessage.Text;
+            var enableSsl = CheckBoxSSL.IsChecked == true;
+            if (mySender.SendMail(from, to, subject, message, server, port, enableSsl) == 0)
+                MessageBox.Show("Сообщение успешно отправлено", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
+            else
+                MessageBox.Show("Облом отправки сообщения", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+        private void ButtonClear_OnClick(object sender, RoutedEventArgs e)
+        {
+            TextBoxMessage.Text = String.Empty;
+        }
+        private void ItemExit_OnClick(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }
