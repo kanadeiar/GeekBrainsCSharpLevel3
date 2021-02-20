@@ -9,7 +9,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Theme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            <sys:String x:Key="NameApplication">Geekbrains. Д.З. №1. Рассыльщик электронной почты</sys:String>
+            <sys:String x:Key="NameApplication">Geekbrains. Д.З. №2. Введение в WPF. Часть 2</sys:String>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
