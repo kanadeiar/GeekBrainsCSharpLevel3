@@ -226,7 +226,36 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Статистика">
-
+                <Grid Margin="20">
+                    <Grid.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="Margin" Value="0,5,0,0"/>
+                            <Style.Triggers>
+                                <Trigger Property="Grid.Column" Value="0">
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                    <Setter Property="Margin" Value="0,5,10,0"/>
+                                    <Setter Property="HorizontalAlignment" Value="Right"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Resources>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Column ="0" Grid.Row="0" Text="Отправлено писем:"/>
+                    <TextBlock Grid.Column="1" Grid.Row="0" Text="0 штук"/>
+                    <TextBlock Grid.Column="0" Grid.Row="1" Text="Всего отправителей:"/>
+                    <TextBlock Grid.Column="1" Grid.Row="1" Text="0 штук"/>
+                    <TextBlock Grid.Column="0" Grid.Row="2" Text="Всего получателей:"/>
+                    <TextBlock Grid.Column="1" Grid.Row="2" Text="0 штук"/>
+                </Grid>
             </TabItem>
         </TabControl>
     </DockPanel>
