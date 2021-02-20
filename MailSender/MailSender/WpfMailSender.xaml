@@ -198,12 +198,32 @@
                         </ListBox>
                     </GroupBox>
                     <GridSplitter Grid.Column="0" Width="3" VerticalAlignment="Stretch" HorizontalAlignment="Right" Background="Transparent"/>
-
                 </Grid>
-
             </TabItem>
             <TabItem Header="Письма">
-
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" MinWidth="150"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <GroupBox Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Header="Письма">
+                        <ListBox>
+                            <ListBoxItem>Первое письмо</ListBoxItem>
+                            <ListBoxItem>Второе письмо</ListBoxItem>
+                            <ListBoxItem>Третье письмо</ListBoxItem>
+                        </ListBox>
+                    </GroupBox>
+                    <GroupBox Grid.Column="1" Grid.Row="0" Header="Заголовок">
+                        <TextBox Text="Заголовок"/>
+                    </GroupBox>
+                    <GroupBox Grid.Column="1" Grid.Row="1" Header="Текст письма">
+                        <TextBox AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap" Text="Содержимое письма"/>
+                    </GroupBox>
+                </Grid>
             </TabItem>
             <TabItem Header="Статистика">
 
