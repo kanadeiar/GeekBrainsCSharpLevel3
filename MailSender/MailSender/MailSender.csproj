@@ -12,7 +12,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Remove="Theme.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Avatar.ico" />
+    <Resource Include="Theme.xaml">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>

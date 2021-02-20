@@ -29,14 +29,58 @@
         <Grid DockPanel.Dock="Top" Background="PaleGreen" Height="40">
             <TextBlock Text="{StaticResource NameApplication}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
         </Grid>
-        <StatusBar DockPanel.Dock="Bottom">
+        <StatusBar DockPanel.Dock="Bottom" Background="#333333" Foreground="Azure">
             <StatusBarItem>
                 <TextBlock Text="Готов"/>
             </StatusBarItem>
         </StatusBar>
         <TabControl>
             <TabItem Header="Списки">
-
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <ToolBarTray Grid.Row="0" Background="#333333">
+                        <ToolBar Header="Сервер" Band="0">
+                            <ComboBox Width="160" SelectedIndex="0" Height="30">
+                                <ComboBoxItem>smtp.yandex.ru:587</ComboBoxItem>
+                                <ComboBoxItem>smtp.gmail.com:587</ComboBoxItem>
+                                <ComboBoxItem>smtp.mail.ru:25</ComboBoxItem>
+                            </ComboBox>
+                            <Button Content="Добавить" Height="30"/>
+                            <Button Content="Редактировать" Height="30"/>
+                            <Button Content="Удалить" Height="30"/>
+                        </ToolBar>
+                        <ToolBar Band="0" BandIndex="1" Header="Планировщик">
+                            <Button Content="Планировать" Height="30"/>
+                        </ToolBar>
+                        <ToolBar Band="1" Header="Отправитель">
+                            <ComboBox Width="160" SelectedIndex="0" Height="30">
+                                <ComboBoxItem>Иванов:ivanov@mail.ru</ComboBoxItem>
+                                <ComboBoxItem>Петров:petrov@mail.ru</ComboBoxItem>
+                                <ComboBoxItem>Сидоров:sidorov@mail.ru</ComboBoxItem>
+                            </ComboBox>
+                            <Button Content="Добавить" Height="30"/>
+                            <Button Content="Редактировать" Height="30"/>
+                            <Button Content="Удалить" Height="30"/>
+                        </ToolBar>
+                        <ToolBar Band="1" BandIndex="1" Header="Получатели">
+                            <Button Content="Добавить" Height="30"/>
+                            <Button Content="Редактировать" Height="30"/>
+                            <Button Content="Удалить" Height="30"/>
+                        </ToolBar>
+                    </ToolBarTray>
+                    <GroupBox Grid.Row="1" Header="Получатели">
+                        <DataGrid AutoGenerateColumns="False" Background="#aaaaaa">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="ID" MinWidth="30"/>
+                                <DataGridTextColumn Header="Имя" Width="*"/>
+                                <DataGridTextColumn Header="Адрес" MinWidth="200"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </GroupBox>
+                </Grid>
             </TabItem>
             <TabItem Header="Планировщик">
 
