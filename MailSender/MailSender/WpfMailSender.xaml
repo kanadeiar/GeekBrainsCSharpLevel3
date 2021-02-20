@@ -5,8 +5,48 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MailSender"
         mc:Ignorable="d"
-        Title="{StaticResource NameApplication}" Height="600" Width="800" WindowStartupLocation="CenterScreen" Icon="/Avatar.ico">
+        Title="{StaticResource NameApplication}" Height="600" Width="800" WindowStartupLocation="CenterScreen" Icon="/Avatar.ico" ResizeMode="CanResizeWithGrip">
     <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Файл">
+                <MenuItem Header="Новый"/>
+                <Separator/>
+                <MenuItem Header="Открыть"/>
+                <MenuItem Header="Сохранить"/>
+                <MenuItem Header="Сохранить как ..."/>
+                <Separator/>
+                <MenuItem Header="Выход" Click="Exit_Click"/>
+            </MenuItem>
+            <MenuItem Header="Сервис">
+                <MenuItem Header="Настройка"/>
+            </MenuItem>
+            <MenuItem Header="Справка">
+                <MenuItem Header="Помощь"/>
+                <Separator/>
+                <MenuItem Header="О программе"/>
+            </MenuItem>
+        </Menu>
+        <Grid DockPanel.Dock="Top" Background="PaleGreen" Height="40">
+            <TextBlock Text="{StaticResource NameApplication}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+        </Grid>
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem>
+                <TextBlock Text="Готов"/>
+            </StatusBarItem>
+        </StatusBar>
+        <TabControl>
+            <TabItem Header="Списки">
 
+            </TabItem>
+            <TabItem Header="Планировщик">
+
+            </TabItem>
+            <TabItem Header="Письма">
+
+            </TabItem>
+            <TabItem Header="Статистика">
+
+            </TabItem>
+        </TabControl>
     </DockPanel>
 </Window>
