@@ -6,18 +6,18 @@ namespace MailSender.lib.Services
     public class TextEncoder
     {
         /// <summary> Шифрование </summary>
-        /// <param name="str">Исходная</param>
+        /// <param name="str">Исходная строка</param>
         /// <param name="key">ключ</param>
-        /// <returns>Зашифрованная</returns>
-        public string Encode(string str, int key = 1)
+        /// <returns>Зашифрованная строка</returns>
+        public static string Encode(string str, int key = 1)
         {
             return new string(str.Select(c => (char) (c + key)).ToArray());
         }
         /// <summary> Дешифрование </summary>
-        /// <param name="str">Зашифрованная</param>
+        /// <param name="str">Зашифрованная строка</param>
         /// <param name="key">ключ</param>
-        /// <returns>Исходная</returns>
-        public string Decode(string str, int key = 1)
+        /// <returns>Исходная строка</returns>
+        public static string Decode(string str, int key = 1)
         {
             return new string(str.Select(c => (char)(c - key)).ToArray());
         }

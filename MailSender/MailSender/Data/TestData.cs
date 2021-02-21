@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using MailSender.lib.Models;
+using MailSender.lib.Services;
 
 namespace MailSender.Data
 {
@@ -15,7 +16,7 @@ namespace MailSender.Data
             Description = $"Тестовый сервер {i}",
             Login = $"Password{i}",
             Name = $"Сервер-{i}",
-            Password = $"Password-{i}",
+            Password = TextEncoder.Encode($"Password-{i}", 9),
             Port = 25,
             UseSsl = i % 2 != 0,
         }).ToList();

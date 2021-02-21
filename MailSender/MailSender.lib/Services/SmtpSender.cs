@@ -40,7 +40,7 @@ namespace MailSender.lib.Services
             var client = new SmtpClient(_address, _port)
             {
                 EnableSsl = _useSsl,
-                Credentials = new NetworkCredential(_login, _password),
+                Credentials = new NetworkCredential(_login, TextEncoder.Decode(_password,9)),
             };
             client.Send(message);
         }
