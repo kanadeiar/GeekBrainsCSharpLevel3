@@ -6,6 +6,7 @@
         xmlns:fa="http://schemas.fontawesome.com/icons/"
         xmlns:data="clr-namespace:MailSender.Data"
         xmlns:m="clr-namespace:MailSender.lib.Models;assembly=MailSender.lib"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:MailSender"
         mc:Ignorable="d"
         Title="{StaticResource NameApplication}" Height="600" Width="800" WindowStartupLocation="CenterScreen" 
@@ -138,9 +139,9 @@
                     <GroupBox Grid.Column="0" Header="Управление">
                         <StackPanel>
                             <TextBlock Text="Календарь" HorizontalAlignment="Center" Margin="5"/>
-                            <Calendar/>
+                            <Calendar Name="CalendarSendDate"/>
                             <TextBlock Text="Время" HorizontalAlignment="Center" Margin="5"/>
-                            <TextBox Margin="10,0"/>
+                            <xctk:TimePicker Name="TimePickerSendDate" Margin="5"/>
                             <UniformGrid Columns="1" Margin="5, 10">
                                 <UniformGrid.Resources>
                                     <Style TargetType="Button">
@@ -150,7 +151,12 @@
                                     </Style>
                                 </UniformGrid.Resources>
                                 <Button Content="Запланировать"/>
-                                <Button Name="ButtonSendNow" Content="Отправить немедленно" Click="ButtonSendNow_OnClick"/>
+                                <Button Name="ButtonSendNow" Click="ButtonSendNow_OnClick" ToolTip="Отправить немедленно письмо">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="Resources/Media/letter2.png" Height="30"/>
+                                        <TextBlock Text="Отправить сейчас" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                                    </StackPanel>
+                                </Button>
                             </UniformGrid>
                         </StackPanel>
                     </GroupBox>
