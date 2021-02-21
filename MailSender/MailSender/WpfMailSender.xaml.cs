@@ -107,5 +107,10 @@ namespace MailSender
                 MessageBox.Show("Ошибка отправки почты:\n" + ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+        private void ButtonToPlan_OnClick(object sender, RoutedEventArgs e)
+        {
+            TabItemPlan.IsSelected = true;
+        }
     }
 }

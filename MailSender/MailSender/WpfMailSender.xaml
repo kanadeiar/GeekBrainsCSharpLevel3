@@ -73,7 +73,7 @@
                             <Button Name="ButtonDeleteServer" ToolTip="Удалить сервер" fa:Awesome.Content="Solid_Trash" Height="30" Foreground="Red" Click="ButtonDeleteServer_OnClick"/>
                         </ToolBar>
                         <ToolBar Band="0" BandIndex="1" Header="Планировщик">
-                            <Button ToolTip="Запланировать отправку" Height="30">
+                            <Button Name="ButtonToPlan" Click="ButtonToPlan_OnClick" ToolTip="Запланировать отправку" Height="30">
                                 <StackPanel Orientation="Horizontal">
                                     <fa:FontAwesome Icon="Regular_Clock" Foreground="CornflowerBlue" Margin="3,0" VerticalAlignment="Center"/>
                                     <TextBlock Text="Запланировать"/>
@@ -129,7 +129,7 @@
                     </GroupBox>
                 </Grid>
             </TabItem>
-            <TabItem Header="Планировщик">
+            <TabItem Header="Планировщик" Name="TabItemPlan">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" MinWidth="180"/>
