@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <None Remove="Avatar.ico" />
-    <None Remove="Media\proger.png" />
+    <None Remove="Resources\proger.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,7 +22,7 @@
 
   <ItemGroup>
     <Resource Include="Avatar.ico" />
-    <Resource Include="Media\proger.png" />
+    <Resource Include="Resources\Media\proger.png" />
     <Resource Include="Theme.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>

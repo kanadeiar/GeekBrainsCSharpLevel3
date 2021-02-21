@@ -4,9 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:fa="http://schemas.fontawesome.com/icons/"
+        xmlns:data="clr-namespace:MailSender.Data"
+        xmlns:m="clr-namespace:MailSender.Models"
         xmlns:local="clr-namespace:MailSender"
         mc:Ignorable="d"
-        Title="{StaticResource NameApplication}" Height="600" Width="800" WindowStartupLocation="CenterScreen" Icon="/Avatar.ico" ResizeMode="CanResizeWithGrip">
+        Title="{StaticResource NameApplication}" Height="600" Width="800" WindowStartupLocation="CenterScreen" 
+        Icon="/Avatar.ico" ResizeMode="CanResizeWithGrip">
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Файл">
@@ -44,10 +47,21 @@
                     </Grid.RowDefinitions>
                     <ToolBarTray Grid.Row="0" Background="#333333">
                         <ToolBar Header="Сервер" Band="0">
-                            <ComboBox Width="160" SelectedIndex="0" Height="30">
-                                <ComboBoxItem>smtp.yandex.ru:587</ComboBoxItem>
-                                <ComboBoxItem>smtp.gmail.com:587</ComboBoxItem>
-                                <ComboBoxItem>smtp.mail.ru:25</ComboBoxItem>
+                            <ComboBox Width="160" SelectedIndex="0" Height="30" ItemsSource="{x:Static data:TestData.Servers}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate DataType="m:Server">
+                                        <TextBlock>
+                                            <TextBlock.ToolTip>
+                                                <TextBlock>
+                                                    Адрес: <TextBlock Text="{Binding Address}"/> 
+                                                    Порт: <TextBlock Text="{Binding Port}"/>
+                                                    Описание: <TextBlock Text="{Binding Description}"/>
+                                                </TextBlock>
+                                            </TextBlock.ToolTip>
+                                            Сервер: <TextBlock Text="{Binding Name}"/>
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
                             </ComboBox>
                             <Button ToolTip="Добавить сервер" Height="30">
                                 <StackPanel Orientation="Horizontal">
@@ -67,10 +81,20 @@
                             </Button>
                         </ToolBar>
                         <ToolBar Band="1" Header="Отправитель">
-                            <ComboBox Width="160" SelectedIndex="0" Height="30">
-                                <ComboBoxItem>Иванов:ivanov@mail.ru</ComboBoxItem>
-                                <ComboBoxItem>Петров:petrov@mail.ru</ComboBoxItem>
-                                <ComboBoxItem>Сидоров:sidorov@mail.ru</ComboBoxItem>
+                            <ComboBox Width="200" SelectedIndex="0" Height="30" ItemsSource="{x:Static data:TestData.Senders}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate DataType="m:Sender">
+                                        <StackPanel Orientation="Horizontal">
+                                            <StackPanel.ToolTip>
+                                                <TextBlock>Описание: <TextBlock Text="{Binding Description}"/></TextBlock>
+                                            </StackPanel.ToolTip>
+                                            <TextBlock Text="{Binding Name}"/>
+                                            <TextBlock Opacity="0.5" Margin="5,0,0,0">
+                                                (<TextBlock Text="{Binding Address}"/>)
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
                             </ComboBox>
                             <Button ToolTip="Добавить отправителя" Height="30">
                                 <StackPanel Orientation="Horizontal">
@@ -93,11 +117,13 @@
                         </ToolBar>
                     </ToolBarTray>
                     <GroupBox Grid.Row="1" Header="Получатели">
-                        <DataGrid AutoGenerateColumns="False" Background="#aaaaaa">
+                        <DataGrid AutoGenerateColumns="False" ItemsSource="{x:Static data:TestData.Recipients}" GridLinesVisibility="Vertical" 
+                                  AlternatingRowBackground="#FFDAFFDA" VerticalGridLinesBrush="DarkGray" IsReadOnly="True" MinRowHeight="22" Background="#aaaaaa">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="ID" MinWidth="30"/>
-                                <DataGridTextColumn Header="Имя" Width="*"/>
-                                <DataGridTextColumn Header="Адрес" MinWidth="200"/>
+                                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="30"/>
+                                <DataGridTextColumn Header="Имя" Binding="{Binding Name}" MinWidth="100"/>
+                                <DataGridTextColumn Header="Адрес" Binding="{Binding Address}" MinWidth="100"/>
+                                <DataGridTextColumn Header="Описание" Binding="{Binding Description}" Width="*"/>
                             </DataGrid.Columns>
                         </DataGrid>
                     </GroupBox>
@@ -227,23 +253,20 @@
                         <ColumnDefinition Width="Auto" MinWidth="150"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
                     <GroupBox Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Header="Письма">
-                        <ListBox>
-                            <ListBoxItem>Первое письмо</ListBoxItem>
-                            <ListBoxItem>Второе письмо</ListBoxItem>
-                            <ListBoxItem>Третье письмо</ListBoxItem>
+                        <ListBox Name="ListBoxMessages" ItemsSource="{x:Static data:TestData.Messages}" 
+                                 DisplayMemberPath="Subject" SelectedIndex="0" MinWidth="160">
                         </ListBox>
                     </GroupBox>
-                    <GroupBox Grid.Column="1" Grid.Row="0" Header="Заголовок">
-                        <TextBox Text="Заголовок"/>
-                    </GroupBox>
-                    <GroupBox Grid.Column="1" Grid.Row="1" Header="Текст письма">
-                        <TextBox AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap" Text="Содержимое письма"/>
-                    </GroupBox>
+                    <DockPanel Grid.Column="1" DataContext="{Binding SelectedItem, ElementName=ListBoxMessages}">
+                        <GroupBox DockPanel.Dock="Top" Header="Заголовок">
+                            <TextBox Text="{Binding Subject}"/>
+                        </GroupBox>
+                        <GroupBox Header="Текст письма">
+                            <TextBox AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap" 
+                                     Text="{Binding Text}"/>
+                        </GroupBox>
+                    </DockPanel>
                 </Grid>
             </TabItem>
             <TabItem Header="Статистика">
@@ -280,7 +303,7 @@
                     <TextBlock Grid.Column="1" Grid.Row="2" Text="0 штук"/>
                     <TextBlock Grid.Column="0" Grid.Row="3" Text="Длительность работы программы:"/>
                     <TextBlock Grid.Column="1" Grid.Row="3" Text="0 секунд"/>
-                    <Image Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Source="Media/proger.png" MaxHeight="350"/>
+                    <Image Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Source="Resources/Media/proger.png" MaxHeight="350"/>
                 </Grid>
             </TabItem>
         </TabControl>
