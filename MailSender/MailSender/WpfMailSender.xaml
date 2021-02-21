@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ctr="clr-namespace:MailSender.Controls"
         xmlns:fa="http://schemas.fontawesome.com/icons/"
         xmlns:data="clr-namespace:MailSender.Data"
         xmlns:m="clr-namespace:MailSender.lib.Models;assembly=MailSender.lib"
@@ -80,6 +81,10 @@
                                     <TextBlock Text="Запланировать"/>
                                 </StackPanel>
                             </Button>
+                        </ToolBar>
+                        <ToolBar Band="2" BandIndex="3">
+                            <ctr:ToolbarItemsUserControl Title="{Binding Text, ElementName=TextBoxTest}" Width="400" Height="30"/>
+                            <TextBox Name="TextBoxTest" Text="1"/>
                         </ToolBar>
                         <ToolBar Band="1" Header="Отправитель">
                             <ComboBox Name="ComboBoxSenders" Width="200" SelectedIndex="0" Height="30" ItemsSource="{x:Static data:TestData.Senders}">
