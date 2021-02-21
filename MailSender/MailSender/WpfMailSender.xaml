@@ -81,7 +81,7 @@
                             </Button>
                         </ToolBar>
                         <ToolBar Band="1" Header="Отправитель">
-                            <ComboBox Width="200" SelectedIndex="0" Height="30" ItemsSource="{x:Static data:TestData.Senders}">
+                            <ComboBox Name="ComboBoxSenders" Width="200" SelectedIndex="0" Height="30" ItemsSource="{x:Static data:TestData.Senders}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate DataType="m:Sender">
                                         <StackPanel Orientation="Horizontal">
@@ -117,8 +117,8 @@
                         </ToolBar>
                     </ToolBarTray>
                     <GroupBox Grid.Row="1" Header="Получатели">
-                        <DataGrid AutoGenerateColumns="False" ItemsSource="{x:Static data:TestData.Recipients}" GridLinesVisibility="Vertical" 
-                                  AlternatingRowBackground="#FFDAFFDA" VerticalGridLinesBrush="DarkGray" IsReadOnly="True" MinRowHeight="22" Background="#aaaaaa">
+                        <DataGrid Name="DataGridRecipients" AutoGenerateColumns="False" ItemsSource="{x:Static data:TestData.Recipients}" GridLinesVisibility="Vertical" 
+                                  AlternatingRowBackground="#FFDAFFDA" VerticalGridLinesBrush="DarkGray" IsReadOnly="True" MinRowHeight="22" Background="#aaaaaa" SelectionMode="Single">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="30"/>
                                 <DataGridTextColumn Header="Имя" Binding="{Binding Name}" MinWidth="100"/>
@@ -146,10 +146,11 @@
                                     <Style TargetType="Button">
                                         <Setter Property="Margin" Value="1.5"/>
                                         <Setter Property="Background" Value="SpringGreen"/>
+                                        <Setter Property="Height" Value="40"/>
                                     </Style>
                                 </UniformGrid.Resources>
                                 <Button Content="Запланировать"/>
-                                <Button Content="Отправить немедленно"/>
+                                <Button Name="ButtonSendNow" Content="Отправить немедленно" Click="ButtonSendNow_OnClick"/>
                             </UniformGrid>
                         </StackPanel>
                     </GroupBox>
@@ -255,7 +256,7 @@
                     </Grid.ColumnDefinitions>
                     <GroupBox Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Header="Письма">
                         <ListBox Name="ListBoxMessages" ItemsSource="{x:Static data:TestData.Messages}" 
-                                 DisplayMemberPath="Subject" SelectedIndex="0" MinWidth="160">
+                                 DisplayMemberPath="Subject" SelectedIndex="0" MinWidth="160" SelectionMode="Single">
                         </ListBox>
                     </GroupBox>
                     <DockPanel Grid.Column="1" DataContext="{Binding SelectedItem, ElementName=ListBoxMessages}">
