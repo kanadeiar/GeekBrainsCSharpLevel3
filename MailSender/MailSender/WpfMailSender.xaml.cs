@@ -94,7 +94,6 @@ namespace MailSender
             if (!(DataGridRecipients.SelectedItem is Recipient recipient)) return;
 
             var mailSender = new SmtpSender(server.Address, server.Port, server.UseSsl, server.Login, server.Password);
-
             try
             {
                 var timer = Stopwatch.StartNew(); 
