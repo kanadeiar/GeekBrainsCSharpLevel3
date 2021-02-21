@@ -248,7 +248,7 @@
                     <GridSplitter Grid.Column="0" Width="3" VerticalAlignment="Stretch" HorizontalAlignment="Right" Background="Transparent"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="Письма">
+            <TabItem Header="Письма" Name="TabItemLetter">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" MinWidth="150"/>
@@ -264,7 +264,7 @@
                             <TextBox Text="{Binding Subject}"/>
                         </GroupBox>
                         <GroupBox Header="Текст письма">
-                            <TextBox AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap" 
+                            <TextBox Name="TextBoxMailMessage" AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap" 
                                      Text="{Binding Text}"/>
                         </GroupBox>
                     </DockPanel>
