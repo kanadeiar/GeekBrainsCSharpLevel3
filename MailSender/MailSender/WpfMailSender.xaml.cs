@@ -93,11 +93,11 @@ namespace MailSender
             if (!(ListBoxMessages.SelectedItem is Message message)) return;
             if (!(DataGridRecipients.SelectedItem is Recipient recipient)) return;
 
-            var mailSender = new SmtpSender(server.Address, server.Port, server.UseSsl, server.Login, server.Password);
+            var mailSender = new SmtpSenderSerivce(server.Address, server.Port, server.UseSsl, server.Login, server.Password);
             try
             {
                 var timer = Stopwatch.StartNew(); 
-                mailSender.Send(mySender.Address, recipient.Address, message.Subject, message.Text);
+                mailSender.SendMessage(mySender.Address, recipient.Address, message.Subject, message.Text);
                 timer.Stop();
                 MessageBox.Show($"Почтовое сообщение успешно отправлено за {timer.Elapsed.TotalSeconds:0.##} секунд", "Выполнено", MessageBoxButton.OK,
                     MessageBoxImage.Information);
