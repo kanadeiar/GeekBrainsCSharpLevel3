@@ -47,7 +47,7 @@
                     </Grid.RowDefinitions>
                     <ToolBarTray Grid.Row="0" Background="#333333">
                         <ToolBar Header="Сервер" Band="0">
-                            <ComboBox Width="160" SelectedIndex="0" Height="30" ItemsSource="{x:Static data:TestData.Servers}">
+                            <ComboBox Name="ComboBoxServers" Width="160" SelectedIndex="0" Height="30" ItemsSource="{x:Static data:TestData.Servers}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate DataType="m:Server">
                                         <TextBlock>
@@ -63,14 +63,14 @@
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
-                            <Button ToolTip="Добавить сервер" Height="30">
+                            <Button Name="ButtonAddServer" ToolTip="Добавить сервер" Height="30" Click="ButtonAddServer_OnClick">
                                 <StackPanel Orientation="Horizontal">
                                     <fa:FontAwesome Icon="Solid_Plus" Foreground="GreenYellow" Margin="3,0" VerticalAlignment="Center"/>
                                     <TextBlock Text="Добавить"/>
                                 </StackPanel>
                             </Button>
-                            <Button ToolTip="Редактировать сервер" fa:Awesome.Content="Solid_Edit" Height="30" Foreground="Orange"/>
-                            <Button ToolTip="Удалить сервер" fa:Awesome.Content="Solid_Trash" Height="30" Foreground="Red"/>
+                            <Button Name="ButtonEditServer" ToolTip="Редактировать сервер" fa:Awesome.Content="Solid_Edit" Height="30" Foreground="Orange" Click="ButtonEditServer_OnClick"/>
+                            <Button Name="ButtonDeleteServer" ToolTip="Удалить сервер" fa:Awesome.Content="Solid_Trash" Height="30" Foreground="Red" Click="ButtonDeleteServer_OnClick"/>
                         </ToolBar>
                         <ToolBar Band="0" BandIndex="1" Header="Планировщик">
                             <Button ToolTip="Запланировать отправку" Height="30">
