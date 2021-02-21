@@ -3,8 +3,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using MailSender.Data;
+using MailSender.lib.Models;
 using MailSender.lib.Services;
-using MailSender.Models;
 using MailSender.Windows;
 
 namespace MailSender

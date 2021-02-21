@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MailSender.Models
+namespace MailSender.lib.Models
 {
     /// <summary> Задание планировщика </summary>
     public class SchedulerTask

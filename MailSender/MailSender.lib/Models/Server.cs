@@ -1,4 +1,4 @@
-﻿namespace MailSender.Models
+﻿namespace MailSender.lib.Models
 {
     /// <summary> Сервер </summary>
     public class Server

@@ -1,7 +1,7 @@
-﻿namespace MailSender.Models
+﻿namespace MailSender.lib.Models
 {
-    /// <summary> Отправитель </summary>
-    public class Sender
+    /// <summary> Получатель </summary>
+    public class Recipient
     {
         public int Id { get; set; }
         public string Name { get; set; }

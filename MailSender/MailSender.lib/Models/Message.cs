@@ -1,4 +1,4 @@
-﻿namespace MailSender.Models
+﻿namespace MailSender.lib.Models
 {
     /// <summary> Сообщение </summary>
     public class Message
