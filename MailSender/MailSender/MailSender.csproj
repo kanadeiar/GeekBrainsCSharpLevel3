@@ -21,6 +21,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MailSender.lib\MailSender.lib.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Avatar.ico" />
     <Resource Include="Resources\Media\proger.png" />
     <Resource Include="Theme.xaml">
@@ -33,6 +37,10 @@
       <SubType>Code</SubType>
       <DependentUpon>WindowSuccessSend.xaml.cs</DependentUpon>
     </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>
