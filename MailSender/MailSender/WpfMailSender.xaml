@@ -226,7 +226,7 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Статистика">
-                <Grid Margin="20">
+                <Grid Margin="10">
                     <Grid.Resources>
                         <Style TargetType="TextBlock">
                             <Setter Property="Foreground" Value="White"/>
@@ -248,6 +248,8 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Column ="0" Grid.Row="0" Text="Отправлено писем:"/>
                     <TextBlock Grid.Column="1" Grid.Row="0" Text="0 штук"/>
@@ -255,6 +257,9 @@
                     <TextBlock Grid.Column="1" Grid.Row="1" Text="0 штук"/>
                     <TextBlock Grid.Column="0" Grid.Row="2" Text="Всего получателей:"/>
                     <TextBlock Grid.Column="1" Grid.Row="2" Text="0 штук"/>
+                    <TextBlock Grid.Column="0" Grid.Row="3" Text="Длительность работы программы:"/>
+                    <TextBlock Grid.Column="1" Grid.Row="3" Text="0 секунд"/>
+                    <Image Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Source="Media/proger.png" MaxHeight="350"/>
                 </Grid>
             </TabItem>
         </TabControl>
