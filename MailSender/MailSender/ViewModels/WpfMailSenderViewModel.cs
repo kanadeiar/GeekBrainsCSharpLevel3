@@ -54,6 +54,14 @@ namespace MailSender.ViewModels
             get => _servers;
             set => Set(ref _servers, value);
         }
+        private Server _selectedServer;
+        /// <summary> Выбранный сервер </summary>
+        public Server SelectedServer
+        {
+            get => _selectedServer;
+            set => Set(ref _selectedServer, value);
+        }
+
         private ObservableCollection<Sender> _senders;
         /// <summary> Отправители в почтовом сообщении </summary>
         public ObservableCollection<Sender> Senders
@@ -61,6 +69,14 @@ namespace MailSender.ViewModels
             get => _senders;
             set => Set(ref _senders, value);
         }
+        private Sender _selectedSender;
+        /// <summary> Выбранный отправитель </summary>
+        public Sender SelectedSender
+        {
+            get => _selectedSender;
+            set => Set(ref _selectedSender, value);
+        }
+
         private ObservableCollection<Recipient> _recipients;
         /// <summary> Получатели почтового сообщения </summary>
         public ObservableCollection<Recipient> Recipients
@@ -68,6 +84,14 @@ namespace MailSender.ViewModels
             get => _recipients;
             set => Set(ref _recipients, value);
         }
+        private Recipient _selectedRecipient;
+        /// <summary> Выбранный получатель </summary>
+        public Recipient SelectedRecipient
+        {
+            get => _selectedRecipient;
+            set => Set(ref _selectedRecipient, value);
+        }
+
         private ObservableCollection<Message> _messages;
         /// <summary> Сообщения электронной почты </summary>
         public ObservableCollection<Message> Messages
@@ -75,6 +99,14 @@ namespace MailSender.ViewModels
             get => _messages;
             set => Set(ref _messages, value);
         }
+        private Message _selectedMessage;
+        /// <summary> Выбранное сообщение </summary>
+        public Message SelectedMessage
+        {
+            get => _selectedMessage;
+            set => Set(ref _selectedMessage, value);
+        }
+
 
         #region Текущее время
 

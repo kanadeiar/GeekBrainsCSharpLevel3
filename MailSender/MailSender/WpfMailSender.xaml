@@ -97,7 +97,9 @@
                     </Grid.RowDefinitions>
                     <ToolBarTray Grid.Row="0">
                         <ToolBar Header="Сервер" Band="0">
-                            <ComboBox Name="ComboBoxServers" MinWidth="160"  SelectedIndex="0" ItemsSource="{Binding Servers}">
+                            <ComboBox Name="ComboBoxServers" MinWidth="160"  SelectedIndex="0" 
+                                      ItemsSource="{Binding Servers}"
+                                      SelectedItem="{Binding SelectedServer}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate DataType="m:Server">
                                         <TextBlock>
@@ -131,7 +133,9 @@
                             </Button>
                         </ToolBar>
                         <ToolBar Band="1" Header="Отправитель">
-                            <ComboBox Name="ComboBoxSenders" Width="200" SelectedIndex="0" Height="30" ItemsSource="{Binding Senders}">
+                            <ComboBox Name="ComboBoxSenders" Width="200" SelectedIndex="0" Height="30" 
+                                      ItemsSource="{Binding Senders}"
+                                      SelectedItem="{Binding SelectedSender}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate DataType="m:Sender">
                                         <StackPanel Orientation="Horizontal">
@@ -162,8 +166,10 @@
                         </ToolBar>
                     </ToolBarTray>
                     <GroupBox Grid.Row="1" Header="Получатели">
-                        <DataGrid Name="DataGridRecipients" AutoGenerateColumns="False" ItemsSource="{Binding Recipients}" GridLinesVisibility="Vertical" 
-                                  AlternatingRowBackground="#FFFDFFDA" VerticalGridLinesBrush="DarkGray" IsReadOnly="True" SelectionMode="Single">
+                        <DataGrid Name="DataGridRecipients" AutoGenerateColumns="False" GridLinesVisibility="Vertical" AlternatingRowBackground="#FFFDFFDA" 
+                                  VerticalGridLinesBrush="DarkGray" IsReadOnly="True" SelectionMode="Single"
+                                  ItemsSource="{Binding Recipients}"
+                                  SelectedItem="{Binding SelectedRecipient}">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="30"/>
                                 <DataGridTextColumn Header="Имя" Binding="{Binding Name}" MinWidth="100"/>
@@ -323,8 +329,9 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <GroupBox Grid.Column="0" Grid.Row="0" Header="Письма">
-                        <ListBox Name="ListBoxMessages" ItemsSource="{Binding Messages}" 
-                                 DisplayMemberPath="Subject" SelectedIndex="0" MinWidth="160" SelectionMode="Single">
+                        <ListBox Name="ListBoxMessages" DisplayMemberPath="Subject" SelectedIndex="0" MinWidth="160" SelectionMode="Single"
+                                 ItemsSource="{Binding Messages}" 
+                                 SelectedItem="{Binding SelectedMessage}">
                         </ListBox>
                     </GroupBox>
                     <DockPanel Grid.Column="1" DataContext="{Binding SelectedItem, ElementName=ListBoxMessages}">
