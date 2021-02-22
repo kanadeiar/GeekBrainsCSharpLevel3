@@ -9,16 +9,10 @@
 
   <ItemGroup>
     <None Remove="Avatar.ico" />
-    <None Remove="Resources\Media\letter2.png" />
     <None Remove="Resources\proger.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <Page Remove="Theme.xaml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Extended.Wpf.Toolkit" Version="4.0.2" />
     <PackageReference Include="FontAwesome5" Version="2.1.0" />
     <PackageReference Include="MaterialDesignThemes" Version="4.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.3" />
@@ -32,11 +26,7 @@
 
   <ItemGroup>
     <Resource Include="Avatar.ico" />
-    <Resource Include="Resources\Media\letter2.png" />
     <Resource Include="Resources\Media\proger.png" />
-    <Resource Include="Theme.xaml">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
   </ItemGroup>
 
   <ItemGroup>
@@ -47,6 +37,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Controls\" />
     <Folder Include="Models\" />
     <Folder Include="Services\" />
   </ItemGroup>
