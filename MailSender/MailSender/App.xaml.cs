@@ -35,11 +35,11 @@ namespace MailSender
 #else
             services.AddTransient<IMailService, SmtpMailService>();
 #endif
-            
-            //var storage = new DebugDataStorage();
-
+#if DEBUG
+            var storage = new DebugDataStorage();
+#else
             var storage = new XmlFileDataStorage("storage.xml");
-
+#endif
             services.AddSingleton<IServerStorage>(storage);
             services.AddSingleton<ISenderStorage>(storage);
             services.AddSingleton<IRecipientStorage>(storage);

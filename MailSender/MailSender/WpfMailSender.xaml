@@ -45,7 +45,6 @@
                 </MenuItem>
             </MenuItem>
             <MenuItem Header="Сервис">
-                <MenuItem Header="Загрузить тестовые данные" Command="{Binding LoadDataCommand}"/>
                 <MenuItem Header="Загрузить данные из файла" Command="{Binding LoadDataFileCommand}"/>
                 <MenuItem Header="Сохранить данные в файле" Command="{Binding SaveDataFileCommand}"/>
                 <MenuItem Header="Настройка"/>
