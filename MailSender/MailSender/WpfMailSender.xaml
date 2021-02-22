@@ -9,7 +9,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:fa="http://schemas.fontawesome.com/icons/"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-        xmlns:data="clr-namespace:MailSender.Data"
         xmlns:vm="clr-namespace:MailSender.ViewModels"
         xmlns:v="clr-namespace:MailSender.Views"
         xmlns:m="clr-namespace:MailSender.lib.Models;assembly=MailSender.lib"
@@ -130,7 +129,9 @@
                                     CommandParameter="{Binding SelectedServer}"/>
                         </ToolBar>
                         <ToolBar Band="0" BandIndex="1" Header="Планировщик">
-                            <Button Name="ButtonToPlan" Command="{Binding ToTab}" CommandParameter="{Binding ElementName=TabItemPlan}">
+                            <Button Name="ButtonToPlan" 
+                                    Command="{Binding ToTabItemCommand}" 
+                                    CommandParameter="{Binding ElementName=TabItemPlan}">
                                 <StackPanel Orientation="Horizontal">
                                     <fa:FontAwesome Icon="Regular_Clock" Foreground="CornflowerBlue" Margin="5,0" VerticalAlignment="Center"/>
                                     <TextBlock Text="Запланировать"/>
@@ -193,7 +194,7 @@
                             <DatePicker materialDesign:HintAssist.Hint="Выберите дату" Style="{StaticResource MaterialDesignFloatingHintDatePicker}" Language="ru-RU"/>
                             <!--<Calendar Name="CalendarPlan" SelectedDate="2020-09-05" Language="ru-RU"/>-->
                             <TextBlock Text="Время" HorizontalAlignment="Center" Margin="5"/>
-                            <materialDesign:TimePicker materialDesign:HintAssist.Hint="Выберите время"/>
+                            <materialDesign:TimePicker materialDesign:HintAssist.Hint="Выберите время" Is24Hours="True"/>
                             <!--<xctk:TimePicker Name="TimePickerSendDate" Margin="5"/>-->
                             <UniformGrid Columns="1" Margin="5, 10">
                                 <UniformGrid.Resources>

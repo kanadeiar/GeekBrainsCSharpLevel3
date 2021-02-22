@@ -1,13 +1,11 @@
 ﻿
 using System;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using MailSender.Data;
 using MailSender.Infrastructure.Commands;
 using MailSender.lib.Interfaces;
 using MailSender.lib.Models;
@@ -19,7 +17,6 @@ namespace MailSender.ViewModels
     /// <summary> Вьюмодель главного окна приложения </summary>
     class WpfMailSenderViewModel : ViewModel
     {
-        //private static string __DataFileName = "test.xml";
         private readonly IMailService _MailService;
         private readonly IServerStorage _serverStorage;
         private readonly ISenderStorage _senderStorage;
@@ -137,26 +134,12 @@ namespace MailSender.ViewModels
 
         #region Команды работы данными
 
-        private ICommand _loadDataCommand;
-        /// <summary> Команда загрузки тестовых данных </summary>
-        public ICommand LoadDataCommand => _loadDataCommand ??= new LambdaCommand(OnLoadDataCommandExecute);
-        private void OnLoadDataCommandExecute(object p)
-        {
-            var data = TestData.CreateInstance(10,10,10,100);
-            Servers = new ObservableCollection<Server>(data.Servers);
-            Senders = new ObservableCollection<Sender>(data.Senders);
-            Recipients = new ObservableCollection<Recipient>(data.Recipients);
-            Messages = new ObservableCollection<Message>(data.Messages);
-        }
         private ICommand _loadDataFileCommand;
         /// <summary> Команда загрузки данных </summary>
         public ICommand LoadDataFileCommand => _loadDataFileCommand ??= new LambdaCommand(OnLoadDataFileCommandExecute);
         private void OnLoadDataFileCommandExecute(object p)
         {
             _serverStorage.Load();
-            //_senderStorage.Load();
-            //_recipientStorage.Load();
-            //_messageStorage.Load();
             Servers = new ObservableCollection<Server>(_serverStorage.Items);
             Senders = new ObservableCollection<Sender>(_senderStorage.Items);
             Recipients = new ObservableCollection<Recipient>(_recipientStorage.Items);
@@ -168,9 +151,6 @@ namespace MailSender.ViewModels
         private void OnSaveDataFIleCommandExecute(object p)
         {
             _serverStorage.SaveChanges();
-            //_senderStorage.SaveChanges();
-            //_recipientStorage.SaveChanges();
-            //_messageStorage.SaveChanges();
         }
 
         #endregion
@@ -295,10 +275,12 @@ namespace MailSender.ViewModels
             MessageBox.Show(message, "Сообщение приложения", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
-        private ICommand _toTab;
+        private ICommand _toTabItemCommand;
         /// <summary> Команда перехода на закладку главного окна приложения </summary>
-        public ICommand ToTab => _toTab ??= new LambdaCommand(OnToTab);
-        private void OnToTab(object p)
+        public ICommand ToTabItemCommand => _toTabItemCommand ??= new LambdaCommand(OnToTabItemCommandExecute, CanToTabItemCommandExecute);
+
+        private bool CanToTabItemCommandExecute(object p) => p is TabItem;
+        private void OnToTabItemCommandExecute(object p)
         {
             if (!(p is TabItem tabItem)) return;
             tabItem.IsSelected = true;
