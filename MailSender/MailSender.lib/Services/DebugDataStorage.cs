@@ -6,19 +6,20 @@ using System.Linq;
 
 namespace MailSender.lib.Services
 {
+    /// <summary> Хранилище в памяти </summary>
     public class DebugDataStorage : IServerStorage, ISenderStorage, IRecipientStorage, IMessageStorage
     {
-        public ICollection<Server> Servers { get; set; }
-        public ICollection<Sender> Senders { get; set; }
-        public ICollection<Recipient> Recipients { get; set; }
-        public ICollection<Message> Messages { get; set; }
-        ICollection<Server> IStorage<Server>.Items => Servers;
-        ICollection<Sender> IStorage<Sender>.Items => Senders;
-        ICollection<Recipient> IStorage<Recipient>.Items => Recipients;
-        ICollection<Message> IStorage<Message>.Items => Messages;
+        private ICollection<Server> _servers { get; set; }
+        private ICollection<Sender> _senders { get; set; }
+        private ICollection<Recipient> _recipients { get; set; }
+        private ICollection<Message> _messages { get; set; }
+        ICollection<Server> IStorage<Server>.Items => _servers;
+        ICollection<Sender> IStorage<Sender>.Items => _senders;
+        ICollection<Recipient> IStorage<Recipient>.Items => _recipients;
+        ICollection<Message> IStorage<Message>.Items => _messages;
         public void Load()
         {
-            Servers = Enumerable.Range(1, 10)
+            _servers = Enumerable.Range(1, 10)
                 .Select(i => new Server
                 {
                     Id = i,
@@ -30,7 +31,7 @@ namespace MailSender.lib.Services
                     Port = 25,
                     UseSsl = i % 2 != 0,
                 }).ToList();
-            Senders = Enumerable.Range(1, 10)
+            _senders = Enumerable.Range(1, 10)
                 .Select(i => new Sender
                 {
                     Id = i,
@@ -38,7 +39,7 @@ namespace MailSender.lib.Services
                     Description = $"Тестовый отправитель{i}",
                     Name = $"Отправитель{i}",
                 }).ToList();
-            Recipients = Enumerable.Range(1, 10)
+            _recipients = Enumerable.Range(1, 10)
                 .Select(i => new Recipient
                 {
                     Id = i,
@@ -46,7 +47,7 @@ namespace MailSender.lib.Services
                     Description = $"Тестовый получатель{i}",
                     Name = $"Получатель{i}",
                 }).ToList();
-            Messages = Enumerable.Range(1, 100)
+            _messages = Enumerable.Range(1, 100)
                 .Select(i => new Message
                 {
                     Id = i,

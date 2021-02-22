@@ -23,7 +23,7 @@
         Height="600" Width="800" WindowStartupLocation="CenterScreen" Icon="/Avatar.ico" ResizeMode="CanResizeWithGrip">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
-            <i:InvokeCommandAction Command="{Binding LoadDataCommand}"/>
+            <i:InvokeCommandAction Command="{Binding LoadDataFileCommand}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <DockPanel>

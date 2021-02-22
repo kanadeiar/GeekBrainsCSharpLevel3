@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO.Enumeration;
 using System.Windows;
 using MailSender.lib.Interfaces;
 using MailSender.lib.Services;
@@ -35,7 +36,9 @@ namespace MailSender
             services.AddTransient<IMailService, SmtpMailService>();
 #endif
             
-            var storage = new DebugDataStorage();
+            //var storage = new DebugDataStorage();
+
+            var storage = new XmlFileDataStorage("storage.xml");
 
             services.AddSingleton<IServerStorage>(storage);
             services.AddSingleton<ISenderStorage>(storage);
