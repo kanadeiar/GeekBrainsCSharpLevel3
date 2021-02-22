@@ -11,6 +11,7 @@ using MailSender.Data;
 using MailSender.Infrastructure.Commands;
 using MailSender.lib.Models;
 using MailSender.ViewModels.Base;
+using MailSender.Windows;
 
 namespace MailSender.ViewModels
 {
@@ -164,6 +165,86 @@ namespace MailSender.ViewModels
 
         #endregion
 
+        #region Команды изменения данных
+
+        private ICommand _createServerCommand;
+        /// <summary> Коданда создания нового сервера </summary>
+        public ICommand CreateServerCommand => _createServerCommand ??= new LambdaCommand(OnCreateServerCommandExecute);
+        private void OnCreateServerCommandExecute(object p)
+        {
+            if (!ServerEditWindow.Create(
+                out var name,
+                out var address,
+                out var port,
+                out var ssl,
+                out var description,
+                out var login,
+                out var password))
+                return;
+            int newid = default;
+            if (Servers.Count != 0)
+                newid = Servers.Max(s => s.Id) + 1;
+            else
+                newid = 1;
+            var server = new Server
+            {
+                Id = newid,
+                Name = name,
+                Address = address,
+                Port = port,
+                UseSsl = ssl,
+                Description = description,
+                Login = login,
+                Password = password,
+            };
+            Servers.Add(server);
+        }
+        private ICommand _editServerCommand;
+        /// <summary> Команда редактирования выбранного сервера </summary>
+        public ICommand EditServerCommand => _editServerCommand ??=
+            new LambdaCommand(OnEditServerCommandExecute, CanEditServerCommandExecute);
+        private bool CanEditServerCommandExecute(object p) => p is Server;
+        private void OnEditServerCommandExecute(object p)
+        {
+            if (!(p is Server server))
+                return;
+            var name = server.Name;
+            var address = server.Address;
+            var port = server.Port;
+            var ssl = server.UseSsl;
+            var description = server.Description;
+            var login = server.Login;
+            var password = server.Password;
+            if (!ServerEditWindow.ShowDialog("Редактирование почтового сервера",
+                ref name,
+                ref address,
+                ref port,
+                ref ssl,
+                ref description,
+                ref login,
+                ref password))
+                return;
+            server.Name = name;
+            server.Address = address;
+            server.Port = port;
+            server.UseSsl = ssl;
+            server.Description = description;
+            server.Login = login;
+            server.Password = password;
+        }
+        private ICommand _deleteServerCommand;
+        /// <summary> Команда удаления сервера </summary>
+        public ICommand DeleteServerCommand => _deleteServerCommand ??=
+            new LambdaCommand(OnDeleteServerCommandExecute, CanDeleteServerCommandExecute);
+        private bool CanDeleteServerCommandExecute(object p) => p is Server;
+        private void OnDeleteServerCommandExecute(object p)
+        {
+            if (!(p is Server server))
+                return;
+            Servers.Remove(server);
+        }
+
+        #endregion
 
         private ICommand _showDialogCommand;
         /// <summary> Команда показа простого диалогового окна приложения </summary>
