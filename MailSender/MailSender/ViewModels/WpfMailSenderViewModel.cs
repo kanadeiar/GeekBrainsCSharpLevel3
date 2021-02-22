@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -86,6 +87,8 @@ namespace MailSender.ViewModels
             get => _selectedSender;
             set => Set(ref _selectedSender, value);
         }
+
+        
 
         private ObservableCollection<Recipient> _recipients;
         /// <summary> Получатели почтового сообщения </summary>
@@ -350,7 +353,11 @@ namespace MailSender.ViewModels
             var sender = SelectedSender;
             var recipient = SelectedRecipient;
             var message = SelectedMessage;
-            client.Send(sender.Address, recipient.Address, message.Subject, message.Text);
+            var recipients = ((IList) p).Cast<Recipient>().Select(l => l.Address).ToArray();
+            if (recipients.Length <= 1)
+                client.Send(sender.Address, recipient.Address, message.Subject, message.Text);
+            else
+                client.Send(sender.Address, recipients, message.Subject, message.Text);
         }
 
         #region Вспомогательные команды

@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using MailSender.lib.Interfaces;
 
 namespace MailSender.lib.Services
@@ -28,6 +29,14 @@ namespace MailSender.lib.Services
         {
             Debug.WriteLine($"Почтовый сервер {_address}:{_port} ssl:{(_useSsl?"да":"нет")} (Логин:{_login} Пароль:{TextEncoder.Decode(_password, 9)})");
             Debug.WriteLine($"Отправка письма от {from} к {to} с заголовком: {subject} и тестом: {message}");
+        }
+        public void Send(string @from, IEnumerable<string> tos, string subject, string message)
+        {
+            Debug.WriteLine($"Почтовый сервер {_address}:{_port} ssl:{(_useSsl?"да":"нет")} (Логин:{_login} Пароль:{TextEncoder.Decode(_password, 9)})");
+            foreach (var to in tos)
+            {
+                Debug.WriteLine($"Отправка группового письма от {from} к {to} с заголовком: {subject} и тестом: {message}");
+            }
         }
     }
 }

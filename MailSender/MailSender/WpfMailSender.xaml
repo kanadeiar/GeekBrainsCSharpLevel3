@@ -240,7 +240,8 @@
                                     </StackPanel>
                                 </Button>
                                 <Button Name="ButtonSendNow" ToolTip="Отправить немедленно письмо"
-                                        Command = "{Binding SendMessageCommand}">
+                                        Command = "{Binding SendMessageCommand}"
+                                        CommandParameter="{Binding SelectedItems, ElementName=DataGridRecipients}">
                                     <StackPanel Orientation="Horizontal">
                                         <fa:FontAwesome Icon="Solid_Share" Margin="5,0" Foreground="PaleVioletRed"/>
                                         <TextBlock Text="Отправить сейчас" VerticalAlignment="Center" />

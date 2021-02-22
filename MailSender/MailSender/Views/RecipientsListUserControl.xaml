@@ -18,7 +18,7 @@
                     Command="{Binding LoadDataFileCommand}"/>
         </UniformGrid>
         <DataGrid Name="DataGridRecipients" Margin="10,5" AutoGenerateColumns="False" GridLinesVisibility="Vertical" AlternatingRowBackground="#FFFDFFDA"
-                  VerticalGridLinesBrush="DarkGray" IsReadOnly="True" SelectionMode="Single"
+                  VerticalGridLinesBrush="DarkGray" IsReadOnly="True" SelectionMode="Extended"
                   ItemsSource="{Binding FilteredRecipients}"
                   SelectedItem="{Binding SelectedRecipient}">
             <DataGrid.Columns>
