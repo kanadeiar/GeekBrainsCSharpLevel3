@@ -42,7 +42,8 @@
             <MenuItem Header="Справка">
                 <MenuItem Header="Помощь"/>
                 <Separator/>
-                <MenuItem Header="О программе"/>
+                <MenuItem Header="О программе" Command="{Binding ShowDialogCommand }" 
+                          CommandParameter="Geekbrains. Приложение 'Рассыльщик электронной почты'. Выполнил: Рассахатский Андрей."/>
             </MenuItem>
         </Menu>
         <Grid DockPanel.Dock="Top" Background="Orange" Height="50">
