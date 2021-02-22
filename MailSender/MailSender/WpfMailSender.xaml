@@ -13,14 +13,14 @@
         xmlns:local="clr-namespace:MailSender"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="{Binding Path=Title}" Height="600" Width="800" WindowStartupLocation="CenterScreen" 
-        Icon="/Avatar.ico" ResizeMode="CanResizeWithGrip"
-        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-        Background="{DynamicResource MaterialDesignPaper}"
+
+        DataContext="{Binding GetMainWindowViewModel, Source={StaticResource Locator}}"
+
+        Title="{Binding Path=Title}" 
+        Height="600" Width="800" WindowStartupLocation="CenterScreen" Icon="/Avatar.ico" ResizeMode="CanResizeWithGrip"
+
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}" Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto">
-    <Window.DataContext>
-        <vm:WpfMailSenderViewModel/>
-    </Window.DataContext>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Файл">

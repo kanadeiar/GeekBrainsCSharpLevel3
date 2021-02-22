@@ -1,4 +1,8 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
+using MailSender.ViewModels;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace MailSender
 {
@@ -7,5 +11,22 @@ namespace MailSender
     /// </summary>
     public partial class App : Application
     {
+        private static IHost __Hosting;
+        public static IHost Hosting
+        {
+            get
+            {
+                if (__Hosting != null) return __Hosting;
+                var hostBuilder = Host.CreateDefaultBuilder(Environment.GetCommandLineArgs());
+                hostBuilder.ConfigureServices(ConfigureServices);
+                return __Hosting = hostBuilder.Build();
+            }
+        }
+        /// <summary> Сервисы приложения </summary>
+        public static IServiceProvider Services => Hosting.Services;
+        private static void ConfigureServices(HostBuilderContext host, IServiceCollection services)
+        {
+            services.AddSingleton<WpfMailSenderViewModel>();
+        }
     }
 }
