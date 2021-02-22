@@ -68,7 +68,7 @@
 
         <!-- #region Строка состояния -->
 
-        <StatusBar DockPanel.Dock="Bottom" Background="#333333" Foreground="Azure">
+        <StatusBar DockPanel.Dock="Bottom">
             <StatusBarItem>
                 <TextBlock>
                     Статус приложения: <TextBlock Text="Готов"/>
