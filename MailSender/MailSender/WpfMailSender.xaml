@@ -51,7 +51,15 @@
         </Grid>
         <StatusBar DockPanel.Dock="Bottom" Background="#333333" Foreground="Azure">
             <StatusBarItem>
-                <TextBlock Text="Готов"/>
+                <TextBlock>
+                    Статус приложения: <TextBlock Text="Готов"/>
+                </TextBlock>
+            </StatusBarItem>
+            <Separator/>
+            <StatusBarItem>
+                <TextBlock>
+                    Текущее время: <TextBlock Text="{Binding Path=CurrentTime, ConverterCulture=ru-RU, StringFormat=HH:mm:ss.ffff}"/>
+                </TextBlock>
             </StatusBarItem>
         </StatusBar>
         <TabControl>

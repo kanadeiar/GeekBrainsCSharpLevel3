@@ -1,4 +1,7 @@
-﻿using System.Windows;
+﻿
+using System;
+using System.Timers;
+using System.Windows;
 using System.Windows.Input;
 using MailSender.Infrastructure.Commands;
 using MailSender.ViewModels.Base;
@@ -10,6 +13,14 @@ namespace MailSender.ViewModels
     {
         public WpfMailSenderViewModel()
         {
+            _timer = new Timer
+            {
+                Interval = 100,
+                AutoReset = true,
+                Enabled = true,
+            };
+            _timer.Elapsed += OnTimerElapsed;
+
         }
         private string _title = "Geekbrains. Домашнее задание №3. MVVM.";
         /// <summary> Заголовок главного окна </summary>
@@ -25,6 +36,17 @@ namespace MailSender.ViewModels
             get => _description;
             set => Set(ref _description, value);
         }
+
+        #region Текущее время
+
+        private readonly Timer _timer;
+        public DateTime CurrentTime => DateTime.Now;
+        private void OnTimerElapsed(object sender, ElapsedEventArgs e)
+        {
+            OnPropertyChanged(nameof(CurrentTime));
+        }
+
+        #endregion
 
         #region Команды
 
