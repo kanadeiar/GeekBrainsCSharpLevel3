@@ -235,6 +235,65 @@ namespace MailSender.ViewModels
             _serverStorage.Items.Remove(server);
             Servers.Remove(server);
         }
+        private ICommand _createSenderCommand;
+        /// <summary> Команда добавления новго отправителя </summary>
+        public ICommand CreateSenderCommand => _createSenderCommand ??=
+            new LambdaCommand(OnCreateSenderCommandExecute);
+        private void OnCreateSenderCommandExecute(object p)
+        {
+            if (!SenderEditWindow.Create(
+                out var name, 
+                out var address,
+                out var description))
+                return;
+            int newid = default;
+            if (Senders.Count != 0)
+                newid = Senders.Max(s => s.Id) + 1;
+            else
+                newid = 1;
+            var sender = new Sender
+            {
+                Id = newid,
+                Name = name,
+                Address = address,
+                Description = description,
+            };
+            _senderStorage.Items.Add(sender);
+            Senders.Add(sender);
+        }
+        private ICommand _editSenderCommand;
+        /// <summary> Команда редактирования отправителя </summary>
+        public ICommand EditSenderCommand => _editSenderCommand ??=
+            new LambdaCommand(OnEditSenderCommandExecute, CanEditSenderCommandExecute);
+        private bool CanEditSenderCommandExecute(object p) => p is Sender;
+        private void OnEditSenderCommandExecute(object p)
+        {
+            if (!(p is Sender sender))
+                return;
+            var name = sender.Name;
+            var address = sender.Address;
+            var description = sender.Description;
+            if (!SenderEditWindow.ShowDialog("Редактирование отправителя",
+                ref name,
+                ref address,
+                ref description))
+                return;
+            sender.Name = name;
+            sender.Address = address;
+            sender.Description = description;
+        }
+        private ICommand _deleteSenderCommand;
+        /// <summary> Команда удвления отправителя </summary>
+        public ICommand DeleteSenderCommand => _deleteSenderCommand ??=
+            new LambdaCommand(OnDeleteSenderCommandExecute, CanDeleteSenderCommandExecute);
+        private bool CanDeleteSenderCommandExecute(object p) => p is Sender;
+        private void OnDeleteSenderCommandExecute(object p)
+        {
+            if (!(p is Sender sender))
+                return;
+            _senderStorage.Items.Remove(sender);
+            Senders.Remove(sender);
+        }
 
         #endregion
 
@@ -266,6 +325,8 @@ namespace MailSender.ViewModels
             client.Send(sender.Address, recipient.Address, message.Subject, message.Text);
         }
 
+        #region Вспомогательные команды
+
         private ICommand _showDialogCommand;
         /// <summary> Команда показа простого диалогового окна приложения </summary>
         public ICommand ShowDialogCommand => _showDialogCommand ??= new LambdaCommand(OnShowDialogCommandExecute);
@@ -285,6 +346,8 @@ namespace MailSender.ViewModels
             if (!(p is TabItem tabItem)) return;
             tabItem.IsSelected = true;
         }
+
+        #endregion
 
         #endregion
     }

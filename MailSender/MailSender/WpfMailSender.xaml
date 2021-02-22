@@ -156,14 +156,19 @@
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
-                            <Button ToolTip="Добавить отправителя">
+                            <Button ToolTip="Добавить отправителя"
+                                    Command="{Binding CreateSenderCommand}">
                                 <StackPanel Orientation="Horizontal">
                                     <fa:FontAwesome Icon="Solid_Plus" Foreground="GreenYellow" Margin="3,0" VerticalAlignment="Center"/>
                                     <TextBlock Text="Добавить"/>
                                 </StackPanel>
                             </Button>
-                            <Button ToolTip="Редактировать отправителя" fa:Awesome.Content="Solid_Edit" Foreground="Orange"/>
-                            <Button ToolTip="Удалить отправителя" fa:Awesome.Content="Solid_Trash" Foreground="Red"/>
+                            <Button ToolTip="Редактировать отправителя" fa:Awesome.Content="Solid_Edit" Foreground="Orange"
+                                    Command="{Binding EditSenderCommand}"
+                                    CommandParameter="{Binding SelectedSender}"/>
+                            <Button ToolTip="Удалить отправителя" fa:Awesome.Content="Solid_Trash" Foreground="Red"
+                                    Command="{Binding DeleteSenderCommand}"
+                                    CommandParameter="{Binding SelectedSender}"/>
                         </ToolBar>
                         <ToolBar Band="1" BandIndex="1" Header="Получатели">
                             <Button ToolTip="Добавить получателя" fa:Awesome.Content="Solid_Plus" Foreground="GreenYellow"/>
