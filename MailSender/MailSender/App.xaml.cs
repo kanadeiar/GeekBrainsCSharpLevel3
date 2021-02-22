@@ -34,6 +34,13 @@ namespace MailSender
 #else
             services.AddTransient<IMailService, SmtpMailService>();
 #endif
+            
+            var storage = new DebugDataStorage();
+
+            services.AddSingleton<IServerStorage>(storage);
+            services.AddSingleton<ISenderStorage>(storage);
+            services.AddSingleton<IRecipientStorage>(storage);
+            services.AddSingleton<IMessageStorage>(storage);
 
 
         }

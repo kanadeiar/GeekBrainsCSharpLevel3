@@ -19,11 +19,20 @@ namespace MailSender.ViewModels
     /// <summary> Вьюмодель главного окна приложения </summary>
     class WpfMailSenderViewModel : ViewModel
     {
-        private static string __DataFileName = "test.xml";
+        //private static string __DataFileName = "test.xml";
         private readonly IMailService _MailService;
-        public WpfMailSenderViewModel(IMailService mailService)
+        private readonly IServerStorage _serverStorage;
+        private readonly ISenderStorage _senderStorage;
+        private readonly IRecipientStorage _recipientStorage;
+        private readonly IMessageStorage _messageStorage;
+        public WpfMailSenderViewModel(IMailService mailService, IServerStorage serverStorage, ISenderStorage senderStorage, 
+            IRecipientStorage recipientStorage, IMessageStorage messageStorage)
         {
             _MailService = mailService;
+            _serverStorage = serverStorage;
+            _senderStorage = senderStorage;
+            _recipientStorage = recipientStorage;
+            _messageStorage = messageStorage;
             _timer = new Timer
             {
                 Interval = 100,
@@ -126,7 +135,7 @@ namespace MailSender.ViewModels
 
         #region Команды
 
-        #region Команды работы с тестовыми данными
+        #region Команды работы данными
 
         private ICommand _loadDataCommand;
         /// <summary> Команда загрузки тестовых данных </summary>
@@ -140,29 +149,28 @@ namespace MailSender.ViewModels
             Messages = new ObservableCollection<Message>(data.Messages);
         }
         private ICommand _loadDataFileCommand;
-        /// <summary> Команда загрузки данных из файла </summary>
+        /// <summary> Команда загрузки данных </summary>
         public ICommand LoadDataFileCommand => _loadDataFileCommand ??= new LambdaCommand(OnLoadDataFileCommandExecute);
         private void OnLoadDataFileCommandExecute(object p)
         {
-            var data = File.Exists(__DataFileName)
-                ? TestData.LoadFromXml(__DataFileName)
-                : TestData.CreateInstance(10,10,10,100);
-            Servers = new ObservableCollection<Server>(data.Servers);
-            Senders = new ObservableCollection<Sender>(data.Senders);
-            Recipients = new ObservableCollection<Recipient>(data.Recipients);
-            Messages = new ObservableCollection<Message>(data.Messages);
+            _serverStorage.Load();
+            //_senderStorage.Load();
+            //_recipientStorage.Load();
+            //_messageStorage.Load();
+            Servers = new ObservableCollection<Server>(_serverStorage.Items);
+            Senders = new ObservableCollection<Sender>(_senderStorage.Items);
+            Recipients = new ObservableCollection<Recipient>(_recipientStorage.Items);
+            Messages = new ObservableCollection<Message>(_messageStorage.Items);
         }
         private ICommand _saveDataFileCommand;
-        /// <summary> Команда сохранения данных в файл </summary>
+        /// <summary> Команда сохранения данных </summary>
         public ICommand SaveDataFileCommand => _saveDataFileCommand ??= new LambdaCommand(OnSaveDataFIleCommandExecute);
         private void OnSaveDataFIleCommandExecute(object p)
         {
-            var data = TestData.CreateInstance();
-            data.Servers = Servers.ToList();
-            data.Senders = Senders.ToList();
-            data.Recipients = Recipients.ToList();
-            data.Messages = Messages.ToList();
-            data.SaveToXml(__DataFileName);
+            _serverStorage.SaveChanges();
+            //_senderStorage.SaveChanges();
+            //_recipientStorage.SaveChanges();
+            //_messageStorage.SaveChanges();
         }
 
         #endregion
@@ -199,6 +207,7 @@ namespace MailSender.ViewModels
                 Login = login,
                 Password = password,
             };
+            _serverStorage.Items.Add(server);
             Servers.Add(server);
         }
         private ICommand _editServerCommand;
@@ -243,6 +252,7 @@ namespace MailSender.ViewModels
         {
             if (!(p is Server server))
                 return;
+            _serverStorage.Items.Remove(server);
             Servers.Remove(server);
         }
 
