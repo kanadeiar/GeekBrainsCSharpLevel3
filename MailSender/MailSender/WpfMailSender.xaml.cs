@@ -18,9 +18,6 @@ namespace MailSender
             InitializeComponent();
         }
 
-
-        private void Exit_Click(object sender, RoutedEventArgs e) => Close();
-
         private void ButtonAddServer_OnClick(object sender, RoutedEventArgs e)
         {
             if (!ServerEditWindow.Create(

@@ -8,6 +8,7 @@
         xmlns:data="clr-namespace:MailSender.Data"
         xmlns:vm="clr-namespace:MailSender.ViewModels"
         xmlns:m="clr-namespace:MailSender.lib.Models;assembly=MailSender.lib"
+        xmlns:cmd="clr-namespace:MailSender.Infrastructure.Commands"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:MailSender"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
@@ -29,7 +30,11 @@
                 <MenuItem Header="Сохранить"/>
                 <MenuItem Header="Сохранить как ..."/>
                 <Separator/>
-                <MenuItem Header="Выход" Click="Exit_Click"/>
+                <MenuItem Header="Выход" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">
+                    <MenuItem.Command>
+                        <cmd:CloseWindowCommand/>
+                    </MenuItem.Command>
+                </MenuItem>
             </MenuItem>
             <MenuItem Header="Сервис">
                 <MenuItem Header="Настройка"/>
