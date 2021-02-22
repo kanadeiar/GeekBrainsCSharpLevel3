@@ -6,16 +6,20 @@
         xmlns:ctr="clr-namespace:MailSender.Controls"
         xmlns:fa="http://schemas.fontawesome.com/icons/"
         xmlns:data="clr-namespace:MailSender.Data"
+        xmlns:vm="clr-namespace:MailSender.ViewModels"
         xmlns:m="clr-namespace:MailSender.lib.Models;assembly=MailSender.lib"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:MailSender"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="{StaticResource NameApplication}" Height="600" Width="800" WindowStartupLocation="CenterScreen" 
+        Title="{Binding Path=Title}" Height="600" Width="800" WindowStartupLocation="CenterScreen" 
         Icon="/Avatar.ico" ResizeMode="CanResizeWithGrip"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto">
+    <Window.DataContext>
+        <vm:WpfMailSenderViewModel/>
+    </Window.DataContext>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Файл">
@@ -36,8 +40,8 @@
                 <MenuItem Header="О программе"/>
             </MenuItem>
         </Menu>
-        <Grid DockPanel.Dock="Top" Background="Orange" Height="40">
-            <TextBlock Text="{StaticResource NameApplication}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+        <Grid DockPanel.Dock="Top" Background="Orange" Height="50">
+            <TextBlock Text="{Binding Path=Description}" TextWrapping="WrapWithOverflow" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
         </Grid>
         <StatusBar DockPanel.Dock="Bottom" Background="#333333" Foreground="Azure">
             <StatusBarItem>
@@ -119,7 +123,7 @@
                     </ToolBarTray>
                     <GroupBox Grid.Row="1" Header="Получатели">
                         <DataGrid Name="DataGridRecipients" AutoGenerateColumns="False" ItemsSource="{x:Static data:TestData.Recipients}" GridLinesVisibility="Vertical" 
-                                  AlternatingRowBackground="#FFFDFFDA" VerticalGridLinesBrush="DarkGray" IsReadOnly="True" MinRowHeight="22" SelectionMode="Single">
+                                  AlternatingRowBackground="#FFFDFFDA" VerticalGridLinesBrush="DarkGray" IsReadOnly="True" SelectionMode="Single">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="30"/>
                                 <DataGridTextColumn Header="Имя" Binding="{Binding Name}" MinWidth="100"/>
@@ -268,7 +272,7 @@
                         <ColumnDefinition Width="Auto" MinWidth="150"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <GroupBox Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Header="Письма">
+                    <GroupBox Grid.Column="0" Grid.Row="0" Header="Письма">
                         <ListBox Name="ListBoxMessages" ItemsSource="{x:Static data:TestData.Messages}" 
                                  DisplayMemberPath="Subject" SelectedIndex="0" MinWidth="160" SelectionMode="Single">
                         </ListBox>
