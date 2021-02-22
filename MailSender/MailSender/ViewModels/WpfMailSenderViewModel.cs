@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Timers;
@@ -116,6 +117,32 @@ namespace MailSender.ViewModels
             set => Set(ref _selectedMessage, value);
         }
 
+        #region Фильтр получателей сообщений
+
+        private string _recipientsFilter;
+        /// <summary> Фильтр получателей сообщений </summary>
+        public string RecipientsFilter
+        {
+            get => _recipientsFilter;
+            set
+            {
+                Set(ref _recipientsFilter, value);
+                OnPropertyChanged(nameof(FilteredRecipients));
+            }
+        }
+        /// <summary> Отфильтрованные получатели сообщений </summary>
+        public ICollection<Recipient> FilteredRecipients
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(RecipientsFilter))
+                    return Recipients;
+                return Recipients.Where(r => r.Name.ToLower().Contains(RecipientsFilter.ToLower()))
+                    .ToList();
+            }
+        }
+
+        #endregion
 
         #region Текущее время
 
@@ -132,7 +159,7 @@ namespace MailSender.ViewModels
 
         #region Команды
 
-        #region Команды работы данными
+        #region Команды работы с данными
 
         private ICommand _loadDataFileCommand;
         /// <summary> Команда загрузки данных </summary>
@@ -144,6 +171,7 @@ namespace MailSender.ViewModels
             Senders = new ObservableCollection<Sender>(_senderStorage.Items);
             Recipients = new ObservableCollection<Recipient>(_recipientStorage.Items);
             Messages = new ObservableCollection<Message>(_messageStorage.Items);
+            OnPropertyChanged(nameof(FilteredRecipients));
         }
         private ICommand _saveDataFileCommand;
         /// <summary> Команда сохранения данных </summary>

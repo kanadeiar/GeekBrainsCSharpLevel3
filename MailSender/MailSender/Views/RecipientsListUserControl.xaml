@@ -9,8 +9,9 @@
              DataContext="{Binding GetMainWindowViewModel, Source={StaticResource Locator}}">
     <DockPanel>
         <DockPanel DockPanel.Dock="Top" Margin="10,5">
-            <TextBlock Text="Найти:" VerticalAlignment="Center" Margin="0,0,5,0"/>
-            <TextBox ToolTip="Введите слово для поиска"/>
+            <TextBlock Text="Поиск по имени:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+            <TextBox ToolTip="Введите имя для поиска" 
+                     Text="{Binding RecipientsFilter, UpdateSourceTrigger=PropertyChanged}"/>
         </DockPanel>
         <UniformGrid DockPanel.Dock="Bottom" HorizontalAlignment="Center" Rows="1">
             <Button Content="Загрузить данные" Padding="40,2" Margin="5,0"
@@ -18,7 +19,7 @@
         </UniformGrid>
         <DataGrid Name="DataGridRecipients" Margin="10,5" AutoGenerateColumns="False" GridLinesVisibility="Vertical" AlternatingRowBackground="#FFFDFFDA"
                   VerticalGridLinesBrush="DarkGray" IsReadOnly="True" SelectionMode="Single"
-                  ItemsSource="{Binding Recipients}"
+                  ItemsSource="{Binding FilteredRecipients}"
                   SelectedItem="{Binding SelectedRecipient}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="30"/>
