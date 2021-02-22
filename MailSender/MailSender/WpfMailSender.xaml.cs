@@ -20,69 +20,69 @@ namespace MailSender
 
         private void ButtonAddServer_OnClick(object sender, RoutedEventArgs e)
         {
-            if (!ServerEditWindow.Create(
-                out var name,
-                out var address,
-                out var port,
-                out var ssl,
-                out var description,
-                out var login,
-                out var password))
-                return;
-            var server = new Server
-            {
-                Id = TestData.Servers
-                    .DefaultIfEmpty()
-                    .Max(s => s.Id) + 1,
-                Name = name,
-                Address = address,
-                Port = port,
-                UseSsl = ssl,
-                Description = description,
-                Login = login,
-                Password = password,
-            };
-            TestData.Servers.Add(server);
-            ComboBoxServers.Items.Refresh();
-            ComboBoxServers.SelectedItem = server;
+            //if (!ServerEditWindow.Create(
+            //    out var name,
+            //    out var address,
+            //    out var port,
+            //    out var ssl,
+            //    out var description,
+            //    out var login,
+            //    out var password))
+            //    return;
+            //var server = new Server
+            //{
+            //    Id = TestData.Servers
+            //        .DefaultIfEmpty()
+            //        .Max(s => s.Id) + 1,
+            //    Name = name,
+            //    Address = address,
+            //    Port = port,
+            //    UseSsl = ssl,
+            //    Description = description,
+            //    Login = login,
+            //    Password = password,
+            //};
+            //TestData.Servers.Add(server);
+            //ComboBoxServers.Items.Refresh();
+            //ComboBoxServers.SelectedItem = server;
         }
         private void ButtonEditServer_OnClick(object sender, RoutedEventArgs e)
         {
-            if (!(ComboBoxServers.SelectedItem is Server server))
-                return;
-            var name = server.Name;
-            var address = server.Address;
-            var port = server.Port;
-            var ssl = server.UseSsl;
-            var description = server.Description;
-            var login = server.Login;
-            var password = server.Password;
-            if (!ServerEditWindow.ShowDialog("Редактирование почтового сервера", 
-                ref name,
-                ref address,
-                ref port,
-                ref ssl,
-                ref description,
-                ref login,
-                ref password))
-                return;
-            server.Name = name;
-            server.Address = address;
-            server.Port = port;
-            server.UseSsl = ssl;
-            server.Description = description;
-            server.Login = login;
-            server.Password = password;
-            ComboBoxServers.Items.Refresh();
-            ComboBoxServers.SelectedItem = server;
+            //if (!(ComboBoxServers.SelectedItem is Server server))
+            //    return;
+            //var name = server.Name;
+            //var address = server.Address;
+            //var port = server.Port;
+            //var ssl = server.UseSsl;
+            //var description = server.Description;
+            //var login = server.Login;
+            //var password = server.Password;
+            //if (!ServerEditWindow.ShowDialog("Редактирование почтового сервера", 
+            //    ref name,
+            //    ref address,
+            //    ref port,
+            //    ref ssl,
+            //    ref description,
+            //    ref login,
+            //    ref password))
+            //    return;
+            //server.Name = name;
+            //server.Address = address;
+            //server.Port = port;
+            //server.UseSsl = ssl;
+            //server.Description = description;
+            //server.Login = login;
+            //server.Password = password;
+            //ComboBoxServers.Items.Refresh();
+            //ComboBoxServers.SelectedItem = server;
         }
         private void ButtonDeleteServer_OnClick(object sender, RoutedEventArgs e)
         {
-            if (!(ComboBoxServers.SelectedItem is Server server))
-                return;
-            TestData.Servers.Remove(server);
-            ComboBoxServers.Items.Refresh();
-            ComboBoxServers.SelectedItem = server;
+            //if (!(ComboBoxServers.SelectedItem is Server server))
+            //    return;
+            //TestData.Servers.Remove(server);
+            //ComboBoxServers.Items.Refresh();
+            //ComboBoxServers.SelectedItem = server;
         }
         private void ButtonSendNow_OnClick(object sender, RoutedEventArgs e)
         {

@@ -1,6 +1,8 @@
 ﻿
 using System;
 using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
@@ -15,6 +17,8 @@ namespace MailSender.ViewModels
     /// <summary> Вьюмодель главного окна приложения </summary>
     class WpfMailSenderViewModel : ViewModel
     {
+        private static string __DataFileName = "test.xml";
+
         public WpfMailSenderViewModel()
         {
             _timer = new Timer
@@ -24,7 +28,6 @@ namespace MailSender.ViewModels
                 Enabled = true,
             };
             _timer.Elapsed += OnTimerElapsed;
-
         }
 
         #region Свойства
@@ -88,16 +91,47 @@ namespace MailSender.ViewModels
 
         #region Команды
 
+        #region Команды работы с тестовыми данными
+
         private ICommand _loadDataCommand;
         /// <summary> Команда загрузки тестовых данных </summary>
         public ICommand LoadDataCommand => _loadDataCommand ??= new LambdaCommand(OnLoadDataCommandExecute);
         private void OnLoadDataCommandExecute(object p)
         {
-            Servers = new ObservableCollection<Server>(TestData.Servers);
-            Senders = new ObservableCollection<Sender>(TestData.Senders);
-            Recipients = new ObservableCollection<Recipient>(TestData.Recipients);
-            Messages = new ObservableCollection<Message>(TestData.Messages);
+            var data = TestData.CreateInstance(10,10,10,100);
+            Servers = new ObservableCollection<Server>(data.Servers);
+            Senders = new ObservableCollection<Sender>(data.Senders);
+            Recipients = new ObservableCollection<Recipient>(data.Recipients);
+            Messages = new ObservableCollection<Message>(data.Messages);
         }
+        private ICommand _loadDataFileCommand;
+        /// <summary> Команда загрузки данных из файла </summary>
+        public ICommand LoadDataFileCommand => _loadDataFileCommand ??= new LambdaCommand(OnLoadDataFileCommandExecute);
+        private void OnLoadDataFileCommandExecute(object p)
+        {
+            var data = File.Exists(__DataFileName)
+                ? TestData.LoadFromXml(__DataFileName)
+                : TestData.CreateInstance(10,10,10,100);
+            Servers = new ObservableCollection<Server>(data.Servers);
+            Senders = new ObservableCollection<Sender>(data.Senders);
+            Recipients = new ObservableCollection<Recipient>(data.Recipients);
+            Messages = new ObservableCollection<Message>(data.Messages);
+        }
+        private ICommand _saveDataFileCommand;
+        /// <summary> Команда сохранения данных в файл </summary>
+        public ICommand SaveDataFileCommand => _saveDataFileCommand ??= new LambdaCommand(OnSaveDataFIleCommandExecute);
+        private void OnSaveDataFIleCommandExecute(object p)
+        {
+            var data = TestData.CreateInstance();
+            data.Servers = Servers.ToList();
+            data.Senders = Senders.ToList();
+            data.Recipients = Recipients.ToList();
+            data.Messages = Messages.ToList();
+            data.SaveToXml(__DataFileName);
+        }
+
+        #endregion
+
 
         private ICommand _showDialogCommand;
         /// <summary> Команда показа простого диалогового окна приложения </summary>
