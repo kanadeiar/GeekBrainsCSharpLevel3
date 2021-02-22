@@ -11,6 +11,7 @@
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:data="clr-namespace:MailSender.Data"
         xmlns:vm="clr-namespace:MailSender.ViewModels"
+        xmlns:v="clr-namespace:MailSender.Views"
         xmlns:m="clr-namespace:MailSender.lib.Models;assembly=MailSender.lib"
         xmlns:cmd="clr-namespace:MailSender.Infrastructure.Commands"
         xmlns:local="clr-namespace:MailSender"
@@ -170,17 +171,7 @@
                         </ToolBar>
                     </ToolBarTray>
                     <GroupBox Grid.Row="1" Header="Получатели">
-                        <DataGrid Name="DataGridRecipients" AutoGenerateColumns="False" GridLinesVisibility="Vertical" AlternatingRowBackground="#FFFDFFDA" 
-                                  VerticalGridLinesBrush="DarkGray" IsReadOnly="True" SelectionMode="Single"
-                                  ItemsSource="{Binding Recipients}"
-                                  SelectedItem="{Binding SelectedRecipient}">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="30"/>
-                                <DataGridTextColumn Header="Имя" Binding="{Binding Name}" MinWidth="100"/>
-                                <DataGridTextColumn Header="Адрес" Binding="{Binding Address}" MinWidth="100"/>
-                                <DataGridTextColumn Header="Описание" Binding="{Binding Description}" Width="*"/>
-                            </DataGrid.Columns>
-                        </DataGrid>
+                        <v:RecipientsListUserControl/>
                     </GroupBox>
                 </Grid>
             </TabItem>
