@@ -97,7 +97,7 @@
                             <Button Name="ButtonDeleteServer" ToolTip="Удалить сервер" fa:Awesome.Content="Solid_Trash" Foreground="Red" Click="ButtonDeleteServer_OnClick"/>
                         </ToolBar>
                         <ToolBar Band="0" BandIndex="1" Header="Планировщик">
-                            <Button Name="ButtonToPlan" Click="ButtonToPlan_OnClick" ToolTip="Запланировать отправку">
+                            <Button Name="ButtonToPlan" Command="{Binding ToTab}" CommandParameter="{Binding ElementName=TabItemPlan}">
                                 <StackPanel Orientation="Horizontal">
                                     <fa:FontAwesome Icon="Regular_Clock" Foreground="CornflowerBlue" Margin="5,0" VerticalAlignment="Center"/>
                                     <TextBlock Text="Запланировать"/>

@@ -2,6 +2,7 @@
 using System;
 using System.Timers;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using MailSender.Infrastructure.Commands;
 using MailSender.ViewModels.Base;
@@ -58,6 +59,16 @@ namespace MailSender.ViewModels
             var message = p as string ?? "Привет, Мир!";
             MessageBox.Show(message, "Сообщение приложения", MessageBoxButton.OK, MessageBoxImage.Information);
         }
+
+        private ICommand _toTab;
+        /// <summary> Команда перехода на закладку главного окна приложения </summary>
+        public ICommand ToTab => _toTab ??= new LambdaCommand(OnToTab);
+        private void OnToTab(object p)
+        {
+            if (!(p is TabItem tabItem)) return;
+            tabItem.IsSelected = true;
+        }
+
         #endregion
     }
 }

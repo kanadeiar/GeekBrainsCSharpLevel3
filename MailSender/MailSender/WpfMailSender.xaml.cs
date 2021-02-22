@@ -116,9 +116,6 @@ namespace MailSender
             }
         }
 
-        private void ButtonToPlan_OnClick(object sender, RoutedEventArgs e)
-        {
-            TabItemPlan.IsSelected = true;
-        }
+
     }
 }
