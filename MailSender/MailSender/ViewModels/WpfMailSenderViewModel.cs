@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using MailSender.Data;
 using MailSender.Infrastructure.Commands;
+using MailSender.lib.Interfaces;
 using MailSender.lib.Models;
 using MailSender.ViewModels.Base;
 using MailSender.Windows;
@@ -19,9 +20,10 @@ namespace MailSender.ViewModels
     class WpfMailSenderViewModel : ViewModel
     {
         private static string __DataFileName = "test.xml";
-
-        public WpfMailSenderViewModel()
+        private readonly IMailService _MailService;
+        public WpfMailSenderViewModel(IMailService mailService)
         {
+            _MailService = mailService;
             _timer = new Timer
             {
                 Interval = 100,
@@ -245,6 +247,34 @@ namespace MailSender.ViewModels
         }
 
         #endregion
+
+        private ICommand _sendMessageCommand;
+        /// <summary> Команда отправки сообщения </summary>
+        public ICommand SendMessageCommand => _sendMessageCommand ??=
+            new LambdaCommand(OnSendMessageCommandExecute, CanSendMessageCommandExecute);
+        private bool CanSendMessageCommandExecute(object p)
+        {
+            return SelectedServer != null && SelectedSender != null && SelectedRecipient != null &&
+                   SelectedMessage != null;
+        }
+        private void OnSendMessageCommandExecute(object p)
+        {
+            if (string.IsNullOrEmpty(SelectedMessage.Text))
+            {
+                return;
+            }
+            if (string.IsNullOrEmpty(SelectedMessage.Subject))
+            {
+                return;
+            }
+            var server = SelectedServer;
+            var client = _MailService.GetSender(server.Address, server.Port, server.UseSsl, server.Login,
+                server.Password);
+            var sender = SelectedSender;
+            var recipient = SelectedRecipient;
+            var message = SelectedMessage;
+            client.Send(sender.Address, recipient.Address, message.Subject, message.Text);
+        }
 
         private ICommand _showDialogCommand;
         /// <summary> Команда показа простого диалогового окна приложения </summary>

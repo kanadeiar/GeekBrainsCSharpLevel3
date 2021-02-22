@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -9,6 +10,7 @@ using MailSender.lib.Services;
 namespace MailSender.Data
 {
     /// <summary> Тестовые данные </summary>
+    [Serializable]
     public class TestData
     {
         /// <summary> Фабрика создания тестовых данных </summary>
@@ -66,7 +68,6 @@ namespace MailSender.Data
             var serializer = new XmlSerializer(typeof(TestData));
             using var reader = File.OpenText(fileName);
             var data = (TestData)serializer.Deserialize(reader);
-            Debug.WriteLine($"count = {data.Servers.Count}");
             return data;
         }
         /// <summary> Сохраниение данных в файл </summary>

@@ -219,7 +219,8 @@
                                         <TextBlock Text="Запланировать" VerticalAlignment="Center"/>
                                     </StackPanel>
                                 </Button>
-                                <Button Name="ButtonSendNow" Click="ButtonSendNow_OnClick" ToolTip="Отправить немедленно письмо">
+                                <Button Name="ButtonSendNow" ToolTip="Отправить немедленно письмо"
+                                        Command = "{Binding SendMessageCommand}">
                                     <StackPanel Orientation="Horizontal">
                                         <fa:FontAwesome Icon="Solid_Share" Margin="5,0" Foreground="PaleVioletRed"/>
                                         <TextBlock Text="Отправить сейчас" VerticalAlignment="Center" />

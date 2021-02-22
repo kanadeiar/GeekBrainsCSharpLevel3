@@ -1,10 +1,11 @@
 ﻿using System.Net;
 using System.Net.Mail;
+using MailSender.lib.Interfaces;
 
 namespace MailSender.lib.Services
 {
     /// <summary> Боевой сервис отправки почты с шифрованием пароля по Цезарю </summary>
-    public class SmtpSenderSerivce
+    public class SmtpSender : IMailSender
     {
         private readonly string _address;
         private readonly int _port;
@@ -17,7 +18,7 @@ namespace MailSender.lib.Services
         /// <param name="useSsl">шифрование</param>
         /// <param name="login">логин</param>
         /// <param name="password">пароль</param>
-        public SmtpSenderSerivce(string address, int port, bool useSsl, string login, string password)
+        public SmtpSender(string address, int port, bool useSsl, string login, string password)
         {
             _address = address;
             _port = port;
@@ -32,17 +33,22 @@ namespace MailSender.lib.Services
         /// <param name="Message">сообщение</param>
         public void SendMessage(string From, string To, string Subject, string Message)
         {
-            var message = new MailMessage(From, To)
+
+        }
+
+        public void Send(string from, string to, string subject, string message)
+        {
+            var tMessage = new MailMessage(from, to)
             {
-                Subject = Subject,
-                Body = Message,
+                Subject = subject,
+                Body = message,
             };
             var client = new SmtpClient(_address, _port)
             {
                 EnableSsl = _useSsl,
                 Credentials = new NetworkCredential(_login, TextEncoder.Decode(_password,9)),
             };
-            client.Send(message);
+            client.Send(tMessage);
         }
     }
 }
