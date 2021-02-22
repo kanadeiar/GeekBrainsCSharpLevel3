@@ -1,10 +1,13 @@
 ﻿
 using System;
+using System.Collections.ObjectModel;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using MailSender.Data;
 using MailSender.Infrastructure.Commands;
+using MailSender.lib.Models;
 using MailSender.ViewModels.Base;
 
 namespace MailSender.ViewModels
@@ -23,6 +26,9 @@ namespace MailSender.ViewModels
             _timer.Elapsed += OnTimerElapsed;
 
         }
+
+        #region Свойства
+
         private string _title = "Geekbrains. Домашнее задание №3. MVVM.";
         /// <summary> Заголовок главного окна </summary>
         public string Title
@@ -38,6 +44,35 @@ namespace MailSender.ViewModels
             set => Set(ref _description, value);
         }
 
+        private ObservableCollection<Server> _servers;
+        /// <summary> Почтовые сервера с которых отправляется почта </summary>
+        public ObservableCollection<Server> Servers
+        {
+            get => _servers;
+            set => Set(ref _servers, value);
+        }
+        private ObservableCollection<Sender> _senders;
+        /// <summary> Отправители в почтовом сообщении </summary>
+        public ObservableCollection<Sender> Senders
+        {
+            get => _senders;
+            set => Set(ref _senders, value);
+        }
+        private ObservableCollection<Recipient> _recipients;
+        /// <summary> Получатели почтового сообщения </summary>
+        public ObservableCollection<Recipient> Recipients
+        {
+            get => _recipients;
+            set => Set(ref _recipients, value);
+        }
+        private ObservableCollection<Message> _messages;
+        /// <summary> Сообщения электронной почты </summary>
+        public ObservableCollection<Message> Messages
+        {
+            get => _messages;
+            set => Set(ref _messages, value);
+        }
+
         #region Текущее время
 
         private readonly Timer _timer;
@@ -47,9 +82,22 @@ namespace MailSender.ViewModels
             OnPropertyChanged(nameof(CurrentTime));
         }
 
+        #endregion        
+
         #endregion
 
         #region Команды
+
+        private ICommand _loadDataCommand;
+        /// <summary> Команда загрузки тестовых данных </summary>
+        public ICommand LoadDataCommand => _loadDataCommand ??= new LambdaCommand(OnLoadDataCommandExecute);
+        private void OnLoadDataCommandExecute(object p)
+        {
+            Servers = new ObservableCollection<Server>(TestData.Servers);
+            Senders = new ObservableCollection<Sender>(TestData.Senders);
+            Recipients = new ObservableCollection<Recipient>(TestData.Recipients);
+            Messages = new ObservableCollection<Message>(TestData.Messages);
+        }
 
         private ICommand _showDialogCommand;
         /// <summary> Команда показа простого диалогового окна приложения </summary>

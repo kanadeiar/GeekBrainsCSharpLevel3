@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ctr="clr-namespace:MailSender.Controls"
         xmlns:fa="http://schemas.fontawesome.com/icons/"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:data="clr-namespace:MailSender.Data"
         xmlns:vm="clr-namespace:MailSender.ViewModels"
         xmlns:m="clr-namespace:MailSender.lib.Models;assembly=MailSender.lib"
@@ -21,6 +22,11 @@
 
         TextElement.Foreground="{DynamicResource MaterialDesignBody}" Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadDataCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Файл">
@@ -37,6 +43,7 @@
                 </MenuItem>
             </MenuItem>
             <MenuItem Header="Сервис">
+                <MenuItem Header="Загрузка данных" Command="{Binding LoadDataCommand}"/>
                 <MenuItem Header="Настройка"/>
             </MenuItem>
             <MenuItem Header="Справка">
