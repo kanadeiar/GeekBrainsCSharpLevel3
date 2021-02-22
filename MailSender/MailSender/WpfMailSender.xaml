@@ -177,7 +177,31 @@
                         </ToolBar>
                     </ToolBarTray>
                     <GroupBox Grid.Row="1" Header="Получатели">
-                        <v:RecipientsListUserControl/>
+                        <DockPanel>
+                            <Grid DockPanel.Dock="Top" HorizontalAlignment="Center">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Поиск по имени:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                                <TextBox Grid.Column="1" ToolTip="Введите имя для поиска" MinWidth="400"
+                                         Text="{Binding RecipientsFilter, UpdateSourceTrigger=PropertyChanged}"/>
+                                <Button Grid.Column="2" Content="Загрузить данные" Padding="10,2" Margin="5,0"
+                                        Command="{Binding LoadDataFileCommand}"/>
+                            </Grid>
+                            <DataGrid Name="DataGridRecipients" Margin="10,5" AutoGenerateColumns="False" GridLinesVisibility="Vertical" AlternatingRowBackground="#FFFDFFDA"
+                                      VerticalGridLinesBrush="DarkGray" IsReadOnly="True" SelectionMode="Extended"
+                                      ItemsSource="{Binding FilteredRecipients}"
+                                      SelectedItem="{Binding SelectedRecipient}">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="30"/>
+                                    <DataGridTextColumn Header="Имя" Binding="{Binding Name}" MinWidth="100"/>
+                                    <DataGridTextColumn Header="Адрес" Binding="{Binding Address}" MinWidth="100"/>
+                                    <DataGridTextColumn Header="Описание" Binding="{Binding Description}" Width="*"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </DockPanel>
                     </GroupBox>
                 </Grid>
             </TabItem>
