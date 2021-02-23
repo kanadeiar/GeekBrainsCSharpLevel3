@@ -1,9 +1,9 @@
 ﻿using System;
-using MailSender.Infrastructure.Commands.Base;
+using WpfMailSender.lib.Infrastructure.Commands.Base;
 
-namespace MailSender.Infrastructure.Commands
+namespace WpfMailSender.lib.Infrastructure.Commands
 {
-    class LambdaCommand : Command
+    public class LambdaCommand : Command
     {
         private readonly Action<object> _execute;
         private readonly Func<object, bool> _canExecute;

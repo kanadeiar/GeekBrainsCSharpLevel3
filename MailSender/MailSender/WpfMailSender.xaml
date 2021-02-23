@@ -12,7 +12,6 @@
         xmlns:vm="clr-namespace:MailSender.ViewModels"
         xmlns:v="clr-namespace:MailSender.Views"
         xmlns:m="clr-namespace:MailSender.lib.Models;assembly=MailSender.lib"
-        xmlns:cmd="clr-namespace:MailSender.Infrastructure.Commands"
         xmlns:local="clr-namespace:MailSender"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
@@ -38,11 +37,7 @@
                 <MenuItem Header="Сохранить"/>
                 <MenuItem Header="Сохранить как ..."/>
                 <Separator/>
-                <MenuItem Header="Выход" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">
-                    <MenuItem.Command>
-                        <cmd:CloseWindowCommand/>
-                    </MenuItem.Command>
-                </MenuItem>
+                <MenuItem Header="Выход" Command="{StaticResource CloseAppCommand}"/>
             </MenuItem>
             <MenuItem Header="Сервис">
                 <MenuItem Header="Загрузить данные из файла" Command="{Binding LoadDataFileCommand}"/>

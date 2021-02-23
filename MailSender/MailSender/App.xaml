@@ -4,16 +4,20 @@
              xmlns:vm="clr-namespace:MailSender.ViewModels"
              xmlns:local="clr-namespace:MailSender"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:cmd="clr-namespace:WpfMailSender.lib.Infrastructure.Commands;assembly=WpfMailSender.lib"
              StartupUri="WpfMailSender.xaml">
     <Application.Resources>
         <ResourceDictionary>
             <vm:ViewModelLocator x:Key="Locator"/>
+            <cmd:CloseAppCommand x:Key="CloseAppCommand"/>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.light.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.defaults.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/materialdesigncolor.orange.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/materialdesigncolor.green.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -8,11 +8,11 @@ using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using MailSender.Infrastructure.Commands;
 using MailSender.lib.Interfaces;
 using MailSender.lib.Models;
 using MailSender.ViewModels.Base;
 using MailSender.Windows;
+using WpfMailSender.lib.Infrastructure.Commands;
 
 namespace MailSender.ViewModels
 {
