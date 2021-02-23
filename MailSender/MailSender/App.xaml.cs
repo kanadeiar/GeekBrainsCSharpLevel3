@@ -6,8 +6,6 @@ using MailSender.ViewModels;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using WpfMailSender.lib.Interfaces;
-using WpfMailSender.lib.Services;
 
 namespace MailSender
 {

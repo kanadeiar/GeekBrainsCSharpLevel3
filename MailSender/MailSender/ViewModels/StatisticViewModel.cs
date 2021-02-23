@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Timers;
 using System.Windows.Input;
+using MailSender.lib.Interfaces;
 using MailSender.ViewModels.Base;
 using WpfMailSender.lib.Commands;
-using WpfMailSender.lib.Interfaces;
 
 namespace MailSender.ViewModels
 {
@@ -20,6 +20,7 @@ namespace MailSender.ViewModels
             var timer = new Timer(100);
             timer.Elapsed += (_, _) => OnPropertyChanged(nameof(UpTime));
             timer.Start();
+            _statistic.SendedMailsCountChanged += (_, _) => OnPropertyChanged(nameof(SendedMailsCount));
         }
 
         private ICommand _updateStatisticCommand;
@@ -29,7 +30,6 @@ namespace MailSender.ViewModels
             _updateStatisticCommand ??= new LambdaCommand(OnUpdateStatisticCommandExecute);
         private void OnUpdateStatisticCommandExecute(object p)
         {
-            OnPropertyChanged(nameof(SendedMailsCount));
             OnPropertyChanged(nameof(SendersCount));
             OnPropertyChanged(nameof(RecipientsCount));
         }

@@ -10,6 +10,7 @@ namespace MailSender.lib.Services
     /// <summary> Боевой сервис отправки почты с шифрованием пароля по Цезарю </summary>
     public class SmtpSender : IMailSender
     {
+        private readonly IStatistic _statistic;
         private readonly string _address;
         private readonly int _port;
         private readonly bool _useSsl;
@@ -21,13 +22,14 @@ namespace MailSender.lib.Services
         /// <param name="useSsl">шифрование</param>
         /// <param name="login">логин</param>
         /// <param name="password">пароль</param>
-        public SmtpSender(string address, int port, bool useSsl, string login, string password)
+        public SmtpSender(string address, int port, bool useSsl, string login, string password, IStatistic statistic)
         {
             _address = address;
             _port = port;
             _useSsl = useSsl;
             _login = login;
             _password = password;
+            _statistic = statistic;
         }
         /// <summary> Отправка реального письма по протоколу smtp </summary>
         /// <param name="From">отправитель</param>
@@ -49,6 +51,7 @@ namespace MailSender.lib.Services
             try
             {
                 client.Send(tMessage);
+                _statistic.MailSended();
             }
             catch (Exception ex)
             {
@@ -66,6 +69,7 @@ namespace MailSender.lib.Services
             foreach (var to in tos)
             {
                 Send(from, to, subject, message);
+                _statistic.MailSended();
             }
         }
     }
