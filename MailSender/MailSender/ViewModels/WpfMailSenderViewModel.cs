@@ -12,7 +12,7 @@ using MailSender.lib.Interfaces;
 using MailSender.lib.Models;
 using MailSender.ViewModels.Base;
 using MailSender.Windows;
-using WpfMailSender.lib.Infrastructure.Commands;
+using WpfMailSender.lib.Commands;
 
 namespace MailSender.ViewModels
 {
