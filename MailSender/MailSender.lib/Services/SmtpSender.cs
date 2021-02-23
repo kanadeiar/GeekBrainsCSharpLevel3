@@ -46,7 +46,7 @@ namespace MailSender.lib.Services
             var client = new SmtpClient(_address, _port)
             {
                 EnableSsl = _useSsl,
-                Credentials = new NetworkCredential(_login, TextEncoder.Decode(_password,9)),
+                Credentials = new NetworkCredential(_login, _password.Decode(9)),
             };
             try
             {

@@ -27,7 +27,7 @@ namespace MailSender.lib.Services
                     Description = $"Тестовый сервер {i}",
                     Login = $"Password{i}",
                     Name = $"Сервер-{i}",
-                    Password = TextEncoder.Encode($"Password-{i}", 9),
+                    Password = $"Password-{i}".Encode(9),
                     Port = 25,
                     UseSsl = i % 2 != 0,
                 }).ToList();

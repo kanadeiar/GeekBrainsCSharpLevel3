@@ -5,21 +5,21 @@ namespace MailSender.lib.Services
     /// <summary> Шифрование методом Цезаря </summary>
     public class TextEncoder
     {
-        /// <summary> Шифрование </summary>
-        /// <param name="str">Исходная строка</param>
-        /// <param name="key">ключ</param>
-        /// <returns>Зашифрованная строка</returns>
         public static string Encode(string str, int key = 1)
         {
             return new string(str.Select(c => (char) (c + key)).ToArray());
         }
-        /// <summary> Дешифрование </summary>
-        /// <param name="str">Зашифрованная строка</param>
-        /// <param name="key">ключ</param>
-        /// <returns>Исходная строка</returns>
         public static string Decode(string str, int key = 1)
         {
             return new string(str.Select(c => (char)(c - key)).ToArray());
         }
+    }
+    /// <summary> Функции-расширения для строк </summary>
+    public static class ExtendedTextEncoder
+    {
+        /// <summary> Функция-расширение кодирование текста методом Цезаря </summary>
+        public static string Encode(this string Source, int key = 1) => TextEncoder.Encode(Source, key);
+        /// <summary> Функция-расширение декодирование зашифрованного текста методом Цезаря </summary>
+        public static string Decode(this string Source, int key = 1) => TextEncoder.Decode(Source, key);
     }
 }
