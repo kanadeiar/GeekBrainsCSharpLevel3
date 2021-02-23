@@ -17,7 +17,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
 
-        DataContext="{Binding GetMainWindowViewModel, Source={StaticResource Locator}}"
+        DataContext="{Binding WpfMailSenderViewModel, Source={StaticResource Locator}}"
 
         Title="{Binding Path=Title}" 
         Height="600" Width="800" WindowStartupLocation="CenterScreen" Icon="/Avatar.ico" ResizeMode="CanResizeWithGrip">
@@ -72,7 +72,7 @@
         <StatusBar DockPanel.Dock="Bottom">
             <StatusBarItem>
                 <TextBlock>
-                    Статус приложения: <TextBlock Text="Готов"/>
+                    Статус приложения: <TextBlock Text="{Binding Status}"/>
                 </TextBlock>
             </StatusBarItem>
             <Separator/>

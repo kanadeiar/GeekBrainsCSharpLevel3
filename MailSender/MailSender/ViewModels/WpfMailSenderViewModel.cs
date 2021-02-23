@@ -57,6 +57,13 @@ namespace MailSender.ViewModels
             get => _description;
             set => Set(ref _description, value);
         }
+        private string _status = "Готов!";
+        /// <summary> Статус работы приложения </summary>
+        public string Status
+        {
+            get => _status;
+            set => Set(ref _status, value);
+        }
 
         private ObservableCollection<Server> _servers;
         /// <summary> Почтовые сервера с которых отправляется почта </summary>

@@ -6,6 +6,6 @@ namespace MailSender.ViewModels
     class ViewModelLocator
     {
         /// <summary> Вьюмодель главного окна приложения </summary>
-        public WpfMailSenderViewModel GetMainWindowViewModel => App.Services.GetRequiredService<WpfMailSenderViewModel>();
+        public WpfMailSenderViewModel WpfMailSenderViewModel => App.Services.GetRequiredService<WpfMailSenderViewModel>();
     }
 }
