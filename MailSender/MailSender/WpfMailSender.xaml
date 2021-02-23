@@ -19,6 +19,7 @@
         DataContext="{Binding WpfMailSenderViewModel, Source={StaticResource Locator}}"
 
         Title="{Binding Path=Title}" 
+        Topmost="{Binding IsChecked, ElementName=CheckBoxIsWindowTopMost}"
         Height="600" Width="800" WindowStartupLocation="CenterScreen" Icon="/Avatar.ico" ResizeMode="CanResizeWithGrip">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
@@ -43,6 +44,10 @@
                 <MenuItem Header="Загрузить данные из файла" Command="{Binding LoadDataFileCommand}"/>
                 <MenuItem Header="Сохранить данные в файле" Command="{Binding SaveDataFileCommand}"/>
                 <MenuItem Header="Настройка"/>
+                <MenuItem Header="Опции">
+                    <CheckBox Content="Всегда наверху" Name="CheckBoxIsWindowTopMost"/>
+                    <CheckBox Content="Включить показ текущего времени" IsChecked="{Binding TimerEnabled}"/>
+                </MenuItem>
             </MenuItem>
             <MenuItem Header="Справка">
                 <MenuItem Header="Помощь"/>

@@ -12,11 +12,12 @@ namespace MailSender.ViewModels.Base
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        protected virtual void Set<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
+        protected virtual bool Set<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
         {
-            if (Equals(field, value)) return;
+            if (Equals(field, value)) return false;
             field = value;
             OnPropertyChanged(propertyName);
+            return true;
         }
     }
 }

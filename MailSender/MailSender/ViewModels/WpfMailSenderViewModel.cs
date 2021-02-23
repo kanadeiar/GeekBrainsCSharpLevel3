@@ -156,6 +156,16 @@ namespace MailSender.ViewModels
 
         #region Текущее время
 
+        private bool _timerEnabled = true;
+        public bool TimerEnabled
+        {
+            get => _timerEnabled;
+            set
+            {
+                if (!Set(ref _timerEnabled, value)) return;
+                _timer.Enabled = value;
+            }
+        }
         private readonly Timer _timer;
         public DateTime CurrentTime => DateTime.Now;
         private void OnTimerElapsed(object sender, ElapsedEventArgs e)
