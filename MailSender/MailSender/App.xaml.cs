@@ -6,6 +6,8 @@ using MailSender.ViewModels;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using WpfMailSender.lib.Interfaces;
+using WpfMailSender.lib.Services;
 
 namespace MailSender
 {
@@ -31,11 +33,13 @@ namespace MailSender
         private static void ConfigureServices(HostBuilderContext host, IServiceCollection services)
         {
             services.AddSingleton<WpfMailSenderViewModel>();
+            services.AddSingleton<StatisticViewModel>();
 #if DEBUG
             services.AddTransient<IMailService, DebugMailService>();
 #else
             services.AddTransient<IMailService, SmtpMailService>();
 #endif
+            services.AddSingleton<IStatistic, MemoryStatisticService>();
 #if DEBUG
             var storage = new DebugDataStorage();
 #else

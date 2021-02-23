@@ -1,8 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Windows;
-using MailSender.lib.Models;
-using MailSender.lib.Services;
+﻿using System.Windows;
 
 namespace MailSender
 {

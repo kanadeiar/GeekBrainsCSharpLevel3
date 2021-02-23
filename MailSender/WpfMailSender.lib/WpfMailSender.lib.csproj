@@ -9,8 +9,10 @@
 
   <ItemGroup>
     <Folder Include="Infrastructure\" />
-    <Folder Include="Interfaces\" />
-    <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MailSender.lib\MailSender.lib.csproj" />
   </ItemGroup>
 
 </Project>
