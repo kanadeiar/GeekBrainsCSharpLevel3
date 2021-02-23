@@ -38,13 +38,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="WindowSuccessSend - Копировать.xaml.cs">
-      <SubType>Code</SubType>
-      <DependentUpon>WindowSuccessSend.xaml.cs</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
