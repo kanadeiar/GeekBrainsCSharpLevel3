@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO.Enumeration;
 using System.Windows;
 using MailSender.lib.Interfaces;
 using MailSender.lib.Services;
