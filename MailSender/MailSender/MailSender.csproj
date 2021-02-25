@@ -42,4 +42,10 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Data\Stores\InMemory\" />
+    <Folder Include="Data\Stores\InDB\" />
+    <Folder Include="Infrastructure\Validations\" />
+  </ItemGroup>
+
 </Project>

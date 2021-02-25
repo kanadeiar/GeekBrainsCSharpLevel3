@@ -1,7 +1,7 @@
 ﻿using System;
-using MailSender.lib.Commands.Base;
+using MailSender.Infrastructure.Commands.Base;
 
-namespace MailSender.lib.Commands
+namespace MailSender.Infrastructure.Commands
 {
     public class LambdaCommand : Command
     {

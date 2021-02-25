@@ -12,7 +12,7 @@ using MailSender.lib.Interfaces;
 using MailSender.lib.Models;
 using MailSender.ViewModels.Base;
 using MailSender.Windows;
-using MailSender.lib.Commands;
+using MailSender.Infrastructure.Commands;
 
 namespace MailSender.ViewModels
 {
@@ -20,28 +20,16 @@ namespace MailSender.ViewModels
     class MainWindowViewModel : ViewModel
     {
         private readonly IMailService _MailService;
-        private readonly IServerStorage _serverStorage;
-        private readonly ISenderStorage _senderStorage;
-        private readonly IRecipientStorage _recipientStorage;
-        private readonly IMessageStorage _messageStorage;
-        public MainWindowViewModel(IMailService mailService, IServerStorage serverStorage, ISenderStorage senderStorage, 
-            IRecipientStorage recipientStorage, IMessageStorage messageStorage)
-        {
-            _MailService = mailService;
-            _serverStorage = serverStorage;
-            _senderStorage = senderStorage;
-            _recipientStorage = recipientStorage;
-            _messageStorage = messageStorage;
-            _timer = new Timer
-            {
-                Interval = 100,
-                AutoReset = true,
-                Enabled = true,
-            };
-            _timer.Elapsed += OnTimerElapsed;
-        }
+
+        //private readonly IServerStorage _serverStorage;
+        //private readonly ISenderStorage _senderStorage;
+        //private readonly IRecipientStorage _recipientStorage;
+        //private readonly IMessageStorage _messageStorage;
+
 
         #region Свойства
+
+        #region Вспомогательные свойства
 
         private string _title = "Geekbrains. Домашнее задание №3. MVVM.";
         /// <summary> Заголовок главного окна </summary>
@@ -63,29 +51,29 @@ namespace MailSender.ViewModels
         {
             get => _status;
             set => Set(ref _status, value);
-        }
+        }        
 
-        private ObservableCollection<Server> _servers;
+        #endregion
+
         /// <summary> Почтовые сервера с которых отправляется почта </summary>
-        public ObservableCollection<Server> Servers
-        {
-            get => _servers;
-            set => Set(ref _servers, value);
-        }
+        public ObservableCollection<Server> Servers { get; } = new();
+
+        /// <summary> Отправители в почтовом сообщении </summary>
+        public ObservableCollection<Sender> Senders { get; } = new();
+
+        /// <summary> Получатели почтового сообщения </summary>
+        public ObservableCollection<Recipient> Recipients { get; } = new();
+
+        /// <summary> Сообщения электронной почты </summary>
+        public ObservableCollection<Message> Messages { get; } = new();
+
+
         private Server _selectedServer;
         /// <summary> Выбранный сервер </summary>
         public Server SelectedServer
         {
             get => _selectedServer;
             set => Set(ref _selectedServer, value);
-        }
-
-        private ObservableCollection<Sender> _senders;
-        /// <summary> Отправители в почтовом сообщении </summary>
-        public ObservableCollection<Sender> Senders
-        {
-            get => _senders;
-            set => Set(ref _senders, value);
         }
         private Sender _selectedSender;
         /// <summary> Выбранный отправитель </summary>
@@ -94,30 +82,12 @@ namespace MailSender.ViewModels
             get => _selectedSender;
             set => Set(ref _selectedSender, value);
         }
-
-        
-
-        private ObservableCollection<Recipient> _recipients;
-        /// <summary> Получатели почтового сообщения </summary>
-        public ObservableCollection<Recipient> Recipients
-        {
-            get => _recipients;
-            set => Set(ref _recipients, value);
-        }
         private Recipient _selectedRecipient;
         /// <summary> Выбранный получатель </summary>
         public Recipient SelectedRecipient
         {
             get => _selectedRecipient;
             set => Set(ref _selectedRecipient, value);
-        }
-
-        private ObservableCollection<Message> _messages;
-        /// <summary> Сообщения электронной почты </summary>
-        public ObservableCollection<Message> Messages
-        {
-            get => _messages;
-            set => Set(ref _messages, value);
         }
         private Message _selectedMessage;
         /// <summary> Выбранное сообщение </summary>
@@ -177,6 +147,23 @@ namespace MailSender.ViewModels
 
         #endregion
 
+        public MainWindowViewModel(IMailService mailService, IServerStorage serverStorage, ISenderStorage senderStorage, 
+            IRecipientStorage recipientStorage, IMessageStorage messageStorage)
+        {
+            _MailService = mailService;
+            //_serverStorage = serverStorage;
+            //_senderStorage = senderStorage;
+            //_recipientStorage = recipientStorage;
+            //_messageStorage = messageStorage;
+            _timer = new Timer
+            {
+                Interval = 100,
+                AutoReset = true,
+                Enabled = true,
+            };
+            _timer.Elapsed += OnTimerElapsed;
+        }
+
         #region Команды
 
         #region Команды работы с данными
@@ -186,11 +173,11 @@ namespace MailSender.ViewModels
         public ICommand LoadDataFileCommand => _loadDataFileCommand ??= new LambdaCommand(OnLoadDataFileCommandExecute);
         private void OnLoadDataFileCommandExecute(object p)
         {
-            _serverStorage.Load();
-            Servers = new ObservableCollection<Server>(_serverStorage.Items);
-            Senders = new ObservableCollection<Sender>(_senderStorage.Items);
-            Recipients = new ObservableCollection<Recipient>(_recipientStorage.Items);
-            Messages = new ObservableCollection<Message>(_messageStorage.Items);
+            //_serverStorage.Load();
+            //Servers = new ObservableCollection<Server>(_serverStorage.Items);
+            //Senders = new ObservableCollection<Sender>(_senderStorage.Items);
+            //Recipients = new ObservableCollection<Recipient>(_recipientStorage.Items);
+            //Messages = new ObservableCollection<Message>(_messageStorage.Items);
             OnPropertyChanged(nameof(FilteredRecipients));
         }
         private ICommand _saveDataFileCommand;
@@ -198,7 +185,7 @@ namespace MailSender.ViewModels
         public ICommand SaveDataFileCommand => _saveDataFileCommand ??= new LambdaCommand(OnSaveDataFIleCommandExecute);
         private void OnSaveDataFIleCommandExecute(object p)
         {
-            _serverStorage.SaveChanges();
+            //_serverStorage.SaveChanges();
         }
 
         #endregion

@@ -4,8 +4,8 @@
              xmlns:vm="clr-namespace:MailSender.ViewModels"
              xmlns:local="clr-namespace:MailSender"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
-             xmlns:commands="clr-namespace:MailSender.lib.Commands;assembly=MailSender.lib"
              xmlns:converters="clr-namespace:MailSender.lib.Converters;assembly=MailSender.lib"
+             xmlns:commands="clr-namespace:MailSender.Infrastructure.Commands"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>

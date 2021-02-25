@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Timers;
 using System.Windows.Input;
+using MailSender.Infrastructure.Commands;
 using MailSender.lib.Interfaces;
 using MailSender.ViewModels.Base;
-using MailSender.lib.Commands;
 
 namespace MailSender.ViewModels
 {
