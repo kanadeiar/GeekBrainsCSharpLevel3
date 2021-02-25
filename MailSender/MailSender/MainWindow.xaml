@@ -41,8 +41,8 @@
                 <MenuItem Header="Выход" Command="{StaticResource CloseAppCommand}"/>
             </MenuItem>
             <MenuItem Header="Сервис">
-                <MenuItem Header="Загрузить данные из файла" Command="{Binding LoadDataFileCommand}"/>
-                <MenuItem Header="Сохранить данные в файле" Command="{Binding SaveDataFileCommand}"/>
+                <MenuItem Header="Загрузить данные" Command="{Binding LoadDataFileCommand}"/>
+                <MenuItem Header="Сохранить данные" Command="{Binding SaveDataFileCommand}"/>
                 <MenuItem Header="Настройка"/>
                 <MenuItem Header="Опции">
                     <CheckBox Content="Всегда наверху" Name="CheckBoxIsWindowTopMost"/>
