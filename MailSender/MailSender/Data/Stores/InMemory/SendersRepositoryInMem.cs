@@ -7,7 +7,7 @@ namespace MailSender.Data.Stores.InMemory
     /// <summary> Репозиторий отправителей </summary>
     class SendersRepositoryInMem : RepositoryInMem<Sender>
     {
-        public SendersRepositoryInMem() : base(Enumerable.Range(1, 10)
+        public SendersRepositoryInMem() : base(Enumerable.Range(1, 100)
             .Select(i => new Sender
             {
                 Id = i,

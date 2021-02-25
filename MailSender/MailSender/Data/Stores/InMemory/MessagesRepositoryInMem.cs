@@ -7,7 +7,7 @@ namespace MailSender.Data.Stores.InMemory
     /// <summary> Репозиторий сообщений </summary>
     class MessagesRepositoryInMem : RepositoryInMem<Message>
     {
-        public MessagesRepositoryInMem() : base(Enumerable.Range(1, 100)
+        public MessagesRepositoryInMem() : base(Enumerable.Range(1, 10_000)
             .Select(i => new Message
             {
                 Id = i,

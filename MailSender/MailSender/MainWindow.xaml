@@ -81,6 +81,21 @@
                     Текущее время: <TextBlock Text="{Binding Path=CurrentTime, ConverterCulture=ru-RU, StringFormat=HH:mm:ss.ffff}"/>
                 </TextBlock>
             </StatusBarItem>
+            <StackPanel>
+                <ProgressBar x:Name="ProgressBarTest" Width="100" HorizontalAlignment="Right" Height="14" Minimum="0" Maximum="100">
+                    <ProgressBar.Triggers>
+                        <EventTrigger RoutedEvent="TextBlock.Loaded">
+                            <EventTrigger.Actions>
+                                <BeginStoryboard>
+                                    <Storyboard TargetProperty="Value">
+                                        <DoubleAnimation From="0" To="100" Duration="0:0:10" RepeatBehavior="Forever"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger.Actions>
+                        </EventTrigger>
+                    </ProgressBar.Triggers>
+                </ProgressBar>
+            </StackPanel>
         </StatusBar>
 
         <!-- #endregion -->
@@ -96,21 +111,23 @@
                     </Grid.RowDefinitions>
                     <ToolBarTray Grid.Row="0">
                         <ToolBar Header="Сервер" Band="0">
-                            <ComboBox Name="ComboBoxServers" MinWidth="160"  SelectedIndex="0" 
+                            <ComboBox Name="ComboBoxServers" MinWidth="160"  SelectedIndex="0" VirtualizingStackPanel.IsVirtualizing="True"
                                       ItemsSource="{Binding Servers}"
                                       SelectedItem="{Binding SelectedServer}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate DataType="m:Server">
-                                        <TextBlock>
-                                            <TextBlock.ToolTip>
-                                                <TextBlock>
-                                                    Адрес: <TextBlock Text="{Binding Address}"/> 
-                                                    Порт: <TextBlock Text="{Binding Port}"/>
-                                                    Описание: <TextBlock Text="{Binding Description}"/>
-                                                </TextBlock>
-                                            </TextBlock.ToolTip>
-                                            <TextBlock Text="{Binding Name, StringFormat=Сервер: {0}}"/>
-                                        </TextBlock>
+                                        <VirtualizingStackPanel>
+                                            <TextBlock>
+                                                <TextBlock.ToolTip>
+                                                    <TextBlock>
+                                                        Адрес: <TextBlock Text="{Binding Address}"/> 
+                                                        Порт: <TextBlock Text="{Binding Port}"/>
+                                                        Описание: <TextBlock Text="{Binding Description}"/>
+                                                    </TextBlock>
+                                                </TextBlock.ToolTip>
+                                                <TextBlock Text="{Binding Name}"/>
+                                            </TextBlock>
+                                        </VirtualizingStackPanel>
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
@@ -139,20 +156,22 @@
                             </Button>
                         </ToolBar>
                         <ToolBar Band="1" Header="Отправитель">
-                            <ComboBox Name="ComboBoxSenders" Width="200" SelectedIndex="0" Height="30" 
+                            <ComboBox Name="ComboBoxSenders" Width="200" SelectedIndex="0" Height="30" VirtualizingStackPanel.IsVirtualizing="True"
                                       ItemsSource="{Binding Senders}"
                                       SelectedItem="{Binding SelectedSender}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate DataType="m:Sender">
-                                        <StackPanel Orientation="Horizontal">
-                                            <StackPanel.ToolTip>
-                                                <TextBlock>Описание: <TextBlock Text="{Binding Description}"/></TextBlock>
-                                            </StackPanel.ToolTip>
-                                            <TextBlock Text="{Binding Name}"/>
-                                            <TextBlock Opacity="0.5" Margin="5,0,0,0">
-                                                (<TextBlock Text="{Binding Address}"/>)
+                                        <VirtualizingStackPanel Orientation="Horizontal">
+                                            <TextBlock>
+                                                <TextBlock.ToolTip>
+                                                    <TextBlock>Описание: <TextBlock Text="{Binding Description}"/></TextBlock>
+                                                </TextBlock.ToolTip>
+                                                <TextBlock Text="{Binding Name}"/>
+                                                <TextBlock Opacity="0.5" Margin="5,0,0,0">
+                                                    (<TextBlock Text="{Binding Address}"/>)
+                                                </TextBlock>
                                             </TextBlock>
-                                        </StackPanel>
+                                        </VirtualizingStackPanel>
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
@@ -354,9 +373,16 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <GroupBox Grid.Column="0" Grid.Row="0" Header="Письма">
-                        <ListBox Name="ListBoxMessages" DisplayMemberPath="Subject" SelectedIndex="0" MinWidth="160" SelectionMode="Single"
+                        <ListBox Name="ListBoxMessages" SelectedIndex="0" MinWidth="160" SelectionMode="Single" VirtualizingStackPanel.IsVirtualizing="True"
                                  ItemsSource="{Binding Messages}" 
                                  SelectedItem="{Binding SelectedMessage}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <VirtualizingStackPanel>
+                                        <TextBlock Text="{Binding Subject}"/>
+                                    </VirtualizingStackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
                         </ListBox>
                     </GroupBox>
                     <DockPanel Grid.Column="1" DataContext="{Binding SelectedItem, ElementName=ListBoxMessages}">
