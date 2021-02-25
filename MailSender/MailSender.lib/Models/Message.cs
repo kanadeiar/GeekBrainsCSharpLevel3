@@ -3,9 +3,8 @@
 namespace MailSender.lib.Models
 {
     /// <summary> Сообщение </summary>
-    public class Message : Model
+    public class Message : Entity
     {
-        public int Id { get; set; }
         private string _subject;
         /// <summary> Заголовок </summary>
         public string Subject

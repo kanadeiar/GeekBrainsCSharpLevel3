@@ -12,19 +12,19 @@ using MailSender.lib.Interfaces;
 using MailSender.lib.Models;
 using MailSender.ViewModels.Base;
 using MailSender.Windows;
-using WpfMailSender.lib.Commands;
+using MailSender.lib.Commands;
 
 namespace MailSender.ViewModels
 {
     /// <summary> Вьюмодель главного окна приложения </summary>
-    class WpfMailSenderViewModel : ViewModel
+    class MainWindowViewModel : ViewModel
     {
         private readonly IMailService _MailService;
         private readonly IServerStorage _serverStorage;
         private readonly ISenderStorage _senderStorage;
         private readonly IRecipientStorage _recipientStorage;
         private readonly IMessageStorage _messageStorage;
-        public WpfMailSenderViewModel(IMailService mailService, IServerStorage serverStorage, ISenderStorage senderStorage, 
+        public MainWindowViewModel(IMailService mailService, IServerStorage serverStorage, ISenderStorage senderStorage, 
             IRecipientStorage recipientStorage, IMessageStorage messageStorage)
         {
             _MailService = mailService;

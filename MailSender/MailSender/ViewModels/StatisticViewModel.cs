@@ -3,7 +3,7 @@ using System.Timers;
 using System.Windows.Input;
 using MailSender.lib.Interfaces;
 using MailSender.ViewModels.Base;
-using WpfMailSender.lib.Commands;
+using MailSender.lib.Commands;
 
 namespace MailSender.ViewModels
 {

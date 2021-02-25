@@ -29,7 +29,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MailSender.lib\MailSender.lib.csproj" />
-    <ProjectReference Include="..\WpfMailSender.lib\WpfMailSender.lib.csproj" />
   </ItemGroup>
 
   <ItemGroup>

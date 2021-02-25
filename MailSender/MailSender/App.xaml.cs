@@ -30,7 +30,7 @@ namespace MailSender
 
         private static void ConfigureServices(HostBuilderContext host, IServiceCollection services)
         {
-            services.AddSingleton<WpfMailSenderViewModel>();
+            services.AddSingleton<MainWindowViewModel>();
             services.AddSingleton<StatisticViewModel>();
 #if DEBUG
             services.AddTransient<IMailService, DebugMailService>();

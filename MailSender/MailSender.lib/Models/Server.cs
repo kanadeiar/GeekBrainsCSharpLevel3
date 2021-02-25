@@ -3,9 +3,8 @@
 namespace MailSender.lib.Models
 {
     /// <summary> Сервер </summary>
-    public class Server : Model
+    public class Server : Entity
     {
-        public int Id { get; set; }
         private string _name;
         /// <summary> Имя сервера </summary>
         public string Name
@@ -41,10 +40,13 @@ namespace MailSender.lib.Models
             get => _login; 
             set => Set(ref _login, value);
         }
-        // TODO: Тут надо подумать над шифрованием пароля
+        private string _password;
         /// <summary> Пароль пользователя </summary>
-        public string Password { get; set; }
-        
+        public string Password
+        {
+            get => _password; 
+            set => Set(ref _password, value);
+        }
         private string _description;
         /// <summary> Описание сервера </summary>
         public string Description

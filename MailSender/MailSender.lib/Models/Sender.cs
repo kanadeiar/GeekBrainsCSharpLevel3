@@ -4,9 +4,8 @@ using MailSender.lib.Models.Base;
 namespace MailSender.lib.Models
 {
     /// <summary> Отправитель </summary>
-    public class Sender : Model
+    public class Sender : Entity
     {
-        public int Id { get; set; }
         private string _name;
         /// <summary> Имя </summary>
         public string Name

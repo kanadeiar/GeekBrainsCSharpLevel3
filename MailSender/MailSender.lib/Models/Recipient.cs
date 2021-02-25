@@ -3,9 +3,8 @@
 namespace MailSender.lib.Models
 {
     /// <summary> Получатель </summary>
-    public class Recipient : Model
+    public class Recipient : Entity
     {
-        public int Id { get; set; }
         private string _name;
         /// <summary> Имя </summary>
         public string Name

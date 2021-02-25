@@ -5,9 +5,8 @@ using MailSender.lib.Models.Base;
 namespace MailSender.lib.Models
 {
     /// <summary> Задание планировщика </summary>
-    public class SchedulerTask : Model
+    public class SchedulerTask : Entity
     {
-        public int Id { get; set; }
         private DateTime _dateTime;
         /// <summary> Время и дата задания </summary>
         public DateTime DateTime
