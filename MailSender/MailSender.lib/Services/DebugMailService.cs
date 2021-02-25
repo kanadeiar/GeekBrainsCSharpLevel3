@@ -32,13 +32,13 @@ namespace MailSender.lib.Services
         }
         public void Send(string from, string to, string subject, string message)
         {
-            Debug.WriteLine($"Почтовый сервер {_address}:{_port} ssl:{(_useSsl?"да":"нет")} (Логин:{_login} Пароль:{_password.Decode(9)})");
+            Debug.WriteLine($"Почтовый сервер {_address}:{_port} ssl:{(_useSsl?"да":"нет")} (Логин:{_login} Пароль:{_password.Rfc2898Decode()})");
             Debug.WriteLine($"Отправка письма от {from} к {to} с заголовком: {subject} и тестом: {message}");
             _statistic.MailSended();
         }
         public void Send(string @from, IEnumerable<string> tos, string subject, string message)
         {
-            Debug.WriteLine($"Почтовый сервер {_address}:{_port} ssl:{(_useSsl?"да":"нет")} (Логин:{_login} Пароль:{_password.Decode(9)})");
+            Debug.WriteLine($"Почтовый сервер {_address}:{_port} ssl:{(_useSsl?"да":"нет")} (Логин:{_login} Пароль:{_password.Rfc2898Decode()})");
             foreach (var to in tos)
             {
                 Debug.WriteLine($"Отправка группового письма от {from} к {to} с заголовком: {subject} и тестом: {message}");

@@ -39,6 +39,8 @@ namespace MailSender
 #else
             services.AddTransient<IMailService, SmtpMailService>();
 #endif
+            services.AddSingleton<IEncryptService, Rfc2898Encryptor>();
+
             services.AddSingleton<IRepository<Server>, ServersRepositoryInMem>();
             services.AddSingleton<IRepository<Sender>, SendersRepositoryInMem>();
             services.AddSingleton<IRepository<Recipient>, RecipientsRepositoryInMem>();

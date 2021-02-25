@@ -15,7 +15,7 @@ namespace MailSender.Data.Stores.InMemory
             Description = $"Тестовый сервер {i}",
             Login = $"Password{i}",
             Name = $"Сервер-{i}",
-            Password = $"Password-{i}".Encode(9),
+            Password = $"Password-{i}".Rfc2898Encode(),
             Port = 25,
             UseSsl = i % 2 != 0,
         }))
