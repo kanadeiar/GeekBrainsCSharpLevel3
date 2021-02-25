@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -38,7 +37,8 @@ namespace MailSender.Windows
                 TextBoxLogin = {Text = Login},
                 PasswordBoxPassword = {Password = Password},
                 TextBoxDescription = {Text = Description},
-                Owner = Application.Current.Windows.Cast<Window>().FirstOrDefault(win => win.IsActive),
+                Owner = Application.Current.Windows.Cast<Window>()
+                    .FirstOrDefault(win => win.IsActive),
             };
             if (window.ShowDialog() != true) return false;
             Name = window.TextBoxServerName.Text;
@@ -72,7 +72,6 @@ namespace MailSender.Windows
             return ShowDialog("Создать почтовый сервер", ref Name, ref Address, ref Port, ref UseSsl, ref Description,
                 ref Login, ref Password);
         }
-
         /// <summary> Закрытие окна </summary>
         private void WindowButton_OnClick(object sender, RoutedEventArgs e)
         {

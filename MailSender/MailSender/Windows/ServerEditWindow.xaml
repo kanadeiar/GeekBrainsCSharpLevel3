@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MailSender.Windows"
         mc:Ignorable="d"
-        Title="Редактировать почтовый сервер" Height="300" Width="300" WindowStartupLocation="CenterOwner">
+        Title="Редактировать почтовый сервер" Height="460" Width="300" WindowStartupLocation="CenterOwner">
     <DockPanel Margin="5">
         <GroupBox Header="Имя сервера" DockPanel.Dock="Top">
             <TextBox Name="TextBoxServerName" x:FieldModifier="private"/>
