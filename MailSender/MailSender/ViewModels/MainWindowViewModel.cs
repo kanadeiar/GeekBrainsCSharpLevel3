@@ -13,6 +13,7 @@ using MailSender.lib.Models;
 using MailSender.ViewModels.Base;
 using MailSender.Windows;
 using MailSender.Infrastructure.Commands;
+using MailSender.lib.Models.Base;
 
 namespace MailSender.ViewModels
 {
@@ -21,11 +22,10 @@ namespace MailSender.ViewModels
     {
         private readonly IMailService _MailService;
 
-        //private readonly IServerStorage _serverStorage;
-        //private readonly ISenderStorage _senderStorage;
-        //private readonly IRecipientStorage _recipientStorage;
-        //private readonly IMessageStorage _messageStorage;
-
+        private readonly IRepository<Server> _Servers;
+        private readonly IRepository<Sender> _Senders;
+        private readonly IRepository<Recipient> _Recipients;
+        private readonly IRepository<Message> _Messages;
 
         #region Свойства
 
@@ -147,14 +147,15 @@ namespace MailSender.ViewModels
 
         #endregion
 
-        public MainWindowViewModel(IMailService mailService, IServerStorage serverStorage, ISenderStorage senderStorage, 
-            IRecipientStorage recipientStorage, IMessageStorage messageStorage)
+        public MainWindowViewModel(IMailService mailService, IRepository<Server> Servers, IRepository<Sender> Senders,
+            IRepository<Recipient> Recipients, IRepository<Message> Messages)
         {
+            _Servers = Servers;
+            _Senders = Senders;
+            _Recipients = Recipients;
+            _Messages = Messages;
+
             _MailService = mailService;
-            //_serverStorage = serverStorage;
-            //_senderStorage = senderStorage;
-            //_recipientStorage = recipientStorage;
-            //_messageStorage = messageStorage;
             _timer = new Timer
             {
                 Interval = 100,
@@ -173,11 +174,7 @@ namespace MailSender.ViewModels
         public ICommand LoadDataFileCommand => _loadDataFileCommand ??= new LambdaCommand(OnLoadDataFileCommandExecute);
         private void OnLoadDataFileCommandExecute(object p)
         {
-            //_serverStorage.Load();
-            //Servers = new ObservableCollection<Server>(_serverStorage.Items);
-            //Senders = new ObservableCollection<Sender>(_senderStorage.Items);
-            //Recipients = new ObservableCollection<Recipient>(_recipientStorage.Items);
-            //Messages = new ObservableCollection<Message>(_messageStorage.Items);
+            LoadData();
             OnPropertyChanged(nameof(FilteredRecipients));
         }
         private ICommand _saveDataFileCommand;
@@ -185,7 +182,7 @@ namespace MailSender.ViewModels
         public ICommand SaveDataFileCommand => _saveDataFileCommand ??= new LambdaCommand(OnSaveDataFIleCommandExecute);
         private void OnSaveDataFIleCommandExecute(object p)
         {
-            //_serverStorage.SaveChanges();
+            SaveData();
         }
 
         #endregion
@@ -197,33 +194,33 @@ namespace MailSender.ViewModels
         public ICommand CreateServerCommand => _createServerCommand ??= new LambdaCommand(OnCreateServerCommandExecute);
         private void OnCreateServerCommandExecute(object p)
         {
-            if (!ServerEditWindow.Create(
-                out var name,
-                out var address,
-                out var port,
-                out var ssl,
-                out var description,
-                out var login,
-                out var password))
-                return;
-            int newid = default;
-            if (Servers.Count != 0)
-                newid = Servers.Max(s => s.Id) + 1;
-            else
-                newid = 1;
-            var server = new Server
-            {
-                Id = newid,
-                Name = name,
-                Address = address,
-                Port = port,
-                UseSsl = ssl,
-                Description = description,
-                Login = login,
-                Password = password,
-            };
-            _serverStorage.Items.Add(server);
-            Servers.Add(server);
+            //if (!ServerEditWindow.Create(
+            //    out var name,
+            //    out var address,
+            //    out var port,
+            //    out var ssl,
+            //    out var description,
+            //    out var login,
+            //    out var password))
+            //    return;
+            //int newid = default;
+            //if (Servers.Count != 0)
+            //    newid = Servers.Max(s => s.Id) + 1;
+            //else
+            //    newid = 1;
+            //var server = new Server
+            //{
+            //    Id = newid,
+            //    Name = name,
+            //    Address = address,
+            //    Port = port,
+            //    UseSsl = ssl,
+            //    Description = description,
+            //    Login = login,
+            //    Password = password,
+            //};
+            //_serverStorage.Items.Add(server);
+            //Servers.Add(server);
         }
         private ICommand _editServerCommand;
         /// <summary> Команда редактирования выбранного сервера </summary>
@@ -232,31 +229,31 @@ namespace MailSender.ViewModels
         private bool CanEditServerCommandExecute(object p) => p is Server;
         private void OnEditServerCommandExecute(object p)
         {
-            if (!(p is Server server))
-                return;
-            var name = server.Name;
-            var address = server.Address;
-            var port = server.Port;
-            var ssl = server.UseSsl;
-            var description = server.Description;
-            var login = server.Login;
-            var password = server.Password;
-            if (!ServerEditWindow.ShowDialog("Редактирование почтового сервера",
-                ref name,
-                ref address,
-                ref port,
-                ref ssl,
-                ref description,
-                ref login,
-                ref password))
-                return;
-            server.Name = name;
-            server.Address = address;
-            server.Port = port;
-            server.UseSsl = ssl;
-            server.Description = description;
-            server.Login = login;
-            server.Password = password;
+            //if (!(p is Server server))
+            //    return;
+            //var name = server.Name;
+            //var address = server.Address;
+            //var port = server.Port;
+            //var ssl = server.UseSsl;
+            //var description = server.Description;
+            //var login = server.Login;
+            //var password = server.Password;
+            //if (!ServerEditWindow.ShowDialog("Редактирование почтового сервера",
+            //    ref name,
+            //    ref address,
+            //    ref port,
+            //    ref ssl,
+            //    ref description,
+            //    ref login,
+            //    ref password))
+            //    return;
+            //server.Name = name;
+            //server.Address = address;
+            //server.Port = port;
+            //server.UseSsl = ssl;
+            //server.Description = description;
+            //server.Login = login;
+            //server.Password = password;
         }
         private ICommand _deleteServerCommand;
         /// <summary> Команда удаления сервера </summary>
@@ -265,10 +262,10 @@ namespace MailSender.ViewModels
         private bool CanDeleteServerCommandExecute(object p) => p is Server;
         private void OnDeleteServerCommandExecute(object p)
         {
-            if (!(p is Server server))
-                return;
-            _serverStorage.Items.Remove(server);
-            Servers.Remove(server);
+            //if (!(p is Server server))
+            //    return;
+            //_serverStorage.Items.Remove(server);
+            //Servers.Remove(server);
         }
         private ICommand _createSenderCommand;
         /// <summary> Команда добавления новго отправителя </summary>
@@ -276,25 +273,25 @@ namespace MailSender.ViewModels
             new LambdaCommand(OnCreateSenderCommandExecute);
         private void OnCreateSenderCommandExecute(object p)
         {
-            if (!SenderEditWindow.Create(
-                out var name, 
-                out var address,
-                out var description))
-                return;
-            int newid = default;
-            if (Senders.Count != 0)
-                newid = Senders.Max(s => s.Id) + 1;
-            else
-                newid = 1;
-            var sender = new Sender
-            {
-                Id = newid,
-                Name = name,
-                Address = address,
-                Description = description,
-            };
-            _senderStorage.Items.Add(sender);
-            Senders.Add(sender);
+            //if (!SenderEditWindow.Create(
+            //    out var name, 
+            //    out var address,
+            //    out var description))
+            //    return;
+            //int newid = default;
+            //if (Senders.Count != 0)
+            //    newid = Senders.Max(s => s.Id) + 1;
+            //else
+            //    newid = 1;
+            //var sender = new Sender
+            //{
+            //    Id = newid,
+            //    Name = name,
+            //    Address = address,
+            //    Description = description,
+            //};
+            //_senderStorage.Items.Add(sender);
+            //Senders.Add(sender);
         }
         private ICommand _editSenderCommand;
         /// <summary> Команда редактирования отправителя </summary>
@@ -303,19 +300,19 @@ namespace MailSender.ViewModels
         private bool CanEditSenderCommandExecute(object p) => p is Sender;
         private void OnEditSenderCommandExecute(object p)
         {
-            if (!(p is Sender sender))
-                return;
-            var name = sender.Name;
-            var address = sender.Address;
-            var description = sender.Description;
-            if (!SenderEditWindow.ShowDialog("Редактирование отправителя",
-                ref name,
-                ref address,
-                ref description))
-                return;
-            sender.Name = name;
-            sender.Address = address;
-            sender.Description = description;
+            //if (!(p is Sender sender))
+            //    return;
+            //var name = sender.Name;
+            //var address = sender.Address;
+            //var description = sender.Description;
+            //if (!SenderEditWindow.ShowDialog("Редактирование отправителя",
+            //    ref name,
+            //    ref address,
+            //    ref description))
+            //    return;
+            //sender.Name = name;
+            //sender.Address = address;
+            //sender.Description = description;
         }
         private ICommand _deleteSenderCommand;
         /// <summary> Команда удвления отправителя </summary>
@@ -324,13 +321,15 @@ namespace MailSender.ViewModels
         private bool CanDeleteSenderCommandExecute(object p) => p is Sender;
         private void OnDeleteSenderCommandExecute(object p)
         {
-            if (!(p is Sender sender))
-                return;
-            _senderStorage.Items.Remove(sender);
-            Senders.Remove(sender);
+            //if (!(p is Sender sender))
+            //    return;
+            //_senderStorage.Items.Remove(sender);
+            //Senders.Remove(sender);
         }
 
         #endregion
+
+        #region Команды работы с сервисом отправки сообщений
 
         private ICommand _sendMessageCommand;
         /// <summary> Команда отправки сообщения </summary>
@@ -364,6 +363,8 @@ namespace MailSender.ViewModels
                 client.Send(sender.Address, recipients, message.Subject, message.Text);
         }
 
+        #endregion
+
         #region Вспомогательные команды
 
         private ICommand _showDialogCommand;
@@ -387,6 +388,28 @@ namespace MailSender.ViewModels
         }
 
         #endregion
+
+        #endregion
+
+        #region Вспомогательные методы
+
+        private static void Load<T>(ObservableCollection<T> collection, IRepository<T> repository) where T : Entity
+        {
+            collection.Clear();
+            foreach (var item in repository.GetAll())
+                collection.Add(item);
+        }
+        private void LoadData()
+        {
+            Load(Servers, _Servers);
+            Load(Senders, _Senders);
+            Load(Recipients, _Recipients);
+            Load(Messages, _Messages);
+        }
+        private void SaveData()
+        {
+            //TODO сохранение данных нужно сделать!
+        }
 
         #endregion
     }

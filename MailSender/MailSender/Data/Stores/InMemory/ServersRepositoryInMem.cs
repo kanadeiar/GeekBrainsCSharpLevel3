@@ -6,9 +6,9 @@ using MailSender.lib.Services;
 namespace MailSender.Data.Stores.InMemory
 {
     /// <summary> Репозиторий серверов </summary>
-    class ServersRepository : RepositoryInMem<Server>
+    class ServersRepositoryInMem : RepositoryInMem<Server>
     {
-        public ServersRepository() : base(Enumerable.Range(1, 10).Select(i => new Server
+        public ServersRepositoryInMem() : base(Enumerable.Range(1, 10).Select(i => new Server
         {
             Id = i,
             Address = $"smtp.server{i}.com",
