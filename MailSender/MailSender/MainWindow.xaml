@@ -131,13 +131,8 @@
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
-                            <Button Name="ButtonAddServer" ToolTip="Добавить сервер"
-                                    Command="{Binding CreateServerCommand}">
-                                <StackPanel Orientation="Horizontal">
-                                    <fa:FontAwesome Icon="Solid_Plus" Foreground="GreenYellow" VerticalAlignment="Center"/>
-                                    <TextBlock Text="Добавить"/>
-                                </StackPanel>
-                            </Button>
+                            <Button Name="ButtonAddServer" ToolTip="Добавить сервер" fa:Awesome.Content="Solid_Plus" Foreground="GreenYellow"
+                                    Command="{Binding CreateServerCommand}"/>
                             <Button Name="ButtonEditServer" ToolTip="Редактировать сервер" fa:Awesome.Content="Solid_Edit" Foreground="Orange"
                                     Command="{Binding EditServerCommand}"
                                     CommandParameter="{Binding SelectedServer}"/>
@@ -175,13 +170,8 @@
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
-                            <Button ToolTip="Добавить отправителя"
-                                    Command="{Binding CreateSenderCommand}">
-                                <StackPanel Orientation="Horizontal">
-                                    <fa:FontAwesome Icon="Solid_Plus" Foreground="GreenYellow" Margin="3,0" VerticalAlignment="Center"/>
-                                    <TextBlock Text="Добавить"/>
-                                </StackPanel>
-                            </Button>
+                            <Button ToolTip="Добавить отправителя" fa:Awesome.Content="Solid_Plus" Foreground="GreenYellow"
+                                    Command="{Binding CreateSenderCommand}"/>
                             <Button ToolTip="Редактировать отправителя" fa:Awesome.Content="Solid_Edit" Foreground="Orange"
                                     Command="{Binding EditSenderCommand}"
                                     CommandParameter="{Binding SelectedSender}"/>
@@ -196,29 +186,55 @@
                         </ToolBar>
                     </ToolBarTray>
                     <GroupBox Grid.Row="1" Header="Получатели">
-                        <DockPanel>
-                            <Grid DockPanel.Dock="Top" HorizontalAlignment="Center">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <DockPanel Grid.Column="0">
+                                <Grid DockPanel.Dock="Top" HorizontalAlignment="Center">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Поиск по имени:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                                    <TextBox Grid.Column="1" ToolTip="Введите имя для поиска" MinWidth="400"
+                                             Text="{Binding RecipientsFilter, UpdateSourceTrigger=PropertyChanged}"/>
+                                </Grid>
+                                <DataGrid Name="DataGridRecipients" Margin="10,5" AutoGenerateColumns="False" GridLinesVisibility="Vertical" AlternatingRowBackground="#FFFDFFDA"
+                                          VerticalGridLinesBrush="DarkGray" IsReadOnly="True" SelectionMode="Extended"
+                                          ItemsSource="{Binding FilteredRecipients}"
+                                          SelectedItem="{Binding SelectedRecipient}">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="ID" Binding="{Binding Id}" MinWidth="50"/>
+                                        <DataGridTextColumn Header="Имя" Binding="{Binding Name}" MinWidth="100"/>
+                                        <DataGridTextColumn Header="Адрес" Binding="{Binding Address}" MinWidth="110"/>
+                                        <DataGridTextColumn Header="Описание" Binding="{Binding Description}" Width="*"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </DockPanel>
+                            <Grid Grid.Column="1">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition/>
-                                    <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Text="Поиск по имени:" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                                <TextBox Grid.Column="1" ToolTip="Введите имя для поиска" MinWidth="400"
-                                         Text="{Binding RecipientsFilter, UpdateSourceTrigger=PropertyChanged}"/>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Text="Редактирование:" HorizontalAlignment="Center" Margin="10"/>
+                                <TextBlock Grid.Column="0" Grid.Row="1" Text="ID:" VerticalAlignment="Center"/>
+                                <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding SelectedRecipient.Id}" IsReadOnly="True" Margin="5"/>
+                                <TextBlock Grid.Column="0" Grid.Row="2" Text="Имя:" VerticalAlignment="Center"/>
+                                <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding SelectedRecipient.Name}" Margin="5"/>
+                                <TextBlock Grid.Column="0" Grid.Row="3" Text="Адрес:" VerticalAlignment="Center"/>
+                                <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding SelectedRecipient.Address}" Margin="5"/>
                             </Grid>
-                            <DataGrid Name="DataGridRecipients" Margin="10,5" AutoGenerateColumns="False" GridLinesVisibility="Vertical" AlternatingRowBackground="#FFFDFFDA"
-                                      VerticalGridLinesBrush="DarkGray" IsReadOnly="True" SelectionMode="Extended"
-                                      ItemsSource="{Binding FilteredRecipients}"
-                                      SelectedItem="{Binding SelectedRecipient}">
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="30"/>
-                                    <DataGridTextColumn Header="Имя" Binding="{Binding Name}" MinWidth="100"/>
-                                    <DataGridTextColumn Header="Адрес" Binding="{Binding Address}" MinWidth="100"/>
-                                    <DataGridTextColumn Header="Описание" Binding="{Binding Description}" Width="*"/>
-                                </DataGrid.Columns>
-                            </DataGrid>
-                        </DockPanel>
+                        </Grid>
                     </GroupBox>
                 </Grid>
             </TabItem>
