@@ -233,6 +233,10 @@
                                 <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding SelectedRecipient.Name}" Margin="5"/>
                                 <TextBlock Grid.Column="0" Grid.Row="3" Text="Адрес:" VerticalAlignment="Center"/>
                                 <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding SelectedRecipient.Address}" Margin="5"/>
+                                <UniformGrid Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Rows="1" HorizontalAlignment="Center">
+                                    <Button ToolTip="Сохранить изменения получателя" fa:Awesome.Content="Regular_Save" Foreground="Blue" Margin="5,0" Padding="40,0"/>
+                                    <Button ToolTip="Создать получателя" fa:Awesome.Content="Solid_Plus" Foreground="Green" Margin="5, 0" Padding="40,0"/>
+                                </UniformGrid>
                             </Grid>
                         </Grid>
                     </GroupBox>
