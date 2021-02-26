@@ -44,7 +44,6 @@
 
   <ItemGroup>
     <Folder Include="Data\Stores\InDB\" />
-    <Folder Include="Infrastructure\Validations\" />
   </ItemGroup>
 
 </Project>
