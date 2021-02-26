@@ -21,7 +21,7 @@
 
         Title="{Binding Path=Title}" 
         Topmost="{Binding IsChecked, ElementName=CheckBoxIsWindowTopMost}"
-        Height="600" Width="800" WindowStartupLocation="CenterScreen" Icon="/Avatar.ico" ResizeMode="CanResizeWithGrip">
+        Height="700" Width="900" WindowStartupLocation="CenterScreen" Icon="/Avatar.ico" ResizeMode="CanResizeWithGrip">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding LoadDataFileCommand}"/>
@@ -62,7 +62,7 @@
 
         <!-- #region Описание приложения -->
 
-        <Grid DockPanel.Dock="Top" Background="Orange" Height="50">
+        <Grid DockPanel.Dock="Top" Background="{StaticResource PrimaryHueMidBrush}" Height="50">
             <TextBlock Text="{Binding Path=Description}" TextWrapping="WrapWithOverflow" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
         </Grid>
 
