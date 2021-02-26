@@ -48,6 +48,8 @@ namespace MailSender
 
             services.AddSingleton<IStatistic, MemoryStatisticService>();
 
+            services.AddTransient<ISchedulerMailService, SchedulerMailService>();
+
 //#if DEBUG
 //            var storage = new DebugDataStorage();
 //#else

@@ -13,6 +13,7 @@ namespace MailSender.ViewModels
     partial class MainWindowViewModel : ViewModel
     {
         private readonly IMailService _MailService;
+        private readonly ISchedulerMailService _SchedulerService;
 
         private readonly IRepository<Server> _Servers;
         private readonly IRepository<Sender> _Senders;
@@ -65,6 +66,9 @@ namespace MailSender.ViewModels
         /// <summary> Сообщения электронной почты </summary>
         public ObservableCollection<Message> Messages { get; } = new();
 
+        /// <summary> Задания на рассылку почты </summary>
+        public ObservableCollection<SchedulerMailSender> SchedulerMailSenders { get; } = new();
+
 
         private Server _selectedServer;
 
@@ -100,6 +104,15 @@ namespace MailSender.ViewModels
         {
             get => _selectedMessage;
             set => Set(ref _selectedMessage, value);
+        }
+
+        private DateTime _selectedDate = DateTime.Now;
+
+        /// <summary> Выбранная дата отправки сообщения </summary>
+        public DateTime SelectedDate
+        {
+            get => _selectedDate;
+            set => Set(ref _selectedDate, value);
         }
 
         #region Фильтр получателей сообщений
@@ -158,13 +171,14 @@ namespace MailSender.ViewModels
         #endregion
 
         public MainWindowViewModel(IMailService mailService, IRepository<Server> Servers, IRepository<Sender> Senders,
-            IRepository<Recipient> Recipients, IRepository<Message> Messages)
+            IRepository<Recipient> Recipients, IRepository<Message> Messages, ISchedulerMailService SchedulerService)
         {
             _Servers = Servers;
             _Senders = Senders;
             _Recipients = Recipients;
             _Messages = Messages;
             _MailService = mailService;
+            _SchedulerService = SchedulerService;
             _timer = new Timer
             {
                 Interval = 100,

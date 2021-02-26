@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -218,6 +220,37 @@ namespace MailSender.ViewModels
                 client.Send(sender.Address, recipient.Address, message.Subject, message.Text);
             else
                 client.Send(sender.Address, recipients, message.Subject, message.Text);
+        }
+
+        private ICommand _schedulerSendMailMessageCommand;
+        /// <summary> Команда добавления задания на отправку сообщения по почте </summary>
+        public ICommand SchedulerSendMailMessageCommand => _schedulerSendMailMessageCommand ??=
+            new LambdaCommand(OnSchedulerSendMessageCommandExecute, CanSchedulerSendMessageCommandExecute);
+        private bool CanSchedulerSendMessageCommandExecute(object p)
+        {
+            return SelectedDate != null && SelectedServer != null && SelectedSender != null && 
+                   SelectedRecipient != null && SelectedMessage != null;
+        }
+
+        private void OnSchedulerSendMessageCommandExecute(object p)
+        {
+
+            var server = SelectedServer;
+            var client = _MailService.GetSender(server.Address, server.Port, server.UseSsl, server.Login,
+                server.Password);
+            var scheduler = _SchedulerService.GetScheduler(client);
+            var sender = SelectedSender;
+            var recipient = SelectedRecipient;
+            var message = SelectedMessage;
+            var date = SelectedDate;
+            scheduler.AddTaskSend(date, sender.Address, recipient.Address, message.Subject, message.Text);
+
+            var context = SynchronizationContext.Current;
+            scheduler.EmailSended += (_, _) =>
+            {
+                context.Send(x => SchedulerMailSenders.Remove((SchedulerMailSender) scheduler), null);
+            };
+            SchedulerMailSenders.Add((SchedulerMailSender)scheduler);
         }
 
         #endregion

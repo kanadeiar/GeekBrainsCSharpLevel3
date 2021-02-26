@@ -319,10 +319,10 @@
                         <StackPanel>
                             <TextBlock Text="Дата и время отправки " HorizontalAlignment="Center" Margin="5"/>
                             <TextBlock Text="Дата" HorizontalAlignment="Center" Margin="5"/>
-                            <DatePicker materialDesign:HintAssist.Hint="Выберите дату" Style="{StaticResource MaterialDesignFloatingHintDatePicker}" Language="ru-RU"/>
+                            <DatePicker SelectedDate="{Binding SelectedDate}" materialDesign:HintAssist.Hint="Выберите дату" Style="{StaticResource MaterialDesignFloatingHintDatePicker}" Language="ru-RU"/>
                             <!--<Calendar Name="CalendarPlan" SelectedDate="2020-09-05" Language="ru-RU"/>-->
                             <TextBlock Text="Время" HorizontalAlignment="Center" Margin="5"/>
-                            <materialDesign:TimePicker materialDesign:HintAssist.Hint="Выберите время" Is24Hours="True"/>
+                            <materialDesign:TimePicker SelectedTime="{Binding SelectedDate}" materialDesign:HintAssist.Hint="Выберите время" Is24Hours="True"/>
                             <!--<xctk:TimePicker Name="TimePickerSendDate" Margin="5"/>-->
                             <UniformGrid Columns="1" Margin="5, 10">
                                 <UniformGrid.Resources>
@@ -332,7 +332,8 @@
                                         <Setter Property="Height" Value="40"/>
                                     </Style>
                                 </UniformGrid.Resources>
-                                <Button Name="ButtonSchedulerSend">
+                                <Button Name="ButtonSchedulerSend" ToolTip="Запланировать отправку письма"
+                                        Command="{Binding SchedulerSendMailMessageCommand}">
                                     <StackPanel Orientation="Horizontal">
                                         <fa:FontAwesome Icon="Regular_Clock" Margin="5,0" Foreground="Blue"/>
                                         <TextBlock Text="Запланировать" VerticalAlignment="Center"/>
@@ -350,13 +351,14 @@
                         </StackPanel>
                     </GroupBox>
                     <GroupBox Grid.Column="1" Header="Задания">
-                        <ListBox>
+                        <ListBox ItemsSource="{Binding SchedulerMailSenders}">
                             <ListBox.ItemContainerStyle>
                                 <Style TargetType="ListBoxItem">
                                     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                                 </Style>
                             </ListBox.ItemContainerStyle>
-                            <ListBoxItem>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
                                 <Border BorderBrush="SpringGreen" BorderThickness="1" Padding="5" CornerRadius="5">
                                     <GroupBox>
                                         <GroupBox.Header>
@@ -367,8 +369,8 @@
                                                 </Grid.ColumnDefinitions>
                                                 <Button Grid.Column="1" Content="X" Width="21" Padding="5,4" Foreground="Red" Background="Yellow" ToolTip="Удалить задание"/>
                                                 <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="0,0,50,0">
-                                                    <TextBlock Text="Задание от " VerticalAlignment="Center"/>
-                                                    <TextBlock Text="01.01.1222 12:21" VerticalAlignment="Center"/>
+                                                    <TextBlock Text="Дата отправки: " VerticalAlignment="Center"/>
+                                                    <TextBlock Text="{Binding DateTimeSend}" VerticalAlignment="Center"/>
                                                 </StackPanel>
                                             </Grid>
                                         </GroupBox.Header>
@@ -384,60 +386,18 @@
                                                 <RowDefinition/>
                                             </Grid.RowDefinitions>
                                             <TextBlock Grid.Column="0" Grid.Row="0" Text="Отправитель:"/>
-                                            <TextBlock Grid.Column="1" Grid.Row="0" Text="Иванов"/>
+                                            <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding From}"/>
                                             <TextBlock Grid.Column="0" Grid.Row="1" Text="Получатели:"/>
                                             <ItemsControl Grid.Column="1" Grid.Row="1">
-                                                <TextBlock Text="Иванов"/>
-                                                <TextBlock Text="Петров"/>
-                                                <TextBlock Text="Сидров"/>
+                                                <TextBlock Text="{Binding To}"/>
                                             </ItemsControl>
                                             <TextBlock Grid.Column="0" Grid.Row="3" Text="Заголовок:"/>
-                                            <TextBlock Grid.Column="1" Grid.Row="3" Text="Тема письма"/>
+                                            <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Subject}"/>
                                         </Grid>
                                     </GroupBox>
                                 </Border>
-                            </ListBoxItem>
-                            <ListBoxItem>
-                                <Border BorderBrush="SpringGreen" BorderThickness="1" Padding="5" CornerRadius="5">
-                                    <GroupBox>
-                                        <GroupBox.Header>
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Button Grid.Column="1" Content="X" Width="21" Padding="5,4" Foreground="Red" Background="Yellow" ToolTip="Удалить задание"/>
-                                                <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="0,0,50,0">
-                                                    <TextBlock Text="Задание от " VerticalAlignment="Center"/>
-                                                    <TextBlock Text="01.01.1222 12:21" VerticalAlignment="Center"/>
-                                                </StackPanel>
-                                            </Grid>
-                                        </GroupBox.Header>
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="3*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto"/>
-                                                <RowDefinition Height="Auto"/>
-                                                <RowDefinition Height="Auto"/>
-                                                <RowDefinition/>
-                                            </Grid.RowDefinitions>
-                                            <TextBlock Grid.Column="0" Grid.Row="0" Text="Отправитель:"/>
-                                            <TextBlock Grid.Column="1" Grid.Row="0" Text="Иванов"/>
-                                            <TextBlock Grid.Column="0" Grid.Row="1" Text="Получатели:"/>
-                                            <ItemsControl Grid.Column="1" Grid.Row="1">
-                                                <TextBlock Text="Иванов"/>
-                                                <TextBlock Text="Петров"/>
-                                                <TextBlock Text="Сидров"/>
-                                            </ItemsControl>
-                                            <TextBlock Grid.Column="0" Grid.Row="3" Text="Заголовок:"/>
-                                            <TextBlock Grid.Column="1" Grid.Row="3" Text="Тема письма"/>
-                                        </Grid>
-                                    </GroupBox>
-                                </Border>
-                            </ListBoxItem>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
                         </ListBox>
                     </GroupBox>
                     <GridSplitter Grid.Column="0" Width="3" VerticalAlignment="Stretch" HorizontalAlignment="Right" Background="Transparent"/>
