@@ -223,7 +223,7 @@ namespace MailSender.ViewModels
         }
 
         private ICommand _schedulerSendMailMessageCommand;
-        /// <summary> Команда добавления задания на отправку сообщения по почте </summary>
+        /// <summary> Команда добавления задания на отправку сообщения </summary>
         public ICommand SchedulerSendMailMessageCommand => _schedulerSendMailMessageCommand ??=
             new LambdaCommand(OnSchedulerSendMessageCommandExecute, CanSchedulerSendMessageCommandExecute);
         private bool CanSchedulerSendMessageCommandExecute(object p)
@@ -234,7 +234,6 @@ namespace MailSender.ViewModels
 
         private void OnSchedulerSendMessageCommandExecute(object p)
         {
-
             var server = SelectedServer;
             var client = _MailService.GetSender(server.Address, server.Port, server.UseSsl, server.Login,
                 server.Password);
@@ -251,6 +250,22 @@ namespace MailSender.ViewModels
                 context.Send(x => SchedulerMailSenders.Remove((SchedulerMailSender) scheduler), null);
             };
             SchedulerMailSenders.Add((SchedulerMailSender)scheduler);
+        }
+
+        private ICommand _SchedulerDeleteMessageCommand;
+
+        /// <summary> Команда удаления задания на отправку сообщения </summary>
+        public ICommand SchedulerDeleteMessageCommand => _SchedulerDeleteMessageCommand ??=
+            new LambdaCommand(OnSchedulerDeleteMessageCommandExecuted, CanSchedulerDeleteMessageCommandExecute);
+
+        private bool CanSchedulerDeleteMessageCommandExecute(object p) => true;
+
+        private void OnSchedulerDeleteMessageCommandExecuted(object p)
+        {
+            if (!(p is SchedulerMailSender scheduler))
+                return;
+            scheduler.Stop();
+            SchedulerMailSenders.Remove(scheduler);
         }
 
         #endregion

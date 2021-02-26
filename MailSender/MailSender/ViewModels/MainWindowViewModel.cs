@@ -24,7 +24,7 @@ namespace MailSender.ViewModels
 
         #region Вспомогательные свойства
 
-        private string _title = "Geekbrains. Домашнее задание №3. MVVM.";
+        private string _title = "Geekbrains. Домашнее задание №4. Валидация.";
 
         /// <summary> Заголовок главного окна </summary>
         public string Title
@@ -34,7 +34,7 @@ namespace MailSender.ViewModels
         }
 
         private string _description =
-            "Geekbrains. Домашнее задание №3. Разработка WPF-приложений с использованием шаблона MVVM на примере MVVM Light Toolkit";
+            "Geekbrains. Домашнее задание №4. Валидация модели или проверка вводимых данных на корректность. Unit-тестирование.";
 
         /// <summary> Описание приложения </summary>
         public string Description
