@@ -9,11 +9,12 @@ using MailSender.Infrastructure.Commands;
 using MailSender.lib.Interfaces;
 using MailSender.lib.Models;
 using MailSender.lib.Models.Base;
+using MailSender.ViewModels.Base;
 using MailSender.Windows;
 
 namespace MailSender.ViewModels
 {
-    partial class MainWindowViewModel
+    partial class MainWindowViewModel : ViewModel
     {
         #region Команды
 

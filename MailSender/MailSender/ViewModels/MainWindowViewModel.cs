@@ -164,7 +164,6 @@ namespace MailSender.ViewModels
             _Senders = Senders;
             _Recipients = Recipients;
             _Messages = Messages;
-
             _MailService = mailService;
             _timer = new Timer
             {
