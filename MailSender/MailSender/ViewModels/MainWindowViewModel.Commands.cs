@@ -9,6 +9,7 @@ using MailSender.Infrastructure.Commands;
 using MailSender.lib.Interfaces;
 using MailSender.lib.Models;
 using MailSender.lib.Models.Base;
+using MailSender.Windows;
 
 namespace MailSender.ViewModels
 {
@@ -44,162 +45,137 @@ namespace MailSender.ViewModels
         #region Команды изменения данных
 
         private ICommand _createServerCommand;
-
         /// <summary> Коданда создания нового сервера </summary>
         public ICommand CreateServerCommand => _createServerCommand ??= new LambdaCommand(OnCreateServerCommandExecute);
-
         private void OnCreateServerCommandExecute(object p)
         {
-            //if (!ServerEditWindow.Create(
-            //    out var name,
-            //    out var address,
-            //    out var port,
-            //    out var ssl,
-            //    out var description,
-            //    out var login,
-            //    out var password))
-            //    return;
-            //int newid = default;
-            //if (Servers.Count != 0)
-            //    newid = Servers.Max(s => s.Id) + 1;
-            //else
-            //    newid = 1;
-            //var server = new Server
-            //{
-            //    Id = newid,
-            //    Name = name,
-            //    Address = address,
-            //    Port = port,
-            //    UseSsl = ssl,
-            //    Description = description,
-            //    Login = login,
-            //    Password = password,
-            //};
-            //_serverStorage.Items.Add(server);
-            //Servers.Add(server);
+            if (!ServerEditWindow.Create(
+                out var name,
+                out var address,
+                out var port,
+                out var ssl,
+                out var description,
+                out var login,
+                out var password))
+                return;
+            int newid = default;
+            if (Servers.Count != 0)
+                newid = Servers.Max(s => s.Id) + 1;
+            else
+                newid = 1;
+            var server = new Server
+            {
+                Id = newid,
+                Name = name,
+                Address = address,
+                Port = port,
+                UseSsl = ssl,
+                Description = description,
+                Login = login,
+                Password = password,
+            };
+            Servers.Add(server);
         }
-
         private ICommand _editServerCommand;
-
         /// <summary> Команда редактирования выбранного сервера </summary>
         public ICommand EditServerCommand => _editServerCommand ??=
             new LambdaCommand(OnEditServerCommandExecute, CanEditServerCommandExecute);
-
         private bool CanEditServerCommandExecute(object p) => p is Server;
-
         private void OnEditServerCommandExecute(object p)
         {
-            //if (!(p is Server server))
-            //    return;
-            //var name = server.Name;
-            //var address = server.Address;
-            //var port = server.Port;
-            //var ssl = server.UseSsl;
-            //var description = server.Description;
-            //var login = server.Login;
-            //var password = server.Password;
-            //if (!ServerEditWindow.ShowDialog("Редактирование почтового сервера",
-            //    ref name,
-            //    ref address,
-            //    ref port,
-            //    ref ssl,
-            //    ref description,
-            //    ref login,
-            //    ref password))
-            //    return;
-            //server.Name = name;
-            //server.Address = address;
-            //server.Port = port;
-            //server.UseSsl = ssl;
-            //server.Description = description;
-            //server.Login = login;
-            //server.Password = password;
+            if (!(p is Server server))
+                return;
+            var name = server.Name;
+            var address = server.Address;
+            var port = server.Port;
+            var ssl = server.UseSsl;
+            var description = server.Description;
+            var login = server.Login;
+            var password = server.Password;
+            if (!ServerEditWindow.ShowDialog("Редактирование почтового сервера",
+                ref name,
+                ref address,
+                ref port,
+                ref ssl,
+                ref description,
+                ref login,
+                ref password))
+                return;
+            server.Name = name;
+            server.Address = address;
+            server.Port = port;
+            server.UseSsl = ssl;
+            server.Description = description;
+            server.Login = login;
+            server.Password = password;
         }
-
         private ICommand _deleteServerCommand;
-
         /// <summary> Команда удаления сервера </summary>
         public ICommand DeleteServerCommand => _deleteServerCommand ??=
             new LambdaCommand(OnDeleteServerCommandExecute, CanDeleteServerCommandExecute);
-
         private bool CanDeleteServerCommandExecute(object p) => p is Server;
-
         private void OnDeleteServerCommandExecute(object p)
         {
-            //if (!(p is Server server))
-            //    return;
-            //_serverStorage.Items.Remove(server);
-            //Servers.Remove(server);
+            if (!(p is Server server))
+                return;
+            Servers.Remove(server);
         }
-
         private ICommand _createSenderCommand;
-
         /// <summary> Команда добавления новго отправителя </summary>
         public ICommand CreateSenderCommand => _createSenderCommand ??=
             new LambdaCommand(OnCreateSenderCommandExecute);
-
         private void OnCreateSenderCommandExecute(object p)
         {
-            //if (!SenderEditWindow.Create(
-            //    out var name, 
-            //    out var address,
-            //    out var description))
-            //    return;
-            //int newid = default;
-            //if (Senders.Count != 0)
-            //    newid = Senders.Max(s => s.Id) + 1;
-            //else
-            //    newid = 1;
-            //var sender = new Sender
-            //{
-            //    Id = newid,
-            //    Name = name,
-            //    Address = address,
-            //    Description = description,
-            //};
-            //_senderStorage.Items.Add(sender);
-            //Senders.Add(sender);
+            if (!SenderEditWindow.Create(
+                out var name,
+                out var address,
+                out var description))
+                return;
+            int newid = default;
+            if (Senders.Count != 0)
+                newid = Senders.Max(s => s.Id) + 1;
+            else
+                newid = 1;
+            var sender = new Sender
+            {
+                Id = newid,
+                Name = name,
+                Address = address,
+                Description = description,
+            };
+            Senders.Add(sender);
         }
-
         private ICommand _editSenderCommand;
-
         /// <summary> Команда редактирования отправителя </summary>
         public ICommand EditSenderCommand => _editSenderCommand ??=
             new LambdaCommand(OnEditSenderCommandExecute, CanEditSenderCommandExecute);
-
         private bool CanEditSenderCommandExecute(object p) => p is Sender;
-
         private void OnEditSenderCommandExecute(object p)
         {
-            //if (!(p is Sender sender))
-            //    return;
-            //var name = sender.Name;
-            //var address = sender.Address;
-            //var description = sender.Description;
-            //if (!SenderEditWindow.ShowDialog("Редактирование отправителя",
-            //    ref name,
-            //    ref address,
-            //    ref description))
-            //    return;
-            //sender.Name = name;
-            //sender.Address = address;
-            //sender.Description = description;
+            if (!(p is Sender sender))
+                return;
+            var name = sender.Name;
+            var address = sender.Address;
+            var description = sender.Description;
+            if (!SenderEditWindow.ShowDialog("Редактирование отправителя",
+                ref name,
+                ref address,
+                ref description))
+                return;
+            sender.Name = name;
+            sender.Address = address;
+            sender.Description = description;
         }
-
         private ICommand _deleteSenderCommand;
-
         /// <summary> Команда удвления отправителя </summary>
         public ICommand DeleteSenderCommand => _deleteSenderCommand ??=
             new LambdaCommand(OnDeleteSenderCommandExecute, CanDeleteSenderCommandExecute);
-
         private bool CanDeleteSenderCommandExecute(object p) => p is Sender;
-
         private void OnDeleteSenderCommandExecute(object p)
         {
-            //if (!(p is Sender sender))
-            //    return;
-            //_senderStorage.Items.Remove(sender);
-            //Senders.Remove(sender);
+            if (!(p is Sender sender))
+                return;
+            Senders.Remove(sender);
         }
 
         #endregion

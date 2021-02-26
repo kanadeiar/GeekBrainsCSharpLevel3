@@ -115,6 +115,14 @@
                             <ComboBox Name="ComboBoxServers" MinWidth="160"  SelectedIndex="0" VirtualizingStackPanel.IsVirtualizing="True"
                                       ItemsSource="{Binding Servers}"
                                       SelectedItem="{Binding SelectedServer}">
+                                <ComboBox.ToolTip>
+                                    <TextBlock>
+                                        Выбранный Сервер: <TextBlock Text="{Binding SelectedServer.Name}"/>
+                                        Адрес: <TextBlock Text="{Binding SelectedServer.Address}"/> 
+                                        Порт: <TextBlock Text="{Binding SelectedServer.Port}"/>
+                                        Описание: <TextBlock Text="{Binding SelectedServer.Description}"/>
+                                    </TextBlock>
+                                </ComboBox.ToolTip>
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate DataType="m:Server">
                                         <VirtualizingStackPanel>
@@ -155,6 +163,13 @@
                             <ComboBox Name="ComboBoxSenders" Width="200" SelectedIndex="0" Height="30" VirtualizingStackPanel.IsVirtualizing="True"
                                       ItemsSource="{Binding Senders}"
                                       SelectedItem="{Binding SelectedSender}">
+                                <ComboBox.ToolTip>
+                                    <TextBlock>
+                                        Выбранный отправитель: <TextBlock Text="{Binding SelectedSender.Name}"/>
+                                        Адрес: <TextBlock Text="{Binding SelectedSender.Address}"/>
+                                        Описание: <TextBlock Text="{Binding SelectedSender.Description}"/>
+                                    </TextBlock>
+                                </ComboBox.ToolTip>
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate DataType="m:Sender">
                                         <VirtualizingStackPanel Orientation="Horizontal">
@@ -164,7 +179,7 @@
                                                 </TextBlock.ToolTip>
                                                 <TextBlock Text="{Binding Name}"/>
                                                 <TextBlock Opacity="0.5" Margin="5,0,0,0">
-                                                    (<TextBlock Text="{Binding Address}"/>)
+                                                    (<TextBlock Text="{Binding Address}" FontSize="10"/>)
                                                 </TextBlock>
                                             </TextBlock>
                                         </VirtualizingStackPanel>
