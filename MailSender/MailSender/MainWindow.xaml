@@ -112,7 +112,8 @@
                     </Grid.RowDefinitions>
                     <ToolBarTray Grid.Row="0">
                         <ToolBar Header="Сервер" Band="0">
-                            <ComboBox Name="ComboBoxServers" MinWidth="160"  SelectedIndex="0" VirtualizingStackPanel.IsVirtualizing="True"
+                            <ComboBox Name="ComboBoxServers" MinWidth="160"  SelectedIndex="0" 
+                                      VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling"
                                       ItemsSource="{Binding Servers}"
                                       SelectedItem="{Binding SelectedServer}">
                                 <ComboBox.ToolTip>
@@ -123,20 +124,23 @@
                                         Описание: <TextBlock Text="{Binding SelectedServer.Description}"/>
                                     </TextBlock>
                                 </ComboBox.ToolTip>
+                                <ComboBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <VirtualizingStackPanel/>
+                                    </ItemsPanelTemplate>
+                                </ComboBox.ItemsPanel>
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate DataType="m:Server">
-                                        <VirtualizingStackPanel>
-                                            <TextBlock>
-                                                <TextBlock.ToolTip>
-                                                    <TextBlock>
-                                                        Адрес: <TextBlock Text="{Binding Address}"/> 
-                                                        Порт: <TextBlock Text="{Binding Port}"/>
-                                                        Описание: <TextBlock Text="{Binding Description}"/>
-                                                    </TextBlock>
-                                                </TextBlock.ToolTip>
-                                                <TextBlock Text="{Binding Name}"/>
-                                            </TextBlock>
-                                        </VirtualizingStackPanel>
+                                        <TextBlock>
+                                            <TextBlock.ToolTip>
+                                                <TextBlock>
+                                                    Адрес: <TextBlock Text="{Binding Address}"/> 
+                                                    Порт: <TextBlock Text="{Binding Port}"/>
+                                                    Описание: <TextBlock Text="{Binding Description}"/>
+                                                </TextBlock>
+                                            </TextBlock.ToolTip>
+                                            <TextBlock Text="{Binding Name}"/>
+                                        </TextBlock>
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
@@ -160,7 +164,8 @@
                             </Button>
                         </ToolBar>
                         <ToolBar Band="1" Header="Отправитель">
-                            <ComboBox Name="ComboBoxSenders" Width="200" SelectedIndex="0" Height="30" VirtualizingStackPanel.IsVirtualizing="True"
+                            <ComboBox Name="ComboBoxSenders" Width="160" SelectedIndex="0" Height="30" 
+                                      VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling"
                                       ItemsSource="{Binding Senders}"
                                       SelectedItem="{Binding SelectedSender}">
                                 <ComboBox.ToolTip>
@@ -170,19 +175,22 @@
                                         Описание: <TextBlock Text="{Binding SelectedSender.Description}"/>
                                     </TextBlock>
                                 </ComboBox.ToolTip>
+                                <ComboBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <VirtualizingStackPanel/>
+                                    </ItemsPanelTemplate>
+                                </ComboBox.ItemsPanel>
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate DataType="m:Sender">
-                                        <VirtualizingStackPanel Orientation="Horizontal">
-                                            <TextBlock>
-                                                <TextBlock.ToolTip>
-                                                    <TextBlock>Описание: <TextBlock Text="{Binding Description}"/></TextBlock>
-                                                </TextBlock.ToolTip>
-                                                <TextBlock Text="{Binding Name}"/>
-                                                <TextBlock Opacity="0.5" Margin="5,0,0,0">
+                                        <TextBlock>
+                                            <TextBlock.ToolTip>
+                                                <TextBlock>
+                                                    Описание: <TextBlock Text="{Binding Description}"/>
                                                     (<TextBlock Text="{Binding Address}" FontSize="10"/>)
                                                 </TextBlock>
-                                            </TextBlock>
-                                        </VirtualizingStackPanel>
+                                            </TextBlock.ToolTip>
+                                            <TextBlock Text="{Binding Name}"/>
+                                        </TextBlock>
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
