@@ -6,7 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="JetBrains.DotMemoryUnit" Version="3.1.20200127.214830" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.1" />
     <PackageReference Include="MSTest.TestAdapter" Version="2.1.2" />
     <PackageReference Include="MSTest.TestFramework" Version="2.1.2" />
