@@ -43,24 +43,20 @@ namespace MailSender.lib.Services
         public byte[] Encrypt(byte[] data, string password)
         {
             var algorithm = getAlgorithmCryptoTransform(password);
-            using (var stream = new MemoryStream())
-            using (var cryproStream = new CryptoStream(stream, algorithm, CryptoStreamMode.Write))
-            {
-                cryproStream.Write(data, 0, data.Length);
-                cryproStream.FlushFinalBlock();
-                return stream.ToArray();
-            }
+            using var stream = new MemoryStream();
+            using var cryproStream = new CryptoStream(stream, algorithm, CryptoStreamMode.Write);
+            cryproStream.Write(data, 0, data.Length);
+            cryproStream.FlushFinalBlock();
+            return stream.ToArray();
         }
         public byte[] Decrypt(byte[] data, string password)
         {
             var algorithm = getInverseAlgorithmCryptoTransform(password);
-            using (var stream = new MemoryStream())
-            using (var cryproStream = new CryptoStream(stream, algorithm, CryptoStreamMode.Write))
-            {
-                cryproStream.Write(data, 0, data.Length);
-                cryproStream.FlushFinalBlock();
-                return stream.ToArray();
-            }
+            using var stream = new MemoryStream();
+            using var cryproStream = new CryptoStream(stream, algorithm, CryptoStreamMode.Write);
+            cryproStream.Write(data, 0, data.Length);
+            cryproStream.FlushFinalBlock();
+            return stream.ToArray();
         }
 
         private static ICryptoTransform getAlgorithmCryptoTransform(string password)
@@ -86,13 +82,13 @@ namespace MailSender.lib.Services
     public static class ExtendedRfc2898Encoder
     {
         /// <summary> Функция-расширение кодирование текста методом Цезаря </summary>
-        public static string Rfc2898Encode(this string Source, string password = "Geekbrains")
+        public static string Encrypt(this string Source, string password = "Geekbrains")
         {
             var encryptor = new Rfc2898Encryptor();
             return encryptor.Encrypt(Source, password);
         }
         /// <summary> Функция-расширение декодирование зашифрованного текста методом Цезаря </summary>
-        public static string Rfc2898Decode(this string Source, string password = "Geekbrains")
+        public static string Decrypt(this string Source, string password = "Geekbrains")
         {
             var encryptor = new Rfc2898Encryptor();
             return encryptor.Decrypt(Source, password);

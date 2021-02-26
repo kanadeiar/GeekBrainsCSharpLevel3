@@ -63,7 +63,7 @@ namespace MailSender.lib.Services
                             Description = $"Тестовый сервер {i}",
                             Login = $"Password{i}",
                             Name = $"Сервер-{i}",
-                            Password = $"Password-{i}".Rfc2898Encode(),
+                            Password = $"Password-{i}".Encrypt(),
                             Port = 25,
                             UseSsl = i % 2 != 0,
                         }).ToList(),
