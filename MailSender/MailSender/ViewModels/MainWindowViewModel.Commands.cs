@@ -239,10 +239,10 @@ namespace MailSender.ViewModels
                 server.Password);
             var scheduler = _SchedulerService.GetScheduler(client);
             var sender = SelectedSender;
-            var recipient = SelectedRecipient;
+            var recipients = ((IList) p).Cast<Recipient>().Select(l => l.Address).ToArray();
             var message = SelectedMessage;
             var date = SelectedDate;
-            scheduler.AddTaskSend(date, sender.Address, recipient.Address, message.Subject, message.Text);
+            scheduler.AddTaskSend(date, sender.Address, recipients, message.Subject, message.Text);
 
             var context = SynchronizationContext.Current;
             scheduler.EmailSended += (_, _) =>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Timers;
 using MailSender.lib.Interfaces;
@@ -18,7 +19,7 @@ namespace MailSender.lib.Models
         /// <summary> Адрес отправителя </summary>
         public string From { get; private set; }
         /// <summary> Адрес получателя </summary>
-        public string To { get; private set; }
+        public IEnumerable<string> Tos { get; private set; }
         /// <summary> Тема письма </summary>
         public string Subject { get; private set; }
         /// <summary> Текст письма </summary>
@@ -33,11 +34,11 @@ namespace MailSender.lib.Models
         /// <param name="to">получатель</param>
         /// <param name="subject">заголовок</param>
         /// <param name="text">сообщение</param>
-        public void AddTaskSend(DateTime DateTimeSend, string from, string to, string subject, string text)
+        public void AddTaskSend(DateTime DateTimeSend, string from, IEnumerable<string> tos, string subject, string text)
         {
             this.DateTimeSend = DateTimeSend;
             From = from;
-            To = to;
+            Tos = tos;
             Subject = subject;
             Text = text;
             _timer = new Timer(1000);
@@ -45,7 +46,7 @@ namespace MailSender.lib.Models
             {
                 if (DateTime.Now > this.DateTimeSend)
                 {
-                    _mailSender.Send(From, To, Subject, Text);
+                    _mailSender.Send(From, Tos, Subject, Text);
                     _timer.Stop();
                     EmailSended?.Invoke(null,null);
                     #if DEBUG

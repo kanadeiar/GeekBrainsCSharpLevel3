@@ -331,7 +331,8 @@
                                     </Style>
                                 </UniformGrid.Resources>
                                 <Button Name="ButtonSchedulerSend" ToolTip="Запланировать отправку письма"
-                                        Command="{Binding SchedulerSendMailMessageCommand}">
+                                        Command="{Binding SchedulerSendMailMessageCommand}"
+                                        CommandParameter="{Binding SelectedItems, ElementName=DataGridRecipients}">
                                     <StackPanel Orientation="Horizontal">
                                         <fa:FontAwesome Icon="Regular_Clock" Margin="5,0" Foreground="Blue"/>
                                         <TextBlock Text="Запланировать" VerticalAlignment="Center"/>
@@ -348,7 +349,7 @@
                             </UniformGrid>
                         </StackPanel>
                     </GroupBox>
-                    <GroupBox Grid.Column="1" Header="Задания">
+                    <GroupBox Grid.Column="1" Header="Задания на отправку писем по времени">
                         <ListBox Name="ListBoxScheduler" ItemsSource="{Binding SchedulerMailSenders}">
                             <ListBox.ItemContainerStyle>
                                 <Style TargetType="ListBoxItem">
@@ -365,12 +366,12 @@
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="Auto"/>
                                                 </Grid.ColumnDefinitions>
-                                                <Button Grid.Column="1" Content="X" Width="21" Padding="5,4" Foreground="Red" Background="Yellow" ToolTip="Удалить задание"
+                                                <Button Grid.Column="1" Content="X" Width="21" Padding="5,4" Foreground="Red" Background="Yellow" ToolTip="Удалить это задание"
                                                         Command="{Binding DataContext.SchedulerDeleteMessageCommand, ElementName=ListBoxScheduler}"
                                                         CommandParameter="{Binding}"/>
                                                 <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="0,0,50,0">
                                                     <TextBlock Text="Дата отправки: " VerticalAlignment="Center"/>
-                                                    <TextBlock Text="{Binding DateTimeSend, StringFormat=dd.mm.yyyy HH:mm}" VerticalAlignment="Center"/>
+                                                    <TextBlock Text="{Binding DateTimeSend, StringFormat=dd.MM.yyyy HH:mm}" VerticalAlignment="Center"/>
                                                 </StackPanel>
                                             </Grid>
                                         </GroupBox.Header>
@@ -388,10 +389,14 @@
                                             <TextBlock Grid.Column="0" Grid.Row="0" Text="Отправитель:"/>
                                             <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding From}"/>
                                             <TextBlock Grid.Column="0" Grid.Row="1" Text="Получатели:"/>
-                                            <ItemsControl Grid.Column="1" Grid.Row="1">
-                                                <TextBlock Text="{Binding To}"/>
+                                            <ItemsControl Grid.Column="1" Grid.Row="1" ItemsSource="{Binding Tos}">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding }"/>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
                                             </ItemsControl>
-                                            <TextBlock Grid.Column="0" Grid.Row="3" Text="Заголовок:"/>
+                                            <TextBlock Grid.Column="0" Grid.Row="3" Text="Заголовок сообщения:"/>
                                             <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Subject}"/>
                                         </Grid>
                                     </GroupBox>
