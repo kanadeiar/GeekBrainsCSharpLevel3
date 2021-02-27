@@ -265,56 +265,9 @@
                             </ListBox.ItemTemplate>
                         </ListBox>
                     </GroupBox>
-                    <DockPanel Grid.Column="1" DataContext="{Binding SelectedItem, ElementName=ListBoxMessages}">
-                        <DockPanel.Resources>
-                            <Style BasedOn="{StaticResource MaterialDesignTextBox}" TargetType="TextBox">
-                                <Setter Property="Validation.ErrorTemplate">
-                                    <Setter.Value>
-                                        <ControlTemplate>
-                                            <DockPanel ToolTip="{Binding AdornedElement.(Validation.Errors)[0].ErrorContent, ElementName=ErrorVisualElement}">
-                                                <TextBlock DockPanel.Dock="Right" Text="!" FontWeight="Black" Margin="-7,0,0,0" Foreground="Red" VerticalAlignment="Center"/>
-                                                <Border Padding="1" BorderBrush="#55FF0000" BorderThickness="10" CornerRadius="3">
-                                                    <AdornedElementPlaceholder Name="ErrorVisualElement"/>
-                                                </Border>
-                                            </DockPanel>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                                <Style.Triggers>
-                                    <Trigger Property="Validation.HasError" Value="True">
-                                        <Setter Property="Background" Value="Pink"/>
-                                        <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </DockPanel.Resources>
+                    <DockPanel Grid.Column="1">
                         <GroupBox DockPanel.Dock="Top" Header="Редактирование письма">
-                            <DockPanel>
-                                <TextBlock Text="Заголовок сообщения:" Margin="5" DockPanel.Dock="Top"/>
-                                <TextBox Margin="5" DockPanel.Dock="Top">
-                                    <TextBox.Text>
-                                        <Binding Path="Subject" UpdateSourceTrigger="PropertyChanged">
-                                            <Binding.ValidationRules>
-                                                <vr:RegexValidation Pattern="[А-Яа-яA-za-z\d]{1,30}" ErrorMessage="Неправильный формат заголовка сообщения"/>
-                                                <DataErrorValidationRule/>
-                                                <ExceptionValidationRule/>
-                                            </Binding.ValidationRules>
-                                        </Binding>
-                                    </TextBox.Text>
-                                </TextBox>
-                                <TextBlock Text="Текст сообщения:" Margin="5" DockPanel.Dock="Top"/>
-                                <TextBox Name="TextBoxMailMessage" AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap" Margin="5">
-                                    <TextBox.Text>
-                                        <Binding Path="Text" UpdateSourceTrigger="PropertyChanged">
-                                            <Binding.ValidationRules>
-                                                <vr:RegexValidation Pattern="[А-Яа-яA-za-z\d]{1,250}" ErrorMessage="Неправильный формат текста сообщения"/>
-                                                <DataErrorValidationRule/>
-                                                <ExceptionValidationRule/>
-                                            </Binding.ValidationRules>
-                                        </Binding>
-                                    </TextBox.Text>
-                                </TextBox>
-                            </DockPanel>
+                            <v:EditSelectLetterView/>
                         </GroupBox>
                     </DockPanel>
                 </Grid>
