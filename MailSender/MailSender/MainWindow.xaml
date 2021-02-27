@@ -119,7 +119,7 @@
                                                               EditItemCommand="{Binding EditServerCommand}"
                                                               DeleteItemCommand="{Binding DeleteServerCommand}"
                                                               ItemSource="{Binding Servers}"
-                                                              SelectedItem="{Binding SelectedServer}">
+                                                              SelectedItem="{Binding SelectedServer, Mode=TwoWay}">
                                 <controls:ItemsToolBarUserControl.ItemTemplate>
                                     <DataTemplate DataType="m:Server">
                                         <TextBlock>
@@ -143,7 +143,7 @@
                                                               EditItemCommand="{Binding EditSenderCommand}"
                                                               DeleteItemCommand="{Binding DeleteSenderCommand}"
                                                               ItemSource="{Binding Senders}"
-                                                              SelectedItem="{Binding SelectedSender}">
+                                                              SelectedItem="{Binding SelectedSender, Mode=TwoWay}">
                                 <controls:ItemsToolBarUserControl.ItemTemplate>
                                     <DataTemplate DataType="m:Sender">
                                         <TextBlock>
@@ -170,6 +170,7 @@
                     </ToolBarTray>
                     <GroupBox Grid.Row="1" Header="Получатели">
                         <Grid>
+
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="2*"/>
                                 <ColumnDefinition Width="*"/>
@@ -185,10 +186,20 @@
                                     <TextBox Grid.Column="1" ToolTip="Введите имя для поиска" MinWidth="400"
                                              Text="{Binding RecipientsFilter, UpdateSourceTrigger=PropertyChanged}"/>
                                 </Grid>
-                                <DataGrid Name="DataGridRecipients" Margin="10,5" AutoGenerateColumns="False" GridLinesVisibility="Vertical" AlternatingRowBackground="#FFFDFFDA"
-                                          VerticalGridLinesBrush="DarkGray" IsReadOnly="True" SelectionMode="Extended"
+                                <DataGrid Name="DataGridRecipients" Margin="10,5" AutoGenerateColumns="False" GridLinesVisibility="Vertical"
+                                          VerticalGridLinesBrush="DarkGray" IsReadOnly="True" SelectionMode="Extended" AlternatingRowBackground="BlanchedAlmond"
                                           ItemsSource="{Binding FilteredRecipients}"
                                           SelectedItem="{Binding SelectedRecipient}">
+                                    <DataGrid.RowStyle>
+                                        <Style TargetType="DataGridRow">
+                                            <Style.Triggers>
+                                                <Trigger Property="IsSelected" Value="True">
+                                                    <Setter Property="Foreground" Value="Green"/>
+                                                    <Setter Property="FontWeight" Value="Bold"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </DataGrid.RowStyle>
                                     <DataGrid.Columns>
                                         <DataGridTextColumn Header="ID" Binding="{Binding Id}" MinWidth="50"/>
                                         <DataGridTextColumn Header="Имя" Binding="{Binding Name}" MinWidth="100"/>
