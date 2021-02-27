@@ -28,6 +28,8 @@ namespace MailSender.lib.Models
             set => Set(ref _description, value);
         }
 
+        #region Валидация
+
         string IDataErrorInfo.Error => null;
         public string this[string propertyName]
         {
@@ -58,5 +60,7 @@ namespace MailSender.lib.Models
                 }
             }
         }
+
+        #endregion
     }
 }

@@ -288,7 +288,7 @@
                                         <Binding Path="SelectedRecipient.Address"
                                                  UpdateSourceTrigger="PropertyChanged">
                                             <Binding.ValidationRules>
-                                                <vr:RegexValidation Pattern="(\w+\.)*\w+@(\w+\.)+[A-Za-z]+" ErrorMessage="Неправильный формат адреса электронной почты"/>
+                                                <vr:RegexValidation Pattern="^(\w+\.)*\w+@(\w+\.)+[A-Za-z]+$" ErrorMessage="Неправильный формат адреса электронной почты"/>
                                                 <DataErrorValidationRule/>
                                                 <ExceptionValidationRule/>
                                             </Binding.ValidationRules>
@@ -415,6 +415,22 @@
 
             <TabItem Header="Письма" Name="TabItemLetter">
                 <Grid>
+                    <Grid.Resources>
+                        <Style BasedOn="{StaticResource MaterialDesignTextBox}" TargetType="TextBox">
+                            <Setter Property="Validation.ErrorTemplate">
+                                <Setter.Value>
+                                    <ControlTemplate>
+                                        <DockPanel ToolTip="{Binding AdornedElement.(Validation.Errors)[0].ErrorContent, ElementName=ErrorVisualElement}">
+                                            <TextBlock DockPanel.Dock="Right" Text="!" FontWeight="Black" Margin="-7,0,0,0" Foreground="Red" VerticalAlignment="Center"/>
+                                            <Border Padding="1" BorderBrush="#55FF0000" BorderThickness="10" CornerRadius="3">
+                                                <AdornedElementPlaceholder Name="ErrorVisualElement"/>
+                                            </Border>
+                                        </DockPanel>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Grid.Resources>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" MinWidth="150"/>
                         <ColumnDefinition/>
@@ -434,11 +450,30 @@
                     </GroupBox>
                     <DockPanel Grid.Column="1" DataContext="{Binding SelectedItem, ElementName=ListBoxMessages}">
                         <GroupBox DockPanel.Dock="Top" Header="Заголовок">
-                            <TextBox Text="{Binding Subject}"/>
+                            <TextBox>
+                                <TextBox.Text>
+                                    <Binding Path="Subject" UpdateSourceTrigger="PropertyChanged">
+                                        <Binding.ValidationRules>
+                                            <vr:RegexValidation Pattern="[А-Яа-яA-za-z\d]{1,30}" ErrorMessage="Неправильный формат заголовка сообщения"/>
+                                            <DataErrorValidationRule/>
+                                            <ExceptionValidationRule/>
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                            </TextBox>
                         </GroupBox>
                         <GroupBox Header="Текст письма">
-                            <TextBox Name="TextBoxMailMessage" AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap" 
-                                     Text="{Binding Text}"/>
+                            <TextBox Name="TextBoxMailMessage" AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap">
+                                <TextBox.Text>
+                                    <Binding Path="Text" UpdateSourceTrigger="PropertyChanged">
+                                        <Binding.ValidationRules>
+                                            <vr:RegexValidation Pattern="[А-Яа-яA-za-z\d]{1,200}" ErrorMessage="Неправильный формат текста сообщения"/>
+                                            <DataErrorValidationRule/>
+                                            <ExceptionValidationRule/>
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                            </TextBox>
                         </GroupBox>
                     </DockPanel>
                 </Grid>
