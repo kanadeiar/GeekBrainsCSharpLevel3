@@ -176,37 +176,7 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <DockPanel Grid.Column="0">
-                                <Grid DockPanel.Dock="Top" HorizontalAlignment="Center">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Text="Поиск по имени:" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                                    <TextBox Grid.Column="1" ToolTip="Введите имя для поиска" MinWidth="400"
-                                             Text="{Binding RecipientsFilter, UpdateSourceTrigger=PropertyChanged}"/>
-                                </Grid>
-                                <DataGrid Name="DataGridRecipients" Margin="10,5" AutoGenerateColumns="False" GridLinesVisibility="Vertical"
-                                          VerticalGridLinesBrush="DarkGray" IsReadOnly="True" SelectionMode="Extended" AlternatingRowBackground="BlanchedAlmond"
-                                          ItemsSource="{Binding FilteredRecipients}"
-                                          SelectedItem="{Binding SelectedRecipient}">
-                                    <DataGrid.RowStyle>
-                                        <Style TargetType="DataGridRow">
-                                            <Style.Triggers>
-                                                <Trigger Property="IsSelected" Value="True">
-                                                    <Setter Property="Foreground" Value="Green"/>
-                                                    <Setter Property="FontWeight" Value="Bold"/>
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </DataGrid.RowStyle>
-                                    <DataGrid.Columns>
-                                        <DataGridTextColumn Header="ID" Binding="{Binding Id}" MinWidth="50"/>
-                                        <DataGridTextColumn Header="Имя" Binding="{Binding Name}" MinWidth="100"/>
-                                        <DataGridTextColumn Header="Адрес" Binding="{Binding Address}" MinWidth="110"/>
-                                        <DataGridTextColumn Header="Описание" Binding="{Binding Description}" Width="*"/>
-                                    </DataGrid.Columns>
-                                </DataGrid>
+                                <v:RecipientsFilterView/>
                             </DockPanel>
                             <Grid Grid.Column="1">
                                 <v:RecipientEditorView/>
@@ -243,7 +213,7 @@
                                 </UniformGrid.Resources>
                                 <Button Name="ButtonSchedulerSend" ToolTip="Запланировать отправку письма"
                                         Command="{Binding SchedulerSendMailMessageCommand}"
-                                        CommandParameter="{Binding SelectedItems, ElementName=DataGridRecipients}">
+                                        CommandParameter="{Binding SelectedRecipients}">
                                     <StackPanel Orientation="Horizontal">
                                         <fa:FontAwesome Icon="Regular_Clock" Margin="5,0" Foreground="Blue"/>
                                         <TextBlock Text="Запланировать" VerticalAlignment="Center"/>
@@ -251,7 +221,7 @@
                                 </Button>
                                 <Button Name="ButtonSendNow" ToolTip="Отправить немедленно письмо"
                                         Command = "{Binding SendMessageCommand}"
-                                        CommandParameter="{Binding SelectedItems, ElementName=DataGridRecipients}">
+                                        CommandParameter="{Binding SelectedRecipients}">
                                     <StackPanel Orientation="Horizontal">
                                         <fa:FontAwesome Icon="Solid_Share" Margin="5,0" Foreground="PaleVioletRed"/>
                                         <TextBlock Text="Отправить сейчас" VerticalAlignment="Center" />
@@ -356,6 +326,16 @@
                         <ListBox Name="ListBoxMessages" SelectedIndex="0" MinWidth="160" SelectionMode="Single" VirtualizingStackPanel.IsVirtualizing="True"
                                  ItemsSource="{Binding Messages}" 
                                  SelectedItem="{Binding SelectedMessage}">
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="ListBoxItem" BasedOn="{StaticResource MaterialDesignListBoxItem}">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter Property="Foreground" Value="Green"/>
+                                            <Setter Property="FontWeight" Value="Bold"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <VirtualizingStackPanel>

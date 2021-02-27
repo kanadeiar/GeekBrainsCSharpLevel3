@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -96,6 +97,15 @@ namespace MailSender.ViewModels
         {
             get => _selectedRecipient;
             set => Set(ref _selectedRecipient, value);
+        }
+
+        private IList _SelectedRecipients;
+
+        /// <summary> Выбранные получатели </summary>
+        public IList SelectedRecipients
+        {
+            get => _SelectedRecipients;
+            set => Set(ref _SelectedRecipients, value);
         }
 
         private Message _selectedMessage;

@@ -1,0 +1,51 @@
+﻿<UserControl x:Class="MailSender.Views.RecipientsFilterView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MailSender.Views"
+             mc:Ignorable="d" 
+
+             DataContext="{Binding MainWindowViewModel, Source={StaticResource Locator}}"
+
+             d:DesignHeight="300" d:DesignWidth="600">
+    <DockPanel>
+        <DockPanel.Resources>
+            <Style TargetType="DataGrid" BasedOn="{StaticResource MaterialDesignDataGrid}">
+            </Style>
+        </DockPanel.Resources>
+        <Grid DockPanel.Dock="Top" HorizontalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Поиск по имени:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+            <TextBox Grid.Column="1" ToolTip="Введите имя для поиска" MinWidth="400"
+                     Text="{Binding RecipientsFilter, UpdateSourceTrigger=PropertyChanged}"/>
+        </Grid>
+        <DataGrid Name="DataGridRecipients" Margin="10,5" AutoGenerateColumns="False" GridLinesVisibility="Vertical"
+                  VerticalGridLinesBrush="DarkGray" IsReadOnly="True" SelectionMode="Extended" AlternatingRowBackground="BlanchedAlmond"
+                  ItemsSource="{Binding FilteredRecipients}"
+                  SelectedItem="{Binding SelectedRecipient}"
+                  SelectionChanged="DataGridRecipients_OnSelectionChanged">
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Foreground" Value="Green"/>
+                            <Setter Property="FontWeight" Value="Bold"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.RowStyle>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding Id}" MinWidth="50"/>
+                <DataGridTextColumn Header="Имя" Binding="{Binding Name}" MinWidth="100"/>
+                <DataGridTextColumn Header="Адрес" Binding="{Binding Address}" MinWidth="110"/>
+                <DataGridTextColumn Header="Описание" Binding="{Binding Description}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+            
+    </DockPanel>
+</UserControl>
