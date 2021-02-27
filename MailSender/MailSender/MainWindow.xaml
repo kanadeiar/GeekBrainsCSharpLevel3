@@ -169,10 +169,8 @@
                                 </StackPanel>
                             </Button>
                         </ToolBar>
-                        <ToolBar Band="1" BandIndex="1" Header="Получатели">
-                            <Button ToolTip="Добавить получателя" fa:Awesome.Content="Solid_Plus" Foreground="GreenYellow"/>
-                            <Button ToolTip="Редактировать получателя" fa:Awesome.Content="Solid_Edit" Foreground="Orange"/>
-                            <Button ToolTip="Удалить получателя" fa:Awesome.Content="Solid_Trash" Foreground="Red"/>
+                        <ToolBar Band="1">
+                            <controls:RecipientsToolBarUserControl Title="Получатели" HintAddElementRecipients="Добавить получателя" HintDeleteElementRecipients="Удалить получателя"/>
                         </ToolBar>
                     </ToolBarTray>
                     <GroupBox Grid.Row="1" Header="Получатели">
@@ -268,8 +266,8 @@
                                     </TextBox.Text>
                                 </TextBox>
                                 <UniformGrid Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Rows="1" HorizontalAlignment="Center">
-                                    <Button ToolTip="Сохранить изменения получателя" fa:Awesome.Content="Regular_Save" Foreground="Blue" Margin="5,0" Padding="40,0"/>
-                                    <Button ToolTip="Создать получателя" fa:Awesome.Content="Solid_Plus" Foreground="Green" Margin="5, 0" Padding="40,0"/>
+                                    <Button ToolTip="Сохранить изменения получателя" fa:Awesome.Content="Regular_Save" Foreground="Blue" Margin="5,0" Padding="40,0" Height="40"/>
+                                    <Button ToolTip="Создать получателя" fa:Awesome.Content="Solid_Plus" Foreground="Green" Margin="5, 0" Padding="40,0" Height="40"/>
                                 </UniformGrid>
                             </Grid>
                         </Grid>
