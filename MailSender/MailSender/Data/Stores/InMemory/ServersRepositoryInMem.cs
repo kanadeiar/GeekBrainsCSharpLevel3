@@ -8,7 +8,7 @@ namespace MailSender.Data.Stores.InMemory
     /// <summary> Репозиторий серверов </summary>
     class ServersRepositoryInMem : RepositoryInMem<Server>
     {
-        public ServersRepositoryInMem() : base(Enumerable.Range(1, 10_000).Select(i => new Server
+        public ServersRepositoryInMem() : base(Enumerable.Range(1, 100).Select(i => new Server
         {
             Id = i,
             Address = $"smtp.server{i}.com",

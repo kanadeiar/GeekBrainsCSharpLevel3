@@ -1,12 +1,15 @@
 ﻿using System.Linq;
+using System.Security.Cryptography;
 using System.Windows;
 using System.Windows.Controls;
+using MailSender.lib.Models;
 
 namespace MailSender.Windows
 {
     /// <summary> Логика взаимодействия для SernderEditWindow.xaml </summary>
     public partial class SenderEditWindow : Window
     {
+        public Sender Sender { get; set; }
         public SenderEditWindow()
         {
             InitializeComponent();
@@ -22,16 +25,20 @@ namespace MailSender.Windows
             var window = new SenderEditWindow
             {
                 Title = Title,
-                TextBoxName = { Text = Name},
-                TextBoxAddress = {Text = Address},
-                TextBoxDescription = {Text = Description},
+                Sender = new Sender
+                {
+                    Name = Name,
+                    Address = Address,
+                    Description = Description,
+                },
                 Owner = Application.Current.Windows.Cast<Window>()
                     .FirstOrDefault(win => win.IsActive),
             };
+            window.DockPanelEditSender.DataContext = window.Sender;
             if (window.ShowDialog() != true) return false;
-            Name = window.TextBoxName.Text;
-            Address = window.TextBoxAddress.Text;
-            Description = window.TextBoxDescription.Text;
+            Name = window.Sender.Name;
+            Address = window.Sender.Address;
+            Description = window.Sender.Description;
             return true;
         }
         /// <summary> Диалог в режиме создания отправителя </summary>

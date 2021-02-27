@@ -253,6 +253,12 @@
                                                 </ControlTemplate>
                                             </Setter.Value>
                                         </Setter>
+                                        <Style.Triggers>
+                                            <Trigger Property="Validation.HasError" Value="True">
+                                                <Setter Property="Background" Value="Pink"/>
+                                                <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                                            </Trigger>
+                                        </Style.Triggers>
                                     </Style>
                                 </Grid.Resources>
                                 <Grid.ColumnDefinitions>
@@ -429,6 +435,12 @@
                                     </ControlTemplate>
                                 </Setter.Value>
                             </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="Validation.HasError" Value="True">
+                                    <Setter Property="Background" Value="Pink"/>
+                                    <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                                </Trigger>
+                            </Style.Triggers>
                         </Style>
                     </Grid.Resources>
                     <Grid.ColumnDefinitions>
@@ -467,7 +479,7 @@
                                 <TextBox.Text>
                                     <Binding Path="Text" UpdateSourceTrigger="PropertyChanged">
                                         <Binding.ValidationRules>
-                                            <vr:RegexValidation Pattern="[А-Яа-яA-za-z\d]{1,200}" ErrorMessage="Неправильный формат текста сообщения"/>
+                                            <vr:RegexValidation Pattern="[А-Яа-яA-za-z\d]{1,250}" ErrorMessage="Неправильный формат текста сообщения"/>
                                             <DataErrorValidationRule/>
                                             <ExceptionValidationRule/>
                                         </Binding.ValidationRules>
