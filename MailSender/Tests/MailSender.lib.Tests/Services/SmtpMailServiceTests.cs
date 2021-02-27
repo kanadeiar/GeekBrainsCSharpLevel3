@@ -10,7 +10,7 @@ namespace MailSender.lib.Tests.Services
     {
         private SmtpMailService _MailService;
         [TestMethod]
-        public void GetSender_Stub_Test()
+        public void GetSender_Give_NotNull_Stub_Test()
         {
             var stub = Mock.Of<IStatistic>();
             _MailService = new SmtpMailService(stub);
@@ -24,6 +24,7 @@ namespace MailSender.lib.Tests.Services
 
             var actual = _MailService.GetSender(address, port, useSsl, login, password);
             
+            Assert.IsNotNull(actual);
             Assert.AreEqual(expected.ToString(), actual.ToString());
         }
     }

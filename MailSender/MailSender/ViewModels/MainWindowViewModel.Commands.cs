@@ -243,7 +243,7 @@ namespace MailSender.ViewModels
             var recipients = ((IList) p).Cast<Recipient>().Select(l => l.Address).ToArray();
             var message = SelectedMessage;
             var date = SelectedDate;
-            scheduler.AddTaskSend(date, sender.Address, recipients, message.Subject, message.Text);
+            scheduler.AddTask(date, sender.Address, recipients, message.Subject, message.Text);
 
             var context = SynchronizationContext.Current;
             scheduler.EmailSended += (_, _) =>

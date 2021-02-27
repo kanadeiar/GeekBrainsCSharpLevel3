@@ -34,7 +34,7 @@ namespace MailSender.lib.Models
         /// <param name="to">получатель</param>
         /// <param name="subject">заголовок</param>
         /// <param name="text">сообщение</param>
-        public void AddTaskSend(DateTime DateTimeSend, string from, IEnumerable<string> tos, string subject, string text)
+        public void AddTask(DateTime DateTimeSend, string from, IEnumerable<string> tos, string subject, string text)
         {
             this.DateTimeSend = DateTimeSend;
             From = from;
