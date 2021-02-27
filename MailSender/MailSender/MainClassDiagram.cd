@@ -1,4 +1,95 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="MailSender.ViewModels.MainWindowViewModel">
+    <Position X="3.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EUJjgIAFAoQyAMmMCQQaXDhRKFIoMECRAJEAwxSCGqU=</HashCode>
+      <FileName>ViewModels\MainWindowViewModel.Commands.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MailSender.ViewModels.StatisticViewModel">
+    <Position X="1.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAiAAAAAAAAAAAAAAAAAACQAAIAAAQAEAAAAAGAAAA=</HashCode>
+      <FileName>ViewModels\StatisticViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MailSender.ViewModels.ViewModelLocator">
+    <Position X="0.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAA=</HashCode>
+      <FileName>ViewModels\ViewModelLocator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MailSender.lib.Models.Server">
+    <Position X="7.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="MailSender.lib.Models.Sender">
+    <Position X="7.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="MailSender.lib.Models.SchedulerMailSender">
+    <Position X="10" Y="4.75" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MailSender.lib.Services.SchedulerMailService">
+    <Position X="12" Y="3.75" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MailSender.ViewModels.Base.ViewModel" Collapsed="true">
+    <Position X="5.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAIAAAAAAAgAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Base\ViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MailSender.Data.Stores.InMemory.Base.RepositoryInMem&lt;T&gt;">
+    <Position X="16" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAYAAAAAAAAAAAAAAAAABAAAABAAAAAAAgAAAgAAAIA=</HashCode>
+      <FileName>Data\Stores\InMemory\Base\RepositoryInMem.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MailSender.Data.Stores.InMemory.MessagesRepositoryInMem" Collapsed="true">
+    <Position X="15" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\Stores\InMemory\MessagesRepositoryInMem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MailSender.Data.Stores.InMemory.RecipientsRepositoryInMem" Collapsed="true">
+    <Position X="17.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\Stores\InMemory\RecipientsRepositoryInMem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MailSender.Data.Stores.InMemory.SendersRepositoryInMem" Collapsed="true">
+    <Position X="19.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\Stores\InMemory\SendersRepositoryInMem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MailSender.Data.Stores.InMemory.ServersRepositoryInMem" Collapsed="true">
+    <Position X="22" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\Stores\InMemory\ServersRepositoryInMem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="MailSender.lib.Interfaces.ISchedulerMailService" Collapsed="true">
+    <Position X="11.25" Y="1.25" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="MailSender.lib.Interfaces.IRepository&lt;T&gt;">
+    <Position X="13.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>
