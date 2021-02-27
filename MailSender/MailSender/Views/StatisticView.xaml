@@ -5,8 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MailSender.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="400" d:DesignWidth="500"
-             DataContext="{Binding StatisticViewModel, Source={StaticResource Locator}}">
+
+             DataContext="{Binding StatisticViewModel, Source={StaticResource Locator}}"
+             
+             d:DesignHeight="400" d:DesignWidth="500">
     <Grid Margin="10">
         <Grid.Resources>
             <Style TargetType="TextBlock">
