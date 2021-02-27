@@ -29,9 +29,6 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <DockPanel>
-
-        <!-- #region Главное меню -->
-
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Файл">
                 <MenuItem Header="Создать"/>
@@ -58,19 +55,9 @@
                           CommandParameter="Geekbrains. Приложение 'Рассыльщик электронной почты'. Выполнил: Рассахатский Андрей."/>
             </MenuItem>
         </Menu>
-
-        <!-- #endregion -->
-
-        <!-- #region Описание приложения -->
-
         <Grid DockPanel.Dock="Top" Background="{StaticResource PrimaryHueMidBrush}" Height="50">
             <TextBlock Text="{Binding Path=Description}" TextWrapping="WrapWithOverflow" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
         </Grid>
-
-        <!-- #endregion -->
-
-        <!-- #region Строка состояния -->
-
         <StatusBar DockPanel.Dock="Bottom">
             <StatusBarItem>
                 <TextBlock>
@@ -99,13 +86,7 @@
                 </ProgressBar>
             </StackPanel>
         </StatusBar>
-
-        <!-- #endregion -->
-
         <TabControl>
-
-            <!-- #region Списки -->
-
             <TabItem Header="Списки" MinHeight="30">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -185,11 +166,6 @@
                     </GroupBox>
                 </Grid>
             </TabItem>
-
-            <!-- #endregion -->
-
-            <!-- #region Планировщик -->
-
             <TabItem Header="Планировщик" Name="TabItemPlan">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -198,36 +174,7 @@
                     </Grid.ColumnDefinitions>
                     <GroupBox Grid.Column="0" Header="Управление">
                         <StackPanel>
-                            <TextBlock Text="Дата и время отправки " HorizontalAlignment="Center" Margin="5"/>
-                            <TextBlock Text="Дата" HorizontalAlignment="Center" Margin="5"/>
-                            <DatePicker SelectedDate="{Binding SelectedDate}" materialDesign:HintAssist.Hint="Выберите дату" Style="{StaticResource MaterialDesignFloatingHintDatePicker}" Language="ru-RU"/>
-                            <TextBlock Text="Время" HorizontalAlignment="Center" Margin="5"/>
-                            <materialDesign:TimePicker SelectedTime="{Binding SelectedDate}" materialDesign:HintAssist.Hint="Выберите время" Is24Hours="True"/>
-                            <UniformGrid Columns="1" Margin="5, 10">
-                                <UniformGrid.Resources>
-                                    <Style TargetType="Button">
-                                        <Setter Property="Margin" Value="1.5"/>
-                                        <Setter Property="Background" Value="Orange"/>
-                                        <Setter Property="Height" Value="40"/>
-                                    </Style>
-                                </UniformGrid.Resources>
-                                <Button Name="ButtonSchedulerSend" ToolTip="Запланировать отправку письма"
-                                        Command="{Binding SchedulerSendMailMessageCommand}"
-                                        CommandParameter="{Binding SelectedRecipients}">
-                                    <StackPanel Orientation="Horizontal">
-                                        <fa:FontAwesome Icon="Regular_Clock" Margin="5,0" Foreground="Blue"/>
-                                        <TextBlock Text="Запланировать" VerticalAlignment="Center"/>
-                                    </StackPanel>
-                                </Button>
-                                <Button Name="ButtonSendNow" ToolTip="Отправить немедленно письмо"
-                                        Command = "{Binding SendMessageCommand}"
-                                        CommandParameter="{Binding SelectedRecipients}">
-                                    <StackPanel Orientation="Horizontal">
-                                        <fa:FontAwesome Icon="Solid_Share" Margin="5,0" Foreground="PaleVioletRed"/>
-                                        <TextBlock Text="Отправить сейчас" VerticalAlignment="Center" />
-                                    </StackPanel>
-                                </Button>
-                            </UniformGrid>
+                            <v:PlanControlView/>
                         </StackPanel>
                     </GroupBox>
                     <GroupBox Grid.Column="1" Header="Задания на отправку писем по времени">
@@ -289,35 +236,8 @@
                     <GridSplitter Grid.Column="0" Width="3" VerticalAlignment="Stretch" HorizontalAlignment="Right" Background="Transparent"/>
                 </Grid>
             </TabItem>
-
-            <!-- #endregion -->
-
-            <!-- #region Письма -->
-
             <TabItem Header="Письма" Name="TabItemLetter">
                 <Grid>
-                    <Grid.Resources>
-                        <Style BasedOn="{StaticResource MaterialDesignTextBox}" TargetType="TextBox">
-                            <Setter Property="Validation.ErrorTemplate">
-                                <Setter.Value>
-                                    <ControlTemplate>
-                                        <DockPanel ToolTip="{Binding AdornedElement.(Validation.Errors)[0].ErrorContent, ElementName=ErrorVisualElement}">
-                                            <TextBlock DockPanel.Dock="Right" Text="!" FontWeight="Black" Margin="-7,0,0,0" Foreground="Red" VerticalAlignment="Center"/>
-                                            <Border Padding="1" BorderBrush="#55FF0000" BorderThickness="10" CornerRadius="3">
-                                                <AdornedElementPlaceholder Name="ErrorVisualElement"/>
-                                            </Border>
-                                        </DockPanel>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                            <Style.Triggers>
-                                <Trigger Property="Validation.HasError" Value="True">
-                                    <Setter Property="Background" Value="Pink"/>
-                                    <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Grid.Resources>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" MinWidth="150"/>
                         <ColumnDefinition/>
@@ -346,40 +266,59 @@
                         </ListBox>
                     </GroupBox>
                     <DockPanel Grid.Column="1" DataContext="{Binding SelectedItem, ElementName=ListBoxMessages}">
-                        <GroupBox DockPanel.Dock="Top" Header="Заголовок">
-                            <TextBox>
-                                <TextBox.Text>
-                                    <Binding Path="Subject" UpdateSourceTrigger="PropertyChanged">
-                                        <Binding.ValidationRules>
-                                            <vr:RegexValidation Pattern="[А-Яа-яA-za-z\d]{1,30}" ErrorMessage="Неправильный формат заголовка сообщения"/>
-                                            <DataErrorValidationRule/>
-                                            <ExceptionValidationRule/>
-                                        </Binding.ValidationRules>
-                                    </Binding>
-                                </TextBox.Text>
-                            </TextBox>
-                        </GroupBox>
-                        <GroupBox Header="Текст письма">
-                            <TextBox Name="TextBoxMailMessage" AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap">
-                                <TextBox.Text>
-                                    <Binding Path="Text" UpdateSourceTrigger="PropertyChanged">
-                                        <Binding.ValidationRules>
-                                            <vr:RegexValidation Pattern="[А-Яа-яA-za-z\d]{1,250}" ErrorMessage="Неправильный формат текста сообщения"/>
-                                            <DataErrorValidationRule/>
-                                            <ExceptionValidationRule/>
-                                        </Binding.ValidationRules>
-                                    </Binding>
-                                </TextBox.Text>
-                            </TextBox>
+                        <DockPanel.Resources>
+                            <Style BasedOn="{StaticResource MaterialDesignTextBox}" TargetType="TextBox">
+                                <Setter Property="Validation.ErrorTemplate">
+                                    <Setter.Value>
+                                        <ControlTemplate>
+                                            <DockPanel ToolTip="{Binding AdornedElement.(Validation.Errors)[0].ErrorContent, ElementName=ErrorVisualElement}">
+                                                <TextBlock DockPanel.Dock="Right" Text="!" FontWeight="Black" Margin="-7,0,0,0" Foreground="Red" VerticalAlignment="Center"/>
+                                                <Border Padding="1" BorderBrush="#55FF0000" BorderThickness="10" CornerRadius="3">
+                                                    <AdornedElementPlaceholder Name="ErrorVisualElement"/>
+                                                </Border>
+                                            </DockPanel>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Style.Triggers>
+                                    <Trigger Property="Validation.HasError" Value="True">
+                                        <Setter Property="Background" Value="Pink"/>
+                                        <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DockPanel.Resources>
+                        <GroupBox DockPanel.Dock="Top" Header="Редактирование письма">
+                            <DockPanel>
+                                <TextBlock Text="Заголовок сообщения:" Margin="5" DockPanel.Dock="Top"/>
+                                <TextBox Margin="5" DockPanel.Dock="Top">
+                                    <TextBox.Text>
+                                        <Binding Path="Subject" UpdateSourceTrigger="PropertyChanged">
+                                            <Binding.ValidationRules>
+                                                <vr:RegexValidation Pattern="[А-Яа-яA-za-z\d]{1,30}" ErrorMessage="Неправильный формат заголовка сообщения"/>
+                                                <DataErrorValidationRule/>
+                                                <ExceptionValidationRule/>
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </TextBox.Text>
+                                </TextBox>
+                                <TextBlock Text="Текст сообщения:" Margin="5" DockPanel.Dock="Top"/>
+                                <TextBox Name="TextBoxMailMessage" AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap" Margin="5">
+                                    <TextBox.Text>
+                                        <Binding Path="Text" UpdateSourceTrigger="PropertyChanged">
+                                            <Binding.ValidationRules>
+                                                <vr:RegexValidation Pattern="[А-Яа-яA-za-z\d]{1,250}" ErrorMessage="Неправильный формат текста сообщения"/>
+                                                <DataErrorValidationRule/>
+                                                <ExceptionValidationRule/>
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </TextBox.Text>
+                                </TextBox>
+                            </DockPanel>
                         </GroupBox>
                     </DockPanel>
                 </Grid>
             </TabItem>
-
-            <!-- #endregion -->
-
-            <!-- #region Статистика -->
-
             <TabItem Header="Статистика">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -392,8 +331,6 @@
                     <Image Grid.Column="1" Source="Resources/Media/proger.png" MaxHeight="800"/>
                 </Grid>
             </TabItem>
-
-            <!-- #endregion -->
         </TabControl>
     </DockPanel>
 </Window>
