@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Windows;
+using MailSender.Data.Stores.InMemory;
 using MailSender.lib.Interfaces;
+using MailSender.lib.Models;
 using MailSender.lib.Services;
 using MailSender.ViewModels;
 using Microsoft.Extensions.Configuration;
@@ -30,23 +32,33 @@ namespace MailSender
 
         private static void ConfigureServices(HostBuilderContext host, IServiceCollection services)
         {
-            services.AddSingleton<WpfMailSenderViewModel>();
+            services.AddSingleton<MainWindowViewModel>();
             services.AddSingleton<StatisticViewModel>();
 #if DEBUG
             services.AddTransient<IMailService, DebugMailService>();
 #else
             services.AddTransient<IMailService, SmtpMailService>();
 #endif
+            services.AddSingleton<IEncryptService, Rfc2898Encryptor>();
+
+            services.AddSingleton<IRepository<Server>, ServersRepositoryInMem>();
+            services.AddSingleton<IRepository<Sender>, SendersRepositoryInMem>();
+            services.AddSingleton<IRepository<Recipient>, RecipientsRepositoryInMem>();
+            services.AddSingleton<IRepository<Message>, MessagesRepositoryInMem>();
+
             services.AddSingleton<IStatistic, MemoryStatisticService>();
-#if DEBUG
-            var storage = new DebugDataStorage();
-#else
-            var storage = new XmlFileDataStorage("storage.xml");
-#endif
-            services.AddSingleton<IServerStorage>(storage);
-            services.AddSingleton<ISenderStorage>(storage);
-            services.AddSingleton<IRecipientStorage>(storage);
-            services.AddSingleton<IMessageStorage>(storage);
+
+            services.AddSingleton<ISchedulerMailService, SchedulerMailService>();
+
+//#if DEBUG
+//            var storage = new DebugDataStorage();
+//#else
+//            var storage = new XmlFileDataStorage("storage.xml");
+//#endif
+//            services.AddSingleton<IServerStorage>(storage);
+//            services.AddSingleton<ISenderStorage>(storage);
+//            services.AddSingleton<IRecipientStorage>(storage);
+//            services.AddSingleton<IMessageStorage>(storage);
 
 
         }

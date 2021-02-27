@@ -1,0 +1,289 @@
+﻿<Window x:Class="MailSender.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:fa="http://schemas.fontawesome.com/icons/"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:vm="clr-namespace:MailSender.ViewModels"
+        xmlns:v="clr-namespace:MailSender.Views"
+        xmlns:m="clr-namespace:MailSender.lib.Models;assembly=MailSender.lib"
+        xmlns:vr="clr-namespace:MailSender.Infrastructure.Validations"
+        xmlns:controls="clr-namespace:MailSender.Controls"
+        xmlns:local="clr-namespace:MailSender"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}" 
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
+
+        DataContext="{Binding MainWindowViewModel, Source={StaticResource Locator}}"
+
+        Title="{Binding Path=Title}" 
+        Topmost="{Binding IsChecked, ElementName=CheckBoxIsWindowTopMost}"
+        Height="700" Width="900" WindowStartupLocation="CenterScreen" Icon="/Avatar.ico" ResizeMode="CanResizeWithGrip">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadDataFileCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Файл">
+                <MenuItem Header="Создать"/>
+                <Separator/>
+                <MenuItem Header="Открыть"/>
+                <MenuItem Header="Сохранить"/>
+                <MenuItem Header="Сохранить как ..."/>
+                <Separator/>
+                <MenuItem Header="Выход" Command="{StaticResource CloseAppCommand}"/>
+            </MenuItem>
+            <MenuItem Header="Сервис">
+                <MenuItem Header="Загрузить данные" Command="{Binding LoadDataFileCommand}"/>
+                <MenuItem Header="Сохранить данные" Command="{Binding SaveDataFileCommand}"/>
+                <MenuItem Header="Настройка"/>
+                <MenuItem Header="Опции">
+                    <CheckBox Content="Всегда наверху" Name="CheckBoxIsWindowTopMost"/>
+                    <CheckBox Content="Включить показ текущего времени" IsChecked="{Binding TimerEnabled}"/>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="Справка">
+                <MenuItem Header="Помощь"/>
+                <Separator/>
+                <MenuItem Header="О программе" Command="{Binding ShowDialogCommand }" 
+                          CommandParameter="Geekbrains. Приложение 'Рассыльщик электронной почты'. Выполнил: Рассахатский Андрей."/>
+            </MenuItem>
+        </Menu>
+        <Grid DockPanel.Dock="Top" Background="{StaticResource PrimaryHueMidBrush}" Height="50">
+            <TextBlock Text="{Binding Path=Description}" TextWrapping="WrapWithOverflow" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+        </Grid>
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem>
+                <TextBlock>
+                    Статус приложения: <TextBlock Text="{Binding Status}"/>
+                </TextBlock>
+            </StatusBarItem>
+            <Separator/>
+            <StatusBarItem>
+                <TextBlock>
+                    Текущее время: <TextBlock Text="{Binding Path=CurrentTime, ConverterCulture=ru-RU, StringFormat=HH:mm:ss.ffff}"/>
+                </TextBlock>
+            </StatusBarItem>
+            <StackPanel>
+                <ProgressBar x:Name="ProgressBarTest" Width="100" HorizontalAlignment="Right" Height="14" Minimum="0" Maximum="100">
+                    <ProgressBar.Triggers>
+                        <EventTrigger RoutedEvent="TextBlock.Loaded">
+                            <EventTrigger.Actions>
+                                <BeginStoryboard>
+                                    <Storyboard TargetProperty="Value">
+                                        <DoubleAnimation From="0" To="100" Duration="0:0:10" RepeatBehavior="Forever"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger.Actions>
+                        </EventTrigger>
+                    </ProgressBar.Triggers>
+                </ProgressBar>
+            </StackPanel>
+        </StatusBar>
+        <TabControl>
+            <TabItem Header="Списки" MinHeight="30">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <ToolBarTray Grid.Row="0">
+                        <ToolBar Band="0">
+                            <controls:ItemsToolBarUserControl Title="Сервера" HintAddElement="Добавить сервер" HintEditElement="Редактировать сервер" HintDeleteElement="Удалить сервер"
+                                                              HintSelectedBox="Выберите сервер"
+                                                              AddNewItemCommand="{Binding CreateServerCommand}"
+                                                              EditItemCommand="{Binding EditServerCommand}"
+                                                              DeleteItemCommand="{Binding DeleteServerCommand}"
+                                                              ItemSource="{Binding Servers}"
+                                                              SelectedItem="{Binding SelectedServer, Mode=TwoWay}">
+                                <controls:ItemsToolBarUserControl.ItemTemplate>
+                                    <DataTemplate DataType="m:Server">
+                                        <TextBlock>
+                                            <TextBlock.ToolTip>
+                                                <TextBlock>
+                                                    Адрес: <TextBlock Text="{Binding Address}"/> 
+                                                    Порт: <TextBlock Text="{Binding Port}"/>
+                                                    Описание: <TextBlock Text="{Binding Description}"/>
+                                                </TextBlock>
+                                            </TextBlock.ToolTip>
+                                            <TextBlock Text="{Binding Name}"/>
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </controls:ItemsToolBarUserControl.ItemTemplate>
+                            </controls:ItemsToolBarUserControl>
+                        </ToolBar>
+                        <ToolBar Band="1" Height="45">
+                            <controls:ItemsToolBarUserControl Title="Отправители" HintAddElement="Добавить отправителя" HintEditElement="Редактировать отправителя" HintDeleteElement="Удалить отправителя"
+                                                              HintSelectedBox="Выберите отправителя"
+                                                              AddNewItemCommand="{Binding CreateSenderCommand}"
+                                                              EditItemCommand="{Binding EditSenderCommand}"
+                                                              DeleteItemCommand="{Binding DeleteSenderCommand}"
+                                                              ItemSource="{Binding Senders}"
+                                                              SelectedItem="{Binding SelectedSender, Mode=TwoWay}">
+                                <controls:ItemsToolBarUserControl.ItemTemplate>
+                                    <DataTemplate DataType="m:Sender">
+                                        <TextBlock>
+                                            <TextBlock.ToolTip>
+                                                <TextBlock>
+                                                    Описание: <TextBlock Text="{Binding Description}"/>
+                                                    (<TextBlock Text="{Binding Address}" FontSize="10"/>)
+                                                </TextBlock>
+                                            </TextBlock.ToolTip>
+                                            <TextBlock Text="{Binding Name}"/>
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </controls:ItemsToolBarUserControl.ItemTemplate>
+                            </controls:ItemsToolBarUserControl>
+                        </ToolBar>
+                        <ToolBar>
+                            <controls:ToPlanToolBarUserControl Title="Планировщик" HintButtonToPlanToolBar="Перейти к планированию"
+                                    GoToPlanFromToolBarCommand="{Binding ToTabItemCommand}"
+                                    GoToPlanFromToolBarCommandParameter="{Binding ElementName=TabItemPlan}"/>
+                        </ToolBar>
+                        <ToolBar Band="1">
+                            <controls:RecipientsToolBarUserControl Title="Получатели" HintAddElementRecipients="Добавить получателя" HintDeleteElementRecipients="Удалить получателя"/>
+                        </ToolBar>
+                    </ToolBarTray>
+                    <GroupBox Grid.Row="1" Header="Получатели">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <DockPanel Grid.Column="0">
+                                <v:RecipientsFilterView/>
+                            </DockPanel>
+                            <Grid Grid.Column="1">
+                                <v:RecipientEditorView/>
+                            </Grid>
+                        </Grid>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Планировщик" Name="TabItemPlan">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" MinWidth="180"/>
+                        <ColumnDefinition Width="*" MinWidth="50"/>
+                    </Grid.ColumnDefinitions>
+                    <GroupBox Grid.Column="0" Header="Управление">
+                        <StackPanel>
+                            <v:PlanControlView/>
+                        </StackPanel>
+                    </GroupBox>
+                    <GroupBox Grid.Column="1" Header="Задания на отправку писем по времени">
+                        <ListBox Name="ListBoxScheduler" ItemsSource="{Binding SchedulerMailSenders}">
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="ListBoxItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                <Border BorderBrush="SpringGreen" BorderThickness="1" Padding="5" CornerRadius="5">
+                                    <GroupBox>
+                                        <GroupBox.Header>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Button Grid.Column="1" Content="X" Width="21" Padding="5,4" Foreground="Red" Background="Yellow" ToolTip="Удалить это задание"
+                                                        Command="{Binding DataContext.SchedulerDeleteMessageCommand, ElementName=ListBoxScheduler}"
+                                                        CommandParameter="{Binding}"/>
+                                                <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="0,0,50,0">
+                                                    <TextBlock Text="Дата отправки: " VerticalAlignment="Center"/>
+                                                    <TextBlock Text="{Binding DateTimeSend, StringFormat=dd.MM.yyyy HH:mm}" VerticalAlignment="Center"/>
+                                                </StackPanel>
+                                            </Grid>
+                                        </GroupBox.Header>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="3*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
+                                            <TextBlock Grid.Column="0" Grid.Row="0" Text="Отправитель:"/>
+                                            <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding From}"/>
+                                            <TextBlock Grid.Column="0" Grid.Row="1" Text="Получатели:"/>
+                                            <ItemsControl Grid.Column="1" Grid.Row="1" ItemsSource="{Binding Tos}">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding }"/>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                            <TextBlock Grid.Column="0" Grid.Row="3" Text="Заголовок сообщения:"/>
+                                            <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Subject}"/>
+                                        </Grid>
+                                    </GroupBox>
+                                </Border>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </GroupBox>
+                    <GridSplitter Grid.Column="0" Width="3" VerticalAlignment="Stretch" HorizontalAlignment="Right" Background="Transparent"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Письма" Name="TabItemLetter">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" MinWidth="150"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <GroupBox Grid.Column="0" Grid.Row="0" Header="Письма">
+                        <ListBox Name="ListBoxMessages" SelectedIndex="0" MinWidth="160" SelectionMode="Single" VirtualizingStackPanel.IsVirtualizing="True"
+                                 ItemsSource="{Binding Messages}" 
+                                 SelectedItem="{Binding SelectedMessage}">
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="ListBoxItem" BasedOn="{StaticResource MaterialDesignListBoxItem}">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter Property="Foreground" Value="Green"/>
+                                            <Setter Property="FontWeight" Value="Bold"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <VirtualizingStackPanel>
+                                        <TextBlock Text="{Binding Subject}"/>
+                                    </VirtualizingStackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </GroupBox>
+                    <DockPanel Grid.Column="1">
+                        <GroupBox DockPanel.Dock="Top" Header="Редактирование письма">
+                            <v:EditSelectLetterView/>
+                        </GroupBox>
+                    </DockPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Статистика">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <GroupBox Header="Статистика:">
+                        <v:StatisticView/>
+                    </GroupBox>
+                    <Image Grid.Column="1" Source="Resources/Media/proger.png" MaxHeight="800"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+</Window>

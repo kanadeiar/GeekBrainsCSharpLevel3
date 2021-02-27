@@ -30,18 +30,18 @@ namespace MailSender.lib.Services
             _password = password;
             _statistic = statistic;
         }
-        public void Send(string from, string to, string subject, string message)
+        public void Send(string from, string to, string subject, string text)
         {
-            Debug.WriteLine($"Почтовый сервер {_address}:{_port} ssl:{(_useSsl?"да":"нет")} (Логин:{_login} Пароль:{_password.Decode(9)})");
-            Debug.WriteLine($"Отправка письма от {from} к {to} с заголовком: {subject} и тестом: {message}");
+            Debug.WriteLine($"Почтовый сервер {_address}:{_port} ssl:{(_useSsl?"да":"нет")} (Логин:{_login} Пароль:{_password.Decrypt()})");
+            Debug.WriteLine($"Отправка письма от {from} к {to} с заголовком: {subject} и тестом: {text}");
             _statistic.MailSended();
         }
-        public void Send(string @from, IEnumerable<string> tos, string subject, string message)
+        public void Send(string @from, IEnumerable<string> tos, string subject, string text)
         {
-            Debug.WriteLine($"Почтовый сервер {_address}:{_port} ssl:{(_useSsl?"да":"нет")} (Логин:{_login} Пароль:{_password.Decode(9)})");
+            Debug.WriteLine($"Почтовый сервер {_address}:{_port} ssl:{(_useSsl?"да":"нет")} (Логин:{_login} Пароль:{_password.Decrypt()})");
             foreach (var to in tos)
             {
-                Debug.WriteLine($"Отправка группового письма от {from} к {to} с заголовком: {subject} и тестом: {message}");
+                Debug.WriteLine($"Отправка группового письма от {from} к {to} с заголовком: {subject} и тестом: {text}");
                 _statistic.MailSended();
             }
         }

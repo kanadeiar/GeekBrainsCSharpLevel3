@@ -4,17 +4,61 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MailSender.Windows"
+        xmlns:validations="clr-namespace:MailSender.Infrastructure.Validations"
         mc:Ignorable="d"
-        Title="Редактировать отправителя" Height="360" Width="300" WindowStartupLocation="CenterOwner">
-    <DockPanel Margin="5">
+        Title="Редактировать отправителя" Height="360" Width="300" WindowStartupLocation="CenterOwner" ShowInTaskbar="False">
+    <DockPanel Margin="5" Name="DockPanelEditSender">
+        <DockPanel.Resources>
+            <Style BasedOn="{StaticResource MaterialDesignTextBox}" TargetType="TextBox">
+                <Setter Property="Validation.ErrorTemplate">
+                    <Setter.Value>
+                        <ControlTemplate>
+                            <DockPanel ToolTip="{Binding AdornedElement.(Validation.Errors)[0].ErrorContent, ElementName=ErrorVisualElement}">
+                                <TextBlock DockPanel.Dock="Right" Text="!" FontWeight="Black" Margin="-7,0,0,0" Foreground="Red" VerticalAlignment="Center"/>
+                                <Border Padding="1" BorderBrush="#55FF0000" BorderThickness="10" CornerRadius="3">
+                                    <AdornedElementPlaceholder Name="ErrorVisualElement"/>
+                                </Border>
+                            </DockPanel>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="Validation.HasError" Value="True">
+                        <Setter Property="Background" Value="Pink"/>
+                        <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </DockPanel.Resources>
         <GroupBox Header="Имя" DockPanel.Dock="Top">
-            <TextBox Name="TextBoxName" x:FieldModifier="private"/>
+            <TextBox Name="TextBoxName" x:FieldModifier="private">
+                <TextBox.Text>
+                    <Binding Path="Name" ValidatesOnDataErrors="True" UpdateSourceTrigger="PropertyChanged" >
+                        <Binding.ValidationRules>
+                            <validations:RegexValidation Pattern="^[А-Яа-яA-za-z\d]{1,30}$" ErrorMessage="Неправильный формат имени пользователя"/>
+                            <DataErrorValidationRule/>
+                            <ExceptionValidationRule/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
         </GroupBox>
         <GroupBox Header="Адрес" DockPanel.Dock="Top">
-            <TextBox Name="TextBoxAddress"/>
+            <TextBox Name="TextBoxAddress">
+                <TextBox.Text>
+                    <Binding Path="Address" ValidatesOnDataErrors="True" UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <validations:RegexValidation Pattern="^(\w+\.)*\w+@(\w+\.)+[A-Za-z]+$" ErrorMessage="Неправильный формат адреса электронной почты"/>
+                            <DataErrorValidationRule/>
+                            <ExceptionValidationRule/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
         </GroupBox>
         <GroupBox Header="Описание" DockPanel.Dock="Top">
-            <TextBox Name="TextBoxDescription"/>
+            <TextBox Name="TextBoxDescription"
+                     Text="{Binding Description, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"/>
         </GroupBox>
 
         <UniformGrid DockPanel.Dock="Bottom" Rows="1" 

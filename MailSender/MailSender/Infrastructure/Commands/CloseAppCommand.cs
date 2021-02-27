@@ -1,7 +1,7 @@
 ﻿using System.Windows;
-using WpfMailSender.lib.Commands.Base;
+using MailSender.Infrastructure.Commands.Base;
 
-namespace WpfMailSender.lib.Commands
+namespace MailSender.Infrastructure.Commands
 {
     public class CloseAppCommand : Command
     {

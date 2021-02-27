@@ -3,9 +3,11 @@ using System.Runtime.CompilerServices;
 
 namespace MailSender.lib.Models.Base
 {
-    /// <summary> Базовое определение модели </summary>
-    public abstract class Model : INotifyPropertyChanged
+    /// <summary> Базовое определение сущности </summary>
+    public abstract class Entity : INotifyPropertyChanged
     {
+        public int Id { get; set; }
+
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {

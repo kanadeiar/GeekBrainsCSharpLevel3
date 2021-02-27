@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
@@ -64,7 +63,7 @@ namespace MailSender.lib.Services
                             Description = $"Тестовый сервер {i}",
                             Login = $"Password{i}",
                             Name = $"Сервер-{i}",
-                            Password = $"Password-{i}".Encode(9),
+                            Password = $"Password-{i}".Encrypt(),
                             Port = 25,
                             UseSsl = i % 2 != 0,
                         }).ToList(),

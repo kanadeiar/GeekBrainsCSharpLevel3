@@ -1,204 +1,47 @@
-﻿
-using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
-using System.Timers;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using MailSender.Infrastructure.Commands;
 using MailSender.lib.Interfaces;
 using MailSender.lib.Models;
+using MailSender.lib.Models.Base;
+using MailSender.lib.Services;
 using MailSender.ViewModels.Base;
 using MailSender.Windows;
-using WpfMailSender.lib.Commands;
 
 namespace MailSender.ViewModels
 {
-    /// <summary> Вьюмодель главного окна приложения </summary>
-    class WpfMailSenderViewModel : ViewModel
+    partial class MainWindowViewModel : ViewModel
     {
-        private readonly IMailService _MailService;
-        private readonly IServerStorage _serverStorage;
-        private readonly ISenderStorage _senderStorage;
-        private readonly IRecipientStorage _recipientStorage;
-        private readonly IMessageStorage _messageStorage;
-        public WpfMailSenderViewModel(IMailService mailService, IServerStorage serverStorage, ISenderStorage senderStorage, 
-            IRecipientStorage recipientStorage, IMessageStorage messageStorage)
-        {
-            _MailService = mailService;
-            _serverStorage = serverStorage;
-            _senderStorage = senderStorage;
-            _recipientStorage = recipientStorage;
-            _messageStorage = messageStorage;
-            _timer = new Timer
-            {
-                Interval = 100,
-                AutoReset = true,
-                Enabled = true,
-            };
-            _timer.Elapsed += OnTimerElapsed;
-        }
-
-        #region Свойства
-
-        private string _title = "Geekbrains. Домашнее задание №3. MVVM.";
-        /// <summary> Заголовок главного окна </summary>
-        public string Title
-        {
-            get => _title;
-            set => Set(ref _title, value);
-        }
-        private string _description = "Geekbrains. Домашнее задание №3. Разработка WPF-приложений с использованием шаблона MVVM на примере MVVM Light Toolkit";
-        /// <summary> Описание приложения </summary>
-        public string Description
-        {
-            get => _description;
-            set => Set(ref _description, value);
-        }
-        private string _status = "Готов!";
-        /// <summary> Статус работы приложения </summary>
-        public string Status
-        {
-            get => _status;
-            set => Set(ref _status, value);
-        }
-
-        private ObservableCollection<Server> _servers;
-        /// <summary> Почтовые сервера с которых отправляется почта </summary>
-        public ObservableCollection<Server> Servers
-        {
-            get => _servers;
-            set => Set(ref _servers, value);
-        }
-        private Server _selectedServer;
-        /// <summary> Выбранный сервер </summary>
-        public Server SelectedServer
-        {
-            get => _selectedServer;
-            set => Set(ref _selectedServer, value);
-        }
-
-        private ObservableCollection<Sender> _senders;
-        /// <summary> Отправители в почтовом сообщении </summary>
-        public ObservableCollection<Sender> Senders
-        {
-            get => _senders;
-            set => Set(ref _senders, value);
-        }
-        private Sender _selectedSender;
-        /// <summary> Выбранный отправитель </summary>
-        public Sender SelectedSender
-        {
-            get => _selectedSender;
-            set => Set(ref _selectedSender, value);
-        }
-
-        
-
-        private ObservableCollection<Recipient> _recipients;
-        /// <summary> Получатели почтового сообщения </summary>
-        public ObservableCollection<Recipient> Recipients
-        {
-            get => _recipients;
-            set => Set(ref _recipients, value);
-        }
-        private Recipient _selectedRecipient;
-        /// <summary> Выбранный получатель </summary>
-        public Recipient SelectedRecipient
-        {
-            get => _selectedRecipient;
-            set => Set(ref _selectedRecipient, value);
-        }
-
-        private ObservableCollection<Message> _messages;
-        /// <summary> Сообщения электронной почты </summary>
-        public ObservableCollection<Message> Messages
-        {
-            get => _messages;
-            set => Set(ref _messages, value);
-        }
-        private Message _selectedMessage;
-        /// <summary> Выбранное сообщение </summary>
-        public Message SelectedMessage
-        {
-            get => _selectedMessage;
-            set => Set(ref _selectedMessage, value);
-        }
-
-        #region Фильтр получателей сообщений
-
-        private string _recipientsFilter;
-        /// <summary> Фильтр получателей сообщений </summary>
-        public string RecipientsFilter
-        {
-            get => _recipientsFilter;
-            set
-            {
-                Set(ref _recipientsFilter, value);
-                OnPropertyChanged(nameof(FilteredRecipients));
-            }
-        }
-        /// <summary> Отфильтрованные получатели сообщений </summary>
-        public ICollection<Recipient> FilteredRecipients
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(RecipientsFilter))
-                    return Recipients;
-                return Recipients.Where(r => r.Name.ToLower().Contains(RecipientsFilter.ToLower()))
-                    .ToList();
-            }
-        }
-
-        #endregion
-
-        #region Текущее время
-
-        private bool _timerEnabled = true;
-        public bool TimerEnabled
-        {
-            get => _timerEnabled;
-            set
-            {
-                if (!Set(ref _timerEnabled, value)) return;
-                _timer.Enabled = value;
-            }
-        }
-        private readonly Timer _timer;
-        public DateTime CurrentTime => DateTime.Now;
-        private void OnTimerElapsed(object sender, ElapsedEventArgs e)
-        {
-            OnPropertyChanged(nameof(CurrentTime));
-        }
-
-        #endregion        
-
-        #endregion
-
         #region Команды
 
         #region Команды работы с данными
 
         private ICommand _loadDataFileCommand;
+
         /// <summary> Команда загрузки данных </summary>
         public ICommand LoadDataFileCommand => _loadDataFileCommand ??= new LambdaCommand(OnLoadDataFileCommandExecute);
+
         private void OnLoadDataFileCommandExecute(object p)
         {
-            _serverStorage.Load();
-            Servers = new ObservableCollection<Server>(_serverStorage.Items);
-            Senders = new ObservableCollection<Sender>(_senderStorage.Items);
-            Recipients = new ObservableCollection<Recipient>(_recipientStorage.Items);
-            Messages = new ObservableCollection<Message>(_messageStorage.Items);
+            LoadData();
             OnPropertyChanged(nameof(FilteredRecipients));
         }
+
         private ICommand _saveDataFileCommand;
+
         /// <summary> Команда сохранения данных </summary>
         public ICommand SaveDataFileCommand => _saveDataFileCommand ??= new LambdaCommand(OnSaveDataFIleCommandExecute);
+
         private void OnSaveDataFIleCommandExecute(object p)
         {
-            _serverStorage.SaveChanges();
+            SaveData();
         }
 
         #endregion
@@ -235,7 +78,6 @@ namespace MailSender.ViewModels
                 Login = login,
                 Password = password,
             };
-            _serverStorage.Items.Add(server);
             Servers.Add(server);
         }
         private ICommand _editServerCommand;
@@ -253,7 +95,7 @@ namespace MailSender.ViewModels
             var ssl = server.UseSsl;
             var description = server.Description;
             var login = server.Login;
-            var password = server.Password;
+            var password = server.Password.Decrypt();
             if (!ServerEditWindow.ShowDialog("Редактирование почтового сервера",
                 ref name,
                 ref address,
@@ -269,7 +111,7 @@ namespace MailSender.ViewModels
             server.UseSsl = ssl;
             server.Description = description;
             server.Login = login;
-            server.Password = password;
+            server.Password = password.Encrypt();
         }
         private ICommand _deleteServerCommand;
         /// <summary> Команда удаления сервера </summary>
@@ -280,7 +122,6 @@ namespace MailSender.ViewModels
         {
             if (!(p is Server server))
                 return;
-            _serverStorage.Items.Remove(server);
             Servers.Remove(server);
         }
         private ICommand _createSenderCommand;
@@ -290,7 +131,7 @@ namespace MailSender.ViewModels
         private void OnCreateSenderCommandExecute(object p)
         {
             if (!SenderEditWindow.Create(
-                out var name, 
+                out var name,
                 out var address,
                 out var description))
                 return;
@@ -306,7 +147,6 @@ namespace MailSender.ViewModels
                 Address = address,
                 Description = description,
             };
-            _senderStorage.Items.Add(sender);
             Senders.Add(sender);
         }
         private ICommand _editSenderCommand;
@@ -339,31 +179,37 @@ namespace MailSender.ViewModels
         {
             if (!(p is Sender sender))
                 return;
-            _senderStorage.Items.Remove(sender);
             Senders.Remove(sender);
         }
 
         #endregion
 
+        #region Команды работы с сервисом отправки сообщений
+
         private ICommand _sendMessageCommand;
+
         /// <summary> Команда отправки сообщения </summary>
         public ICommand SendMessageCommand => _sendMessageCommand ??=
             new LambdaCommand(OnSendMessageCommandExecute, CanSendMessageCommandExecute);
+
         private bool CanSendMessageCommandExecute(object p)
         {
             return SelectedServer != null && SelectedSender != null && SelectedRecipient != null &&
                    SelectedMessage != null;
         }
+
         private void OnSendMessageCommandExecute(object p)
         {
             if (string.IsNullOrEmpty(SelectedMessage.Text))
             {
                 return;
             }
+
             if (string.IsNullOrEmpty(SelectedMessage.Subject))
             {
                 return;
             }
+
             var server = SelectedServer;
             var client = _MailService.GetSender(server.Address, server.Port, server.UseSsl, server.Login,
                 server.Password);
@@ -377,11 +223,61 @@ namespace MailSender.ViewModels
                 client.Send(sender.Address, recipients, message.Subject, message.Text);
         }
 
+        private ICommand _schedulerSendMailMessageCommand;
+        /// <summary> Команда добавления задания на отправку сообщения </summary>
+        public ICommand SchedulerSendMailMessageCommand => _schedulerSendMailMessageCommand ??=
+            new LambdaCommand(OnSchedulerSendMessageCommandExecute, CanSchedulerSendMessageCommandExecute);
+        private bool CanSchedulerSendMessageCommandExecute(object p)
+        {
+            return SelectedDate != null && SelectedServer != null && SelectedSender != null && 
+                   SelectedRecipient != null && SelectedMessage != null;
+        }
+
+        private void OnSchedulerSendMessageCommandExecute(object p)
+        {
+            var server = SelectedServer;
+            var client = _MailService.GetSender(server.Address, server.Port, server.UseSsl, server.Login,
+                server.Password);
+            var scheduler = _SchedulerService.GetScheduler(client);
+            var sender = SelectedSender;
+            var recipients = ((IList) p).Cast<Recipient>().Select(l => l.Address).ToArray();
+            var message = SelectedMessage;
+            var date = SelectedDate;
+            scheduler.AddTask(date, sender.Address, recipients, message.Subject, message.Text);
+
+            var context = SynchronizationContext.Current;
+            scheduler.EmailSended += (_, _) =>
+            {
+                context.Send(x => SchedulerMailSenders.Remove((SchedulerMailSender) scheduler), null);
+            };
+            SchedulerMailSenders.Add((SchedulerMailSender)scheduler);
+        }
+
+        private ICommand _SchedulerDeleteMessageCommand;
+
+        /// <summary> Команда удаления задания на отправку сообщения </summary>
+        public ICommand SchedulerDeleteMessageCommand => _SchedulerDeleteMessageCommand ??=
+            new LambdaCommand(OnSchedulerDeleteMessageCommandExecuted, CanSchedulerDeleteMessageCommandExecute);
+
+        private bool CanSchedulerDeleteMessageCommandExecute(object p) => true;
+
+        private void OnSchedulerDeleteMessageCommandExecuted(object p)
+        {
+            if (!(p is SchedulerMailSender scheduler))
+                return;
+            scheduler.Stop();
+            SchedulerMailSenders.Remove(scheduler);
+        }
+
+        #endregion
+
         #region Вспомогательные команды
 
         private ICommand _showDialogCommand;
+
         /// <summary> Команда показа простого диалогового окна приложения </summary>
         public ICommand ShowDialogCommand => _showDialogCommand ??= new LambdaCommand(OnShowDialogCommandExecute);
+
         private void OnShowDialogCommandExecute(object p)
         {
             var message = p as string ?? "Привет, Мир!";
@@ -389,10 +285,13 @@ namespace MailSender.ViewModels
         }
 
         private ICommand _toTabItemCommand;
+
         /// <summary> Команда перехода на закладку главного окна приложения </summary>
-        public ICommand ToTabItemCommand => _toTabItemCommand ??= new LambdaCommand(OnToTabItemCommandExecute, CanToTabItemCommandExecute);
+        public ICommand ToTabItemCommand => _toTabItemCommand ??=
+            new LambdaCommand(OnToTabItemCommandExecute, CanToTabItemCommandExecute);
 
         private bool CanToTabItemCommandExecute(object p) => p is TabItem;
+
         private void OnToTabItemCommandExecute(object p)
         {
             if (!(p is TabItem tabItem)) return;
@@ -402,5 +301,30 @@ namespace MailSender.ViewModels
         #endregion
 
         #endregion
+
+        #region Вспомогательные методы
+
+        private static void Load<T>(ObservableCollection<T> collection, IRepository<T> repository) where T : Entity
+        {
+            collection.Clear();
+            foreach (var item in repository.GetAll())
+                collection.Add(item);
+        }
+
+        private void LoadData()
+        {
+            Load(Servers, _Servers);
+            Load(Senders, _Senders);
+            Load(Recipients, _Recipients);
+            Load(Messages, _Messages);
+        }
+
+        private void SaveData()
+        {
+            //TODO сохранение данных нужно сделать!
+        }
+
+        #endregion
     }
+
 }

@@ -8,13 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Controls\**" />
-    <EmbeddedResource Remove="Controls\**" />
-    <None Remove="Controls\**" />
-    <Page Remove="Controls\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="Avatar.ico" />
     <None Remove="Resources\proger.png" />
   </ItemGroup>
@@ -29,7 +22,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MailSender.lib\MailSender.lib.csproj" />
-    <ProjectReference Include="..\WpfMailSender.lib\WpfMailSender.lib.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -41,6 +33,10 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Data\Stores\InDB\" />
   </ItemGroup>
 
 </Project>

@@ -36,17 +36,17 @@ namespace MailSender.lib.Services
         /// <param name="To">получатель</param>
         /// <param name="Subject">заголовок</param>
         /// <param name="Message">сообщение</param>
-        public void Send(string from, string to, string subject, string message)
+        public void Send(string from, string to, string subject, string text)
         {
             var tMessage = new MailMessage(from, to)
             {
                 Subject = subject,
-                Body = message,
+                Body = text,
             };
             var client = new SmtpClient(_address, _port)
             {
                 EnableSsl = _useSsl,
-                Credentials = new NetworkCredential(_login, _password.Decode(9)),
+                Credentials = new NetworkCredential(_login, _password.Decrypt()),
             };
             try
             {
@@ -63,12 +63,12 @@ namespace MailSender.lib.Services
         /// <param name="from">отправитель</param>
         /// <param name="tos">получатели</param>
         /// <param name="subject">заголовок</param>
-        /// <param name="message">сообщение</param>
-        public void Send(string from, IEnumerable<string> tos, string subject, string message)
+        /// <param name="text">сообщение</param>
+        public void Send(string from, IEnumerable<string> tos, string subject, string text)
         {
             foreach (var to in tos)
             {
-                Send(from, to, subject, message);
+                Send(from, to, subject, text);
                 _statistic.MailSended();
             }
         }

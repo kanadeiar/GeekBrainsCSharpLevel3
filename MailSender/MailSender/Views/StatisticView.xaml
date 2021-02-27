@@ -5,8 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MailSender.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="400" d:DesignWidth="500"
-             DataContext="{Binding StatisticViewModel, Source={StaticResource Locator}}">
+
+             DataContext="{Binding StatisticViewModel, Source={StaticResource Locator}}"
+             
+             d:DesignHeight="400" d:DesignWidth="500">
     <Grid Margin="10">
         <Grid.Resources>
             <Style TargetType="TextBlock">
@@ -33,13 +35,13 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <TextBlock Grid.Column ="0" Grid.Row="0" Text="Отправлено писем:"/>
-        <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding SendedMailsCount}"/>
+        <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding SendedMailsCount, StringFormat={}{0} шт.}"/>
         <TextBlock Grid.Column="0" Grid.Row="1" Text="Всего отправителей:"/>
-        <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding SendersCount}"/>
+        <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding SendersCount, StringFormat={}{0} шт.}"/>
         <TextBlock Grid.Column="0" Grid.Row="2" Text="Всего получателей:"/>
-        <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding RecipientsCount}"/>
+        <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding RecipientsCount, StringFormat={}{0} шт.}"/>
         <TextBlock Grid.Column="0" Grid.Row="3" Text="Время сеанса:"/>
-        <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding UpTime}"/>
+        <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding UpTime, StringFormat={}{0:hh\\:mm\\:ss} сек.}"/>
         <Button Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" MaxWidth="180" Content="Обновить статистику" Margin="5"
                 Command="{Binding UpdateStatisticCommand}"/>
     </Grid>
