@@ -19,7 +19,7 @@ namespace MailSender.ViewModels
         private readonly IRepository<Sender> _Senders;
         private readonly IRepository<Recipient> _Recipients;
         private readonly IRepository<Message> _Messages;
-
+        
         #region Свойства
 
         #region Вспомогательные свойства

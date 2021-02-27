@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:MailSender.Windows"
         xmlns:validations="clr-namespace:MailSender.Infrastructure.Validations"
         mc:Ignorable="d"
-        Title="Редактировать отправителя" Height="360" Width="300" WindowStartupLocation="CenterOwner">
+        Title="Редактировать отправителя" Height="360" Width="300" WindowStartupLocation="CenterOwner" ShowInTaskbar="False">
     <DockPanel Margin="5" Name="DockPanelEditSender">
         <DockPanel.Resources>
             <Style BasedOn="{StaticResource MaterialDesignTextBox}" TargetType="TextBox">

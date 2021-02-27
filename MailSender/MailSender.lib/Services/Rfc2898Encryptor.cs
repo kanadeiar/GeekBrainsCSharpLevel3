@@ -81,13 +81,13 @@ namespace MailSender.lib.Services
     /// <summary> Функции-расширения для строк </summary>
     public static class ExtendedRfc2898Encoder
     {
-        /// <summary> Функция-расширение кодирование текста методом Цезаря </summary>
+        /// <summary> Функция-расширение шифрование текста  </summary>
         public static string Encrypt(this string Source, string password = "Geekbrains")
         {
             var encryptor = new Rfc2898Encryptor();
             return encryptor.Encrypt(Source, password);
         }
-        /// <summary> Функция-расширение декодирование зашифрованного текста методом Цезаря </summary>
+        /// <summary> Функция-расширение дешифрование текста </summary>
         public static string Decrypt(this string Source, string password = "Geekbrains")
         {
             var encryptor = new Rfc2898Encryptor();

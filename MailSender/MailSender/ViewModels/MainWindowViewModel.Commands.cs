@@ -11,6 +11,7 @@ using MailSender.Infrastructure.Commands;
 using MailSender.lib.Interfaces;
 using MailSender.lib.Models;
 using MailSender.lib.Models.Base;
+using MailSender.lib.Services;
 using MailSender.ViewModels.Base;
 using MailSender.Windows;
 
@@ -94,7 +95,7 @@ namespace MailSender.ViewModels
             var ssl = server.UseSsl;
             var description = server.Description;
             var login = server.Login;
-            var password = server.Password;
+            var password = server.Password.Decrypt();
             if (!ServerEditWindow.ShowDialog("Редактирование почтового сервера",
                 ref name,
                 ref address,
@@ -110,7 +111,7 @@ namespace MailSender.ViewModels
             server.UseSsl = ssl;
             server.Description = description;
             server.Login = login;
-            server.Password = password;
+            server.Password = password.Encrypt();
         }
         private ICommand _deleteServerCommand;
         /// <summary> Команда удаления сервера </summary>

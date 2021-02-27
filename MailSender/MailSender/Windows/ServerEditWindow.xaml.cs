@@ -1,7 +1,9 @@
 ﻿using System.Linq;
+using System.Security.Cryptography;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using MailSender.lib.Models;
 
 namespace MailSender.Windows
 {
@@ -10,6 +12,7 @@ namespace MailSender.Windows
     /// </summary>
     public partial class ServerEditWindow : Window
     {
+        public Server Server { get; set; }
         public ServerEditWindow()
         {
             InitializeComponent();
@@ -30,24 +33,28 @@ namespace MailSender.Windows
             var window = new ServerEditWindow
             {
                 Title = Title,
-                TextBoxServerName = {Text = Name},
-                TextBoxServerAddress = {Text = Address},
-                TextBoxServerPort = {Text = Port.ToString()},
-                CheckBoxServerSsl = {IsChecked = UseSsl},
-                TextBoxLogin = {Text = Login},
-                PasswordBoxPassword = {Password = Password},
-                TextBoxDescription = {Text = Description},
+                Server = new Server
+                {
+                    Name = Name,
+                    Address = Address,
+                    Port = Port,
+                    UseSsl = UseSsl,
+                    Description = Description,
+                    Login = Login,
+                    Password = Password,
+                },
                 Owner = Application.Current.Windows.Cast<Window>()
                     .FirstOrDefault(win => win.IsActive),
             };
+            window.DockPanelServerEdit.DataContext = window.Server;
             if (window.ShowDialog() != true) return false;
-            Name = window.TextBoxServerName.Text;
-            Address = window.TextBoxServerAddress.Text;
-            Port = int.Parse(window.TextBoxServerPort.Text);
-            UseSsl = window.CheckBoxServerSsl.IsChecked == true;
-            Login = window.TextBoxLogin.Text;
-            Password = window.PasswordBoxPassword.Password;
-            Description = window.TextBoxDescription.Text;
+            Name = window.Server.Name;
+            Address = window.Server.Address;
+            Port = window.Server.Port;
+            UseSsl = window.Server.UseSsl;
+            Description = window.Server.Description;
+            Login = window.Server.Login;
+            Password = window.Server.Password;
             return true;
         }
         /// <summary> Диалог в режиме создания сервера </summary>
@@ -77,12 +84,6 @@ namespace MailSender.Windows
         {
             DialogResult = !((Button) e.OriginalSource).IsCancel;
             Close();
-        }
-        /// <summary> Перед вводом текста в окно для ввода цифры </summary>
-        private void TextBoxServerPort_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            if (!(sender is TextBox textBox) || string.IsNullOrEmpty(textBox.Text)) return;
-            e.Handled = !int.TryParse(textBox.Text, out _);
         }
     }
 }

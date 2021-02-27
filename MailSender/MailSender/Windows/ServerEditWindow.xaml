@@ -4,35 +4,113 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MailSender.Windows"
+        xmlns:validations="clr-namespace:MailSender.Infrastructure.Validations"
         mc:Ignorable="d"
-        Title="Редактировать почтовый сервер" Height="460" Width="300" WindowStartupLocation="CenterOwner">
-    <DockPanel Margin="5">
+        Title="Редактировать почтовый сервер" Height="460" Width="300" WindowStartupLocation="CenterOwner" ShowInTaskbar="False">
+    <DockPanel Margin="5" Name="DockPanelServerEdit">
+        <DockPanel.Resources>
+            <Style BasedOn="{StaticResource MaterialDesignTextBox}" TargetType="TextBox">
+                <Setter Property="Validation.ErrorTemplate">
+                    <Setter.Value>
+                        <ControlTemplate>
+                            <DockPanel ToolTip="{Binding AdornedElement.(Validation.Errors)[0].ErrorContent, ElementName=ErrorVisualElement}">
+                                <TextBlock DockPanel.Dock="Right" Text="!" FontWeight="Black" Margin="-7,0,0,0" Foreground="Red" VerticalAlignment="Center"/>
+                                <Border Padding="1" BorderBrush="#55FF0000" BorderThickness="10" CornerRadius="3">
+                                    <AdornedElementPlaceholder Name="ErrorVisualElement"/>
+                                </Border>
+                            </DockPanel>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="Validation.HasError" Value="True">
+                        <Setter Property="Background" Value="Pink"/>
+                        <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </DockPanel.Resources>
         <GroupBox Header="Имя сервера" DockPanel.Dock="Top">
-            <TextBox Name="TextBoxServerName" x:FieldModifier="private"/>
+            <TextBox Name="TextBoxServerName" x:FieldModifier="private">
+                <TextBox.Text>
+                    <Binding Path="Name" ValidatesOnDataErrors="True" UpdateSourceTrigger="PropertyChanged" >
+                        <Binding.ValidationRules>
+                            <DataErrorValidationRule/>
+                            <ExceptionValidationRule/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
         </GroupBox>
         <Border DockPanel.Dock="Top">
             <DockPanel>
                 <GroupBox Header="Использование SSL" DockPanel.Dock="Right">
-                    <CheckBox Name="CheckBoxServerSsl" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <CheckBox Name="CheckBoxServerSsl" HorizontalAlignment="Center" VerticalAlignment="Center"
+                              IsChecked="{Binding UseSsl, UpdateSourceTrigger=PropertyChanged}"/>
                 </GroupBox>
                 <GroupBox Header="Порт" DockPanel.Dock="Right">
-                    <TextBox Name="TextBoxServerPort" Text="25" PreviewTextInput="TextBoxServerPort_OnPreviewTextInput"/>
+                    <TextBox Name="TextBoxServerPort">
+                        <TextBox.Text>
+                            <Binding Path="Port" ValidatesOnDataErrors="True" UpdateSourceTrigger="PropertyChanged" >
+                                <Binding.ValidationRules>
+                                    <DataErrorValidationRule/>
+                                    <ExceptionValidationRule/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
                 </GroupBox>
                 <GroupBox Header="Адрес">
-                    <TextBox Name="TextBoxServerAddress"/>
+                    <TextBox Name="TextBoxServerAddress">
+                        <TextBox.Text>
+                            <Binding Path="Address" ValidatesOnDataErrors="True" UpdateSourceTrigger="PropertyChanged" >
+                                <Binding.ValidationRules>
+                                    <DataErrorValidationRule/>
+                                    <ExceptionValidationRule/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
                 </GroupBox>
             </DockPanel>
         </Border>
         <UniformGrid DockPanel.Dock="Top" Rows="1">
             <GroupBox Header="Логин">
-                <TextBox Name="TextBoxLogin"/>
+                <TextBox Name="TextBoxLogin">
+                    <TextBox.Text>
+                        <Binding Path="Login" ValidatesOnDataErrors="True" UpdateSourceTrigger="PropertyChanged" >
+                            <Binding.ValidationRules>
+                                <DataErrorValidationRule/>
+                                <ExceptionValidationRule/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
             </GroupBox>
             <GroupBox Header="Пароль">
-                <PasswordBox Name="PasswordBoxPassword"/>
+                <TextBox Name="TextBoxPassword">
+                    <TextBox.Text>
+                        <Binding Path="Password" ValidatesOnDataErrors="True" UpdateSourceTrigger="PropertyChanged" >
+                            <Binding.ValidationRules>
+                                <DataErrorValidationRule/>
+                                <ExceptionValidationRule/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
             </GroupBox>
         </UniformGrid>
         <GroupBox Header="Описание сервера" DockPanel.Dock="Top">
-            <TextBox Name="TextBoxDescription"/>
+            <TextBox Name="TextBoxDescription">
+                <TextBox.Text>
+                    <Binding Path="Description" ValidatesOnDataErrors="True" UpdateSourceTrigger="PropertyChanged" >
+                        <Binding.ValidationRules>
+                            <DataErrorValidationRule/>
+                            <ExceptionValidationRule/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
         </GroupBox>
         <UniformGrid DockPanel.Dock="Bottom" Rows="1" 
                      HorizontalAlignment="Right"

@@ -13,9 +13,9 @@ namespace MailSender.Data.Stores.InMemory
             Id = i,
             Address = $"smtp.server{i}.com",
             Description = $"Тестовый сервер {i}",
-            Login = $"Password{i}",
+            Login = $"Login{i}",
             Name = $"Сервер-{i}",
-            Password = $"Password-{i}".Encrypt(),
+            Password = $"Password{i}".Encrypt(),
             Port = 25,
             UseSsl = i % 2 != 0,
         }))
