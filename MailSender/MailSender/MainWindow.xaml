@@ -159,15 +159,10 @@
                                 </controls:ItemsToolBarUserControl.ItemTemplate>
                             </controls:ItemsToolBarUserControl>
                         </ToolBar>
-                        <ToolBar Band="0" BandIndex="1" Header="Планировщик">
-                            <Button Name="ButtonToPlan" 
-                                    Command="{Binding ToTabItemCommand}" 
-                                    CommandParameter="{Binding ElementName=TabItemPlan}">
-                                <StackPanel Orientation="Horizontal">
-                                    <fa:FontAwesome Icon="Regular_Clock" Foreground="CornflowerBlue" Margin="5,0" VerticalAlignment="Center"/>
-                                    <TextBlock Text="Запланировать"/>
-                                </StackPanel>
-                            </Button>
+                        <ToolBar>
+                            <controls:ToPlanToolBarUserControl Title="Планировщик" HintButtonToPlanToolBar="Перейти к планированию"
+                                    GoToPlanFromToolBarCommand="{Binding ToTabItemCommand}"
+                                    GoToPlanFromToolBarCommandParameter="{Binding ElementName=TabItemPlan}"/>
                         </ToolBar>
                         <ToolBar Band="1">
                             <controls:RecipientsToolBarUserControl Title="Получатели" HintAddElementRecipients="Добавить получателя" HintDeleteElementRecipients="Удалить получателя"/>
