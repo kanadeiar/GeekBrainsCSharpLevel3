@@ -9,14 +9,14 @@
         
         Title="{Binding Title}" 
         
-        Height="400" Width="700" WindowStartupLocation="CenterScreen" Background="Azure">
+        Height="400" Width="600" WindowStartupLocation="CenterScreen" Background="Azure">
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>
     <DockPanel>
         <Grid DockPanel.Dock="Top" Background="PaleGreen">
-            <TextBlock Text="Задание №1. Подсчет в отдельных потоках факториала и суммы чисел." Height="30" FontSize="18" 
-                       HorizontalAlignment="Center" Margin="5" VerticalAlignment="Center"/>
+            <TextBlock Text="Задание №1. Подсчет в отдельных потоках факториала и суммы чисел." Height="40" FontSize="18" 
+                       HorizontalAlignment="Center" Margin="0" VerticalAlignment="Center" TextWrapping="Wrap"/>
         </Grid>
         <ToolBarTray DockPanel.Dock="Top">
             <ToolBar>

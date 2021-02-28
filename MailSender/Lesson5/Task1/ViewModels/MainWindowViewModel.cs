@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Timers;
-using System.Windows;
 using System.Windows.Input;
 using Task1.Commands;
 using Task1.Models;
@@ -12,7 +11,7 @@ namespace Task1.ViewModels
     {
         private Calculations _Calculations;
 
-        private string _Title = "Заголовок";
+        private string _Title = "Geekbrains. Домашнее задание №5. Многопоточное программирование.";
         /// <summary> Заголовок </summary>
         public string Title
         {
