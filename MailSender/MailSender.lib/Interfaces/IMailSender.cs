@@ -8,6 +8,5 @@ namespace MailSender.lib.Interfaces
     {
         void Send(string from, string to, string subject, string text);
         void Send(string from, IEnumerable<string> tos, string subject, string text);
-        void SendParallel(string from, IEnumerable<string> tos, string subject, string text);
     }
 }

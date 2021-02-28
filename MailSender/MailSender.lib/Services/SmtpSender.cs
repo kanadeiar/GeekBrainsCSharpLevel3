@@ -60,7 +60,7 @@ namespace MailSender.lib.Services
                 throw;
             }
         }
-        /// <summary> Групповая отправка реальных писем по smtp </summary>
+        /// <summary> Групповая параллельная отправка реальных писем по smtp </summary>
         /// <param name="from">отправитель</param>
         /// <param name="tos">получатели</param>
         /// <param name="subject">заголовок</param>
@@ -69,21 +69,10 @@ namespace MailSender.lib.Services
         {
             foreach (var to in tos)
             {
-                Send(from, to, subject, text);
-                _statistic.MailSended();
-            }
-        }
-        /// <summary> Параллельная отправка писем по smtp </summary>
-        /// <param name="from">отправитель</param>
-        /// <param name="tos">получатели</param>
-        /// <param name="subject">заголовок</param>
-        /// <param name="text">сообщение</param>
-        public void SendParallel(string @from, IEnumerable<string> tos, string subject, string text)
-        {
-            foreach (var to in tos)
-            {
-                ThreadPool.QueueUserWorkItem(_ => Send(from, to, subject, text));
-                _statistic.MailSended();
+                ThreadPool.QueueUserWorkItem(_ =>
+                { 
+                    Send(from, to, subject, text);
+                });
             }
         }
     }
