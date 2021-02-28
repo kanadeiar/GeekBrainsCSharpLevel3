@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 
 namespace MailSender.lib.Interfaces
 {
@@ -7,5 +8,6 @@ namespace MailSender.lib.Interfaces
     {
         void Send(string from, string to, string subject, string text);
         void Send(string from, IEnumerable<string> tos, string subject, string text);
+        void SendParallel(string from, IEnumerable<string> tos, string subject, string text);
     }
 }

@@ -45,5 +45,14 @@ namespace MailSender.lib.Services
                 _statistic.MailSended();
             }
         }
+        public void SendParallel(string @from, IEnumerable<string> tos, string subject, string text)
+        {
+            Debug.WriteLine($"Почтовый сервер {_address}:{_port} ssl:{(_useSsl?"да":"нет")} (Логин:{_login} Пароль:{_password.Decrypt()})");
+            foreach (var to in tos)
+            {
+                Debug.WriteLine($"Параллельная отправка группового письма от {from} к {to} с заголовком: {subject} и тестом: {text}");
+                _statistic.MailSended();
+            }
+        }
     }
 }

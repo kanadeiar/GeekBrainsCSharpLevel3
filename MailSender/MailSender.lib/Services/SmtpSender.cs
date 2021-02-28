@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Mail;
+using System.Threading;
 using MailSender.lib.Interfaces;
 
 namespace MailSender.lib.Services
@@ -69,6 +70,19 @@ namespace MailSender.lib.Services
             foreach (var to in tos)
             {
                 Send(from, to, subject, text);
+                _statistic.MailSended();
+            }
+        }
+        /// <summary> Параллельная отправка писем по smtp </summary>
+        /// <param name="from">отправитель</param>
+        /// <param name="tos">получатели</param>
+        /// <param name="subject">заголовок</param>
+        /// <param name="text">сообщение</param>
+        public void SendParallel(string @from, IEnumerable<string> tos, string subject, string text)
+        {
+            foreach (var to in tos)
+            {
+                ThreadPool.QueueUserWorkItem(_ => Send(from, to, subject, text));
                 _statistic.MailSended();
             }
         }
