@@ -9,7 +9,7 @@
 
         Title="{Binding Title}" 
 
-        Height="400" Width="600" WindowStartupLocation="CenterScreen" Background="Azure">
+        Height="500" Width="800" WindowStartupLocation="CenterScreen" Background="Azure">
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Timers;
 using System.Windows;
 using System.Windows.Documents;
@@ -11,6 +13,7 @@ using System.Windows.Input;
 using Microsoft.Win32;
 using Task2.Commands;
 using Task2.ViewModels.Base;
+using Timer = System.Timers.Timer;
 
 namespace Task2.ViewModels
 {
@@ -68,18 +71,32 @@ namespace Task2.ViewModels
             if (openDialog.ShowDialog() == false) return;
             var filename = openDialog.FileName;
             if (File.Exists(filename) == false) return;
-            Students.Clear();
-            try
+            var students = new Queue<Student>();
+            var context = AsyncOperationManager.SynchronizationContext;
+            Thread thread = new Thread(() =>
             {
-                var students = File.ReadAllLines(filename, Encoding.UTF8).Select(s => s.Split(';')).Skip(1);
-                foreach (var line in students)
+                try
                 {
-                    Students.Add(new Student(int.Parse( line[0] ), line[1], line[2], line[3]));
+                    var strings = File.ReadAllLines(filename, Encoding.UTF8).Select(s => s.Split(';')).Skip(1);
+                    foreach (var line in strings)
+                    {
+                        students.Enqueue(new Student(int.Parse(line[0]), line[1], line[2], line[3]));
+                    }
                 }
-            }
-            catch (Exception ex)
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Не удалось открыть этот файл: {filename}\nОшибка: {ex.Message}");
+                }
+                context.Post(_ => UpdateDataFromThread(), null);
+            });
+            thread.Start();
+            void UpdateDataFromThread()
             {
-                MessageBox.Show($"Не удалось открыть этот файл: {filename}\nОшибка: {ex.Message}");
+                Students.Clear();
+                foreach (var item in students)
+                {
+                    Students.Add(item);
+                }
             }
         }
         
@@ -108,15 +125,19 @@ namespace Task2.ViewModels
             {
                 strings.Enqueue($"{student.Id} {student.Last} {student.Name} {student.Patronymic}");
             }
-            try
+            Thread thread = new Thread(() =>
             {
-                File.WriteAllLines(filename, strings, Encoding.UTF8);
-                MessageBox.Show("Готово!");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Не удалось записать в этот файл: {filename}\nОшибка: {ex.Message}");
-            }
+                try
+                {
+                    File.WriteAllLines(filename, strings, Encoding.UTF8);
+                    MessageBox.Show("Готово!");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Не удалось записать в этот файл: {filename}\nОшибка: {ex.Message}");
+                }
+            });
+            thread.Start();
         }
     }
 }

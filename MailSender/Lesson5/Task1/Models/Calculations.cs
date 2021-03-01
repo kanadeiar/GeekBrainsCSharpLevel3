@@ -32,9 +32,6 @@ namespace Task1.Models
                 fact *= value;
                 value -= 1;
             }
-#if DEBUG
-            Thread.Sleep(5_000); //Для прикола
-#endif
             result = fact;
         }
         private void Sum(long value, out long result)
@@ -44,9 +41,6 @@ namespace Task1.Models
             {
                 sum += i;
             }
-#if DEBUG
-            Thread.Sleep(5_000); //Для прикола
-#endif
             result = sum;
         }
     }
