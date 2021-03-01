@@ -18,16 +18,12 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MailSender.lib.Tests", "Tests\MailSender.lib.Tests\MailSender.lib.Tests.csproj", "{314969BF-CC1F-4803-9C3D-395F7E61DB6C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lesson5", "lesson5", "{B90288DC-B170-4FB4-81D0-F5DF85F6DF32}"
-	ProjectSection(SolutionItems) = preProject
-		Lesson5\test.xlsx = Lesson5\test.xlsx
-		Lesson5\text.scv = Lesson5\text.scv
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileGeneratorConsole", "Lesson5\FileGeneratorConsole\FileGeneratorConsole.csproj", "{8CCF2EB6-6C93-44EE-BB68-F613622FACE7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Task1", "Lesson5\Task1\Task1.csproj", "{9A8C7045-8FBD-4B70-A15E-7A408D73160F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task2", "Lesson5\Task2\Task2.csproj", "{91A7F17A-40C2-4C97-9D6A-DAD1B8ADBC35}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Task2", "Lesson5\Task2\Task2.csproj", "{91A7F17A-40C2-4C97-9D6A-DAD1B8ADBC35}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

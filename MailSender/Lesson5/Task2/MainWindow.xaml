@@ -20,8 +20,10 @@
         </Grid>
         <ToolBarTray DockPanel.Dock="Top">
             <ToolBar>
-                <Button Content="Открыть файл" Padding="10,0" Height="40" Background="GreenYellow"/>
-                <Button Content="Сохранить в файл ..." Padding="10,0" Height="40" Background="Yellow"/>
+                <Button Content="Открыть файл" Padding="10,0" Height="40" Background="GreenYellow"
+                        Command="{Binding OpenFileCommand}"/>
+                <Button Content="Сохранить в файл ..." Padding="10,0" Height="40" Background="Yellow"
+                        Command="{Binding SaveFileCommand}"/>
             </ToolBar>
             <ToolBar>
                 <TextBlock Text="Текущее время:" VerticalAlignment="Center" Margin="5,0"/>
@@ -30,7 +32,7 @@
             </ToolBar>
         </ToolBarTray>
         <Grid>
-            <DataGrid>
+            <DataGrid ItemsSource="{Binding Students}">
 
             </DataGrid>
 

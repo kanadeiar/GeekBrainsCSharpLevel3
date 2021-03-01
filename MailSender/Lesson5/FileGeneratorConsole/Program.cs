@@ -25,7 +25,7 @@ namespace FileGeneratorConsole
                 _patronymics.Add(patronymic);
             }
 
-            var count = 90_000;
+            var count = 900_000;
 
             var rnd = new Random();
             const string dataFile = "text.scv";
