@@ -47,12 +47,12 @@
         </Grid.RowDefinitions>
         <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Text="Редактирование:" HorizontalAlignment="Center" Margin="10"/>
         <TextBlock Grid.Column="0" Grid.Row="1" Text="ID:" VerticalAlignment="Center"/>
-        <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding SelectedRecipient.Id}" IsReadOnly="True" Margin="5"/>
+        <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding SelectedRecipient.Id, FallbackValue=/Ид отсутствует/}" IsReadOnly="True" Margin="5"/>
         <TextBlock Grid.Column="0" Grid.Row="2" Text="Имя:" VerticalAlignment="Center"/>
         <TextBox Grid.Column="1" Grid.Row="2" Margin="5">
             <TextBox.Text>
                 <Binding Path="SelectedRecipient.Name"
-                                                 UpdateSourceTrigger="PropertyChanged">
+                                                 UpdateSourceTrigger="PropertyChanged" FallbackValue="/Имя пользователя не задано/">
                     <Binding.ValidationRules>
                         <vr:RegexValidation Pattern="^[А-Яа-яA-za-z\d]{1,30}$" ErrorMessage="Неправильный формат имени пользователя"/>
                         <DataErrorValidationRule/>
@@ -65,7 +65,7 @@
         <TextBox Grid.Column="1" Grid.Row="3" Margin="5">
             <TextBox.Text>
                 <Binding Path="SelectedRecipient.Address"
-                                                 UpdateSourceTrigger="PropertyChanged">
+                                                 UpdateSourceTrigger="PropertyChanged" FallbackValue="/Адрес почтовый не задан/">
                     <Binding.ValidationRules>
                         <vr:RegexValidation Pattern="^(\w+\.)*\w+@(\w+\.)+[A-Za-z]+$" ErrorMessage="Неправильный формат адреса электронной почты"/>
                         <DataErrorValidationRule/>
