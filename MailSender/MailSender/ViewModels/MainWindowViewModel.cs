@@ -26,7 +26,7 @@ namespace MailSender.ViewModels
 
         #region Вспомогательные свойства
 
-        private string _title = "Geekbrains. Домашнее задание №4. Валидация.";
+        private string _title = "Geekbrains. Домашнее задание №5. Многопоточное программирование.";
 
         /// <summary> Заголовок главного окна </summary>
         public string Title
@@ -36,7 +36,7 @@ namespace MailSender.ViewModels
         }
 
         private string _description =
-            "Geekbrains. Домашнее задание №4. Валидация модели или проверка вводимых данных на корректность. Unit-тестирование.";
+            "Geekbrains. Домашнее задание №5. Многопоточное программирование.";
 
         /// <summary> Описание приложения </summary>
         public string Description

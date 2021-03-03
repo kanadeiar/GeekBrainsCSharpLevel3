@@ -100,7 +100,7 @@
                                                               AddNewItemCommand="{Binding CreateServerCommand}"
                                                               EditItemCommand="{Binding EditServerCommand}"
                                                               DeleteItemCommand="{Binding DeleteServerCommand}"
-                                                              ItemSource="{Binding Servers}"
+                                                              ItemSource="{Binding Servers, IsAsync=True, Delay=500}"
                                                               SelectedItem="{Binding SelectedServer, Mode=TwoWay}">
                                 <controls:ItemsToolBarUserControl.ItemTemplate>
                                     <DataTemplate DataType="m:Server">
@@ -124,7 +124,7 @@
                                                               AddNewItemCommand="{Binding CreateSenderCommand}"
                                                               EditItemCommand="{Binding EditSenderCommand}"
                                                               DeleteItemCommand="{Binding DeleteSenderCommand}"
-                                                              ItemSource="{Binding Senders}"
+                                                              ItemSource="{Binding Senders, IsAsync=True, Delay=500}"
                                                               SelectedItem="{Binding SelectedSender, Mode=TwoWay}">
                                 <controls:ItemsToolBarUserControl.ItemTemplate>
                                     <DataTemplate DataType="m:Sender">

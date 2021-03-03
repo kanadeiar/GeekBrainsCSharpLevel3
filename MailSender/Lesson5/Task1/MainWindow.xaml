@@ -1,0 +1,53 @@
+﻿<Window x:Class="Task1.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:Task1.ViewModels"
+        xmlns:local="clr-namespace:Task1"
+        mc:Ignorable="d"
+        
+        Title="{Binding Title}" 
+        
+        Height="400" Width="600" WindowStartupLocation="CenterScreen" Background="Azure">
+    <Window.DataContext>
+        <vm:MainWindowViewModel/>
+    </Window.DataContext>
+    <DockPanel>
+        <Grid DockPanel.Dock="Top" Background="PaleGreen">
+            <TextBlock Text="Задание №1. Подсчет в отдельных потоках факториала и суммы чисел." Height="40" FontSize="18" 
+                       HorizontalAlignment="Center" Margin="0" VerticalAlignment="Center" TextWrapping="Wrap"/>
+        </Grid>
+        <ToolBarTray DockPanel.Dock="Top">
+            <ToolBar>
+                <Button Content="Выполнить расчет факториала и сумму чисел в 2 потока" Padding="10,0" Height="40" Background="GreenYellow"
+                        Command="{Binding GoCalculateResultsInDoubleThreadsCommand}"/>
+            </ToolBar>
+        </ToolBarTray>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Row="0" Margin="10">
+                <TextBlock Text="Введите число: "/>
+                <TextBox Text="{Binding SetValue, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="0" Margin="10">
+                <TextBlock Text="Результат подсчета факториала числа: "/>
+                <Label Content="{Binding FactorialResultValue}" />
+            </StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="1" Margin="10">
+                <TextBlock Text="Результат подсчета суммы целых чисел до числа: "/>
+                <Label Content="{Binding SummResultValue}" />
+            </StackPanel>
+            <TextBlock Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="60"
+                       Text="{Binding CurrentTime, ConverterCulture=ru-RU, StringFormat=HH:mm:ss.ffff}"/>
+        </Grid>
+    </DockPanel>
+</Window>

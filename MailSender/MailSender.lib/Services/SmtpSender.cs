@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Mail;
+using System.Threading;
 using MailSender.lib.Interfaces;
 
 namespace MailSender.lib.Services
@@ -59,7 +60,7 @@ namespace MailSender.lib.Services
                 throw;
             }
         }
-        /// <summary> Групповая отправка реальных писем по smtp </summary>
+        /// <summary> Групповая параллельная отправка реальных писем по smtp </summary>
         /// <param name="from">отправитель</param>
         /// <param name="tos">получатели</param>
         /// <param name="subject">заголовок</param>
@@ -68,8 +69,10 @@ namespace MailSender.lib.Services
         {
             foreach (var to in tos)
             {
-                Send(from, to, subject, text);
-                _statistic.MailSended();
+                ThreadPool.QueueUserWorkItem(_ =>
+                { 
+                    Send(from, to, subject, text);
+                });
             }
         }
     }
