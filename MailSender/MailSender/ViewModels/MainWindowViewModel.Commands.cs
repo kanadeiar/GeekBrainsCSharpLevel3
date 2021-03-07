@@ -186,8 +186,16 @@ namespace MailSender.ViewModels
 
         #region Команды работы с сервисом отправки сообщений
 
-        private ICommand _sendMessageCommand;
+        private bool _sendMessageCommandAsyncReady = true;
 
+        /// <summary> Занятость команды выполнением отправки сообщений </summary>
+        public bool SendMessageCommandAsyncReady
+        {
+            get => _sendMessageCommandAsyncReady;
+            set => Set(ref _sendMessageCommandAsyncReady, value);
+        }
+
+        private ICommand _sendMessageCommand;
         /// <summary> Команда отправки сообщения </summary>
         public ICommand SendMessageCommand => _sendMessageCommand ??=
             new LambdaCommand(OnSendMessageCommandExecute, CanSendMessageCommandExecute);
@@ -198,7 +206,7 @@ namespace MailSender.ViewModels
                    SelectedMessage != null;
         }
 
-        private void OnSendMessageCommandExecute(object p)
+        private async void OnSendMessageCommandExecute(object p)
         {
             if (string.IsNullOrEmpty(SelectedMessage.Text))
             {
@@ -209,7 +217,9 @@ namespace MailSender.ViewModels
             {
                 return;
             }
-
+            
+            Status = "Идет отправка сообщений";
+            SendMessageCommandAsyncReady = false;
             var server = SelectedServer;
             var client = _MailService.GetSender(server.Address, server.Port, server.UseSsl, server.Login,
                 server.Password);
@@ -218,9 +228,28 @@ namespace MailSender.ViewModels
             var message = SelectedMessage;
             var recipients = ((IList) p).Cast<Recipient>().Select(l => l.Address).ToArray();
             if (recipients.Length <= 1)
-                client.Send(sender.Address, recipient.Address, message.Subject, message.Text);
+                await client.SendAsync(sender.Address, recipient.Address, message.Subject, message.Text)
+                    .ConfigureAwait(true);
             else
-                client.Send(sender.Address, recipients, message.Subject, message.Text);
+                await client.SendAsync(sender.Address, recipients, message.Subject, message.Text).ConfigureAwait(true);
+            Status = "Готов!";
+            SendMessageCommandAsyncReady = true;
+        }
+
+        private ICommand _SendFastMessageCommand;
+        /// <summary> Команда быстрой отправки большого числа сообщений </summary>
+        public ICommand SendFastMessageCommand => _SendFastMessageCommand ??=
+            new LambdaCommand(OnSendFastMessageCommandExecuted, CanSendFastMessageCommandExecute);
+
+        private bool CanSendFastMessageCommandExecute(object p)
+        {
+            return SelectedServer != null && SelectedSender != null && SelectedRecipient != null &&
+                   SelectedMessage != null;
+        }
+
+        private void OnSendFastMessageCommandExecuted(object p)
+        {
+
         }
 
         private ICommand _schedulerSendMailMessageCommand;

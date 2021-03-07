@@ -40,22 +40,32 @@ namespace MailSender.lib.Services
                     Send(from, to, subject, text);
                 });
             }
+            Debug.WriteLine($"Параллельная отправка завершена");
         }
-        public Task SendAsync(string from, string to, string subject, string text, CancellationToken cancel = default)
+        public async Task SendAsync(string from, string to, string subject, string text, CancellationToken cancel = default)
         {
-            Debug.WriteLine($"Асинхронная отправка:");
-
-            return Task.CompletedTask;
+            await Task.Delay(1000, cancel);
+            Debug.WriteLine($"Асинхронно - Почтовый сервер {_address}:{_port} ssl:{(_useSsl ? "да" : "нет")} (Логин:{_login} Пароль:{_password.Decrypt()})");
+            Debug.WriteLine($"Асинхронно - Отправка письма от {from} к {to} с заголовком: {subject} и тестом: {text}");
+            _statistic.MailSended();
         }
-        public Task SendAsync(string from, IEnumerable<string> tos, string subject, string text, IProgress<double> Progress = default, CancellationToken cancel = default)
+        public async Task SendAsync(string from, IEnumerable<string> tos, string subject, string text, IProgress<double> Progress = default, CancellationToken cancel = default)
         {
             Debug.WriteLine($"Групповая асинхронная отправка:");
-            return Task.CompletedTask;
+            foreach (var to in tos)
+            {
+                await SendAsync(from, to, subject, text, cancel).ConfigureAwait(false);
+            }
+            Debug.WriteLine($"Групповая асинхронная отправка завершена");
         }
-        public Task SendFastAsync(string @from, IEnumerable<string> tos, string subject, string text, CancellationToken cancel = default)
+        public async Task SendFastAsync(string from, IEnumerable<string> tos, string subject, string text, CancellationToken cancel = default)
         {
-            Debug.WriteLine($"Быстрая групповая асинхронная отправка:");
-            return Task.CompletedTask;
+            Debug.WriteLine($"Очень Быстрая групповая асинхронная отправка:");
+            foreach (var to in tos)
+            {
+                await SendAsync(from, to, subject, text, cancel).ConfigureAwait(false);
+            }
+            Debug.WriteLine($"Очень быстрая асинхронная отправка завершена");
         }
     }
 }
