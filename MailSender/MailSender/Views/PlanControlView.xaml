@@ -26,17 +26,17 @@
                 </Style>
             </UniformGrid.Resources>
             <Button Name="ButtonSchedulerSend" ToolTip="Запланировать отправку письма"
-                                        Command="{Binding SchedulerSendMailMessageCommand}"
-                                        CommandParameter="{Binding SelectedRecipients}">
+                    Command="{Binding SchedulerSendMailMessageCommand}"
+                    CommandParameter="{Binding SelectedRecipients}">
                 <StackPanel Orientation="Horizontal">
                     <fa5:FontAwesome Icon="Regular_Clock" Margin="5,0" Foreground="Blue"/>
                     <TextBlock Text="Запланировать" VerticalAlignment="Center"/>
                 </StackPanel>
             </Button>
             <Button Name="ButtonSendNow" ToolTip="Отправить немедленно письмо"
-                                        Command = "{Binding SendMessageCommand}"
-                                        CommandParameter="{Binding SelectedRecipients}"
-                                        IsEnabled="{Binding SendMessageCommandAsyncReady}">
+                    Command = "{Binding SendMessageCommand}"
+                    CommandParameter="{Binding SelectedRecipients}"
+                    IsEnabled="{Binding SendMessageCommandAsyncReady}">
                 <StackPanel Orientation="Horizontal">
                     <fa5:FontAwesome Icon="Solid_Share" Margin="5,0" Foreground="PaleVioletRed"/>
                     <TextBlock Text="Отправить сейчас" VerticalAlignment="Center" />
@@ -44,7 +44,8 @@
             </Button>
             <Button Name="ButtonFastSendNow" ToolTip="Отправить очень быстро большого числа писем"
                     Command = "{Binding SendFastMessageCommand}"
-                    CommandParameter="{Binding SelectedRecipients}">
+                    CommandParameter="{Binding SelectedRecipients}"
+                    IsEnabled="{Binding SendFastMessageCommandAsyncReady}">
                 <StackPanel Orientation="Horizontal">
                     <fa5:FontAwesome Icon="Solid_AddressCard" Margin="5,0" Foreground="Red"/>
                     <TextBlock Text="Отправить быстро и много сейчас" VerticalAlignment="Center" />

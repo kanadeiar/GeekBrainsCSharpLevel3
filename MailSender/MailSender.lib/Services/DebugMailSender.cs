@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MailSender.lib.Interfaces;
@@ -61,10 +62,8 @@ namespace MailSender.lib.Services
         public async Task SendFastAsync(string from, IEnumerable<string> tos, string subject, string text, CancellationToken cancel = default)
         {
             Debug.WriteLine($"Очень Быстрая групповая асинхронная отправка:");
-            foreach (var to in tos)
-            {
-                await SendAsync(from, to, subject, text, cancel).ConfigureAwait(false);
-            }
+            var tasks = tos.Select(to => SendAsync(from, to, subject, text, cancel));
+            await Task.WhenAll(tasks).ConfigureAwait(false);
             Debug.WriteLine($"Очень быстрая асинхронная отправка завершена");
         }
     }

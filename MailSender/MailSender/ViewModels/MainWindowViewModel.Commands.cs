@@ -1,7 +1,5 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Windows;
@@ -186,6 +184,8 @@ namespace MailSender.ViewModels
 
         #region Команды работы с сервисом отправки сообщений
 
+        #region Команда отправки сообщений
+
         private bool _sendMessageCommandAsyncReady = true;
 
         /// <summary> Занятость команды выполнением отправки сообщений </summary>
@@ -236,6 +236,19 @@ namespace MailSender.ViewModels
             SendMessageCommandAsyncReady = true;
         }
 
+        #endregion
+
+        #region Команда очень быстрой отправки сообщений
+
+        private bool _SendFastMessageCommandAsyncReady = true;
+
+        /// <summary> Занятость команды выполнением очень быстрой отправки сообщений </summary>
+        public bool SendFastMessageCommandAsyncReady
+        {
+            get => _SendFastMessageCommandAsyncReady;
+            set => Set(ref _SendFastMessageCommandAsyncReady, value);
+        }
+
         private ICommand _SendFastMessageCommand;
         /// <summary> Команда быстрой отправки большого числа сообщений </summary>
         public ICommand SendFastMessageCommand => _SendFastMessageCommand ??=
@@ -247,10 +260,34 @@ namespace MailSender.ViewModels
                    SelectedMessage != null;
         }
 
-        private void OnSendFastMessageCommandExecuted(object p)
+        private async void OnSendFastMessageCommandExecuted(object p)
         {
+            if (string.IsNullOrEmpty(SelectedMessage.Text))
+            {
+                return;
+            }
 
+            if (string.IsNullOrEmpty(SelectedMessage.Subject))
+            {
+                return;
+            }
+
+            Status = "Идет очень-очень быстрая отправка сообщений";
+            SendFastMessageCommandAsyncReady = false;
+            var server = SelectedServer;
+            var client = _MailService.GetSender(server.Address, server.Port, server.UseSsl, server.Login,
+                server.Password);
+            var sender = SelectedSender;
+            var recipient = SelectedRecipient;
+            var message = SelectedMessage;
+            var recipients = ((IList)p).Cast<Recipient>().Select(l => l.Address).ToArray();
+            await client.SendFastAsync(sender.Address, recipients, message.Subject, message.Text)
+                .ConfigureAwait(true);
+            Status = "Готов!";
+            SendFastMessageCommandAsyncReady = true;
         }
+
+        #endregion
 
         private ICommand _schedulerSendMailMessageCommand;
         /// <summary> Команда добавления задания на отправку сообщения </summary>
