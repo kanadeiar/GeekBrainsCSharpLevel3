@@ -27,5 +27,21 @@ namespace MailSender.lib.Tests.Services
             Assert.IsNotNull(actual);
             Assert.AreEqual(expected.ToString(), actual.ToString());
         }
+        [TestMethod]
+        public void GetSender_TypeIsMailSender()
+        {
+            var stub = Mock.Of<IStatistic>();
+            _MailService = new SmtpMailService(stub);
+            var address = "test@test.ru";
+            var name = "Тестов";
+            var port = 25;
+            var useSsl = true;
+            var login = "login";
+            var password = "password".Encrypt();
+
+            var actual = _MailService.GetSender(address, port, useSsl, login, password);
+
+            Assert.IsInstanceOfType(actual, typeof(IMailSender));
+        }
     }
 }

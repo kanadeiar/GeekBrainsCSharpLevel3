@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
+using System.Threading.Tasks;
 using MailSender.lib.Interfaces;
 
 namespace MailSender.lib.Services
@@ -28,7 +30,7 @@ namespace MailSender.lib.Services
             Debug.WriteLine($"Отправка письма от {from} к {to} с заголовком: {subject} и тестом: {text}");
             _statistic.MailSended();
         }
-        public void Send(string @from, IEnumerable<string> tos, string subject, string text)
+        public void Send(string from, IEnumerable<string> tos, string subject, string text, IProgress<double> progress = default)
         {
             Debug.WriteLine($"Параллельная отправка:");
             foreach (var to in tos)
@@ -38,6 +40,22 @@ namespace MailSender.lib.Services
                     Send(from, to, subject, text);
                 });
             }
+        }
+        public Task SendAsync(string from, string to, string subject, string text, CancellationToken cancel = default)
+        {
+            Debug.WriteLine($"Асинхронная отправка:");
+
+            return Task.CompletedTask;
+        }
+        public Task SendAsync(string from, IEnumerable<string> tos, string subject, string text, IProgress<double> Progress = default, CancellationToken cancel = default)
+        {
+            Debug.WriteLine($"Групповая асинхронная отправка:");
+            return Task.CompletedTask;
+        }
+        public Task SendFastAsync(string @from, IEnumerable<string> tos, string subject, string text, CancellationToken cancel = default)
+        {
+            Debug.WriteLine($"Быстрая групповая асинхронная отправка:");
+            return Task.CompletedTask;
         }
     }
 }
