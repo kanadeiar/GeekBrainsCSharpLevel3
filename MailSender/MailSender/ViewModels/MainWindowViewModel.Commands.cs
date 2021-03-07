@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
@@ -227,11 +228,18 @@ namespace MailSender.ViewModels
             var recipient = SelectedRecipient;
             var message = SelectedMessage;
             var recipients = ((IList) p).Cast<Recipient>().Select(l => l.Address).ToArray();
-            if (recipients.Length <= 1)
-                await client.SendAsync(sender.Address, recipient.Address, message.Subject, message.Text)
-                    .ConfigureAwait(true);
-            else
-                await client.SendAsync(sender.Address, recipients, message.Subject, message.Text).ConfigureAwait(true);
+            try
+            {
+                if (recipients.Length <= 1)
+                    await client.SendAsync(sender.Address, recipient.Address, message.Subject, message.Text)
+                        .ConfigureAwait(true);
+                else
+                    await client.SendAsync(sender.Address, recipients, message.Subject, message.Text).ConfigureAwait(true);
+            }
+            catch (OperationCanceledException)
+            {
+                MessageBox.Show("Произошла отмена операции отправки сообщений", "Отмена операции", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+            }
             Status = "Готов!";
             SendMessageCommandAsyncReady = true;
         }
@@ -281,13 +289,22 @@ namespace MailSender.ViewModels
             var recipient = SelectedRecipient;
             var message = SelectedMessage;
             var recipients = ((IList)p).Cast<Recipient>().Select(l => l.Address).ToArray();
-            await client.SendFastAsync(sender.Address, recipients, message.Subject, message.Text)
-                .ConfigureAwait(true);
+            try
+            {
+                await client.SendFastAsync(sender.Address, recipients, message.Subject, message.Text)
+                    .ConfigureAwait(true);
+            }
+            catch (OperationCanceledException)
+            {
+                MessageBox.Show("Произошла отмена операции отправки сообщений", "Отмена операции", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+            }
             Status = "Готов!";
             SendFastMessageCommandAsyncReady = true;
         }
 
         #endregion
+
+        #region Команда планирования отправки сообщений
 
         private ICommand _schedulerSendMailMessageCommand;
         /// <summary> Команда добавления задания на отправку сообщения </summary>
@@ -314,7 +331,7 @@ namespace MailSender.ViewModels
             var context = SynchronizationContext.Current;
             scheduler.EmailSended += (_, _) =>
             {
-                context.Send(x => SchedulerMailSenders.Remove((SchedulerMailSender) scheduler), null);
+                context?.Send(x => SchedulerMailSenders.Remove((SchedulerMailSender) scheduler), null);
             };
             SchedulerMailSenders.Add((SchedulerMailSender)scheduler);
         }
@@ -334,6 +351,8 @@ namespace MailSender.ViewModels
             scheduler.Stop();
             SchedulerMailSenders.Remove(scheduler);
         }
+
+        #endregion
 
         #endregion
 
