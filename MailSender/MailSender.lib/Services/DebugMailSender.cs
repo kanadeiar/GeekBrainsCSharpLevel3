@@ -34,12 +34,15 @@ namespace MailSender.lib.Services
         public void Send(string from, IEnumerable<string> tos, string subject, string text, IProgress<double> progress = default)
         {
             Debug.WriteLine($"Параллельная отправка:");
+            var count = tos.Count();
+            var i = 0;
             foreach (var to in tos)
             {
                 ThreadPool.QueueUserWorkItem(_ =>
                 { 
                     Send(from, to, subject, text);
                 });
+                progress?.Report((double)i++ / count);
             }
             Debug.WriteLine($"Параллельная отправка завершена");
         }
@@ -50,12 +53,15 @@ namespace MailSender.lib.Services
             Debug.WriteLine($"Асинхронно - Отправка письма от {from} к {to} с заголовком: {subject} и тестом: {text}");
             _statistic.MailSended();
         }
-        public async Task SendAsync(string from, IEnumerable<string> tos, string subject, string text, IProgress<double> Progress = default, CancellationToken cancel = default)
+        public async Task SendAsync(string from, IEnumerable<string> tos, string subject, string text, CancellationToken cancel = default, IProgress<double> progress = default)
         {
             Debug.WriteLine($"Групповая асинхронная отправка:");
+            var count = tos.Count();
+            var i = 0;
             foreach (var to in tos)
             {
                 await SendAsync(from, to, subject, text, cancel).ConfigureAwait(false);
+                progress?.Report((double)i++ / count);
             }
             Debug.WriteLine($"Групповая асинхронная отправка завершена");
         }

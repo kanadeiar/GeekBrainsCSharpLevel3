@@ -120,8 +120,8 @@ namespace MailSender.lib.Services
         /// <param name="progress">прогресс отправки</param>
         /// <param name="cancel">отмена операции</param>
         /// <exception cref="OperationCanceledException">Отмена операции</exception>
-        public async Task SendAsync(string from, IEnumerable<string> tos, string subject, string text, IProgress<double> progress = default,
-            CancellationToken cancel = default)
+        public async Task SendAsync(string from, IEnumerable<string> tos, string subject, string text, CancellationToken cancel = default, 
+            IProgress<double> progress = default)
         {
             cancel.ThrowIfCancellationRequested();
             var count = tos.Count();

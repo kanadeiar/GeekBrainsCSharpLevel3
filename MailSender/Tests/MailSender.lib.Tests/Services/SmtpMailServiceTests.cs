@@ -15,7 +15,6 @@ namespace MailSender.lib.Tests.Services
             var stub = Mock.Of<IStatistic>();
             _MailService = new SmtpMailService(stub);
             var address = "test@test.ru";
-            var name = "Тестов";
             var port = 25;
             var useSsl = true;
             var login = "login";
@@ -33,7 +32,6 @@ namespace MailSender.lib.Tests.Services
             var stub = Mock.Of<IStatistic>();
             _MailService = new SmtpMailService(stub);
             var address = "test@test.ru";
-            var name = "Тестов";
             var port = 25;
             var useSsl = true;
             var login = "login";

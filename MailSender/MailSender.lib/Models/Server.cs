@@ -66,7 +66,6 @@ namespace MailSender.lib.Models
         {
             get
             {
-                Regex regex = null;
                 switch (propertyName)
                 {
                     case nameof(Name):

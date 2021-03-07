@@ -11,7 +11,7 @@ namespace MailSender.lib.Models
     public class SchedulerMailSender : Entity, ISchedulerMailSender
     {
         private Timer _timer;
-        private IMailSender _mailSender;
+        private readonly IMailSender _mailSender;
         /// <summary> Событие - письмо отправлено </summary>
         public event EventHandler EmailSended;
         /// <summary> Время отправления письма </summary>

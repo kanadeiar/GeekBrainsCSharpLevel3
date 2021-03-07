@@ -37,7 +37,7 @@ namespace MailSender.lib.Interfaces
         /// <param name="progress">прогресс отправки</param>
         /// <param name="cancel">отмена операции</param>
         /// <exception cref="OperationCanceledException">Отмена операции</exception>
-        Task SendAsync(string from, IEnumerable<string> tos, string subject, string text, IProgress<double> Progress = default, CancellationToken cancel = default);
+        Task SendAsync(string from, IEnumerable<string> tos, string subject, string text, CancellationToken cancel = default, IProgress<double> Progress = default);
         /// <summary> Быстрая асинхронная отправка почты </summary>
         /// <param name="from">отправитель</param>
         /// <param name="tos">получатели</param>
