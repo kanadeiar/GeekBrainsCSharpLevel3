@@ -19,8 +19,13 @@
                        HorizontalAlignment="Center" Margin="0" TextWrapping="Wrap"/>
         </Grid>
         <Grid>
-
+            <Button HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10" Background="GreenYellow"
+                    Command="{Binding RunFastWorkWithFilesCommand}">
+                <StackPanel>
+                    <TextBlock Text="Пуск" HorizontalAlignment="Center" FontSize="28"/>
+                    <TextBlock Text="многопоточной переработки файлов"/>
+                </StackPanel>
+            </Button>
         </Grid>
-
     </DockPanel>
 </Window>

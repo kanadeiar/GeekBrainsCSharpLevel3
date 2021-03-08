@@ -10,7 +10,7 @@ namespace FilesGenerator
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             [DllImport("kernel32.dll")] static extern bool SetConsoleCP(uint pagenum);
             [DllImport("kernel32.dll")] static extern bool SetConsoleOutputCP(uint pagenum);
@@ -26,10 +26,10 @@ namespace FilesGenerator
             {
                 int i0 = i;
                 Random rand = new Random();
-                tasks.Enqueue(Task.Run(() =>
+                tasks.Enqueue(Task.Run(async () =>
                 {
                     var data = Enumerable.Range(1, 1_000).Select(s => $"{((s % 2 == 0) ? 1 : 2)} {rand.NextDouble() * 1_000.0} {rand.NextDouble() * 100.0}");
-                    File.WriteAllLines($"test{i0}.txt", data, Encoding.UTF8);
+                    await File.WriteAllLinesAsync($"test{i0}.txt", data, Encoding.UTF8);
                 }));
             }
             Task.WhenAll(tasks);
