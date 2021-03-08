@@ -59,11 +59,12 @@ namespace Task1.ViewModels
         }
 
         #endregion
-
         
         public MainWindowViewModel()
         {
         }
+
+        #region Команды
 
         private ICommand _GenerateMatrixCommand;
 
@@ -149,8 +150,8 @@ namespace Task1.ViewModels
             MatrixResult = PrintMatrixToText(_martixResult);
         }
 
+        #endregion
         
-
         #region Вспомогалки
 
         protected string PrintMatrixToText(in int[,] matrix)
