@@ -4,14 +4,16 @@ using MailSender.Data.Stores.InDB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MailSender.Migrations
 {
     [DbContext(typeof(MailSenderDB))]
-    partial class MailSenderDBModelSnapshot : ModelSnapshot
+    [Migration("20210310233914_addScheduler")]
+    partial class addScheduler
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

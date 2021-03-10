@@ -362,19 +362,25 @@ namespace MailSender.ViewModels
             var server = SelectedServer;
             var client = _MailService.GetSender(server.Address, server.Port, server.UseSsl, server.Login,
                 server.Password);
-            var scheduler = _SchedulerService.GetScheduler(client);
-            var sender = SelectedSender;
-            var recipients = ((IList) p).Cast<Recipient>().Select(l => l.Address).ToArray();
-            var message = SelectedMessage;
+            var schedulerMailSender = _SchedulerService.GetScheduler(client);
+            var recipients = ((IList) p).Cast<Recipient>().ToArray();
             var date = SelectedDate;
-            scheduler.AddTask(date, sender.Address, recipients, message.Subject, message.Text);
+            var scheduler = new Scheduler
+            {
+                DateTimeSend = date,
+                Server = SelectedServer,
+                Sender = SelectedSender,
+                Recipients = recipients,
+                Message = SelectedMessage,
+            };
+            schedulerMailSender.Start(scheduler);
 
             var context = SynchronizationContext.Current;
-            scheduler.EmailSended += (_, _) =>
+            schedulerMailSender.MissionCompleted += (_, _) =>
             {
-                context?.Send(x => SchedulerMailSenders.Remove((SchedulerMailSender) scheduler), null);
+                context?.Send(x => SchedulerMailSenders.Remove((SchedulerMailSender) schedulerMailSender), null);
             };
-            SchedulerMailSenders.Add((SchedulerMailSender)scheduler);
+            SchedulerMailSenders.Add((SchedulerMailSender)schedulerMailSender);
         }
 
         private ICommand _SchedulerDeleteMessageCommand;

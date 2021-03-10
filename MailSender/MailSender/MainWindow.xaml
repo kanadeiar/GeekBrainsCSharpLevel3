@@ -199,7 +199,7 @@
                                                         CommandParameter="{Binding}"/>
                                                 <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="0,0,50,0">
                                                     <TextBlock Text="Дата отправки: " VerticalAlignment="Center"/>
-                                                    <TextBlock Text="{Binding DateTimeSend, StringFormat=dd.MM.yyyy HH:mm}" VerticalAlignment="Center"/>
+                                                    <TextBlock Text="{Binding Scheduler.DateTimeSend, StringFormat=dd.MM.yyyy HH:mm}" VerticalAlignment="Center"/>
                                                 </StackPanel>
                                             </Grid>
                                         </GroupBox.Header>
@@ -215,17 +215,17 @@
                                                 <RowDefinition/>
                                             </Grid.RowDefinitions>
                                             <TextBlock Grid.Column="0" Grid.Row="0" Text="Отправитель:"/>
-                                            <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding From}"/>
+                                            <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Scheduler.Sender.Address}"/>
                                             <TextBlock Grid.Column="0" Grid.Row="1" Text="Получатели:"/>
-                                            <ItemsControl Grid.Column="1" Grid.Row="1" ItemsSource="{Binding Tos}">
+                                            <ItemsControl Grid.Column="1" Grid.Row="1" ItemsSource="{Binding Scheduler.Recipients}">
                                                 <ItemsControl.ItemTemplate>
                                                     <DataTemplate>
-                                                        <TextBlock Text="{Binding }"/>
+                                                        <TextBlock Text="{Binding Address}"/>
                                                     </DataTemplate>
                                                 </ItemsControl.ItemTemplate>
                                             </ItemsControl>
                                             <TextBlock Grid.Column="0" Grid.Row="3" Text="Заголовок сообщения:"/>
-                                            <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Subject}"/>
+                                            <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Scheduler.Message.Subject}"/>
                                         </Grid>
                                     </GroupBox>
                                 </Border>

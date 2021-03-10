@@ -6,6 +6,7 @@ using System.Linq;
 using System.Timers;
 using MailSender.lib.Interfaces;
 using MailSender.lib.Models;
+using MailSender.lib.Services;
 using MailSender.ViewModels.Base;
 
 namespace MailSender.ViewModels
