@@ -10,6 +10,7 @@ namespace MailSender.lib.Models
         /// <summary> Время отправления письма </summary>
         public DateTime DateTimeSend { get; set; } = DateTime.Now;
         /// <summary> Сервер отправки почты </summary>
+        [Required]
         public Server Server { get; set; }
         /// <summary> Отправитель </summary>
         [Required]
