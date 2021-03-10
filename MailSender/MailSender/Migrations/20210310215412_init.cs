@@ -65,7 +65,7 @@ namespace MailSender.Migrations
                     Port = table.Column<int>(type: "int", nullable: false),
                     UseSsl = table.Column<bool>(type: "bit", nullable: false),
                     Login = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
                     Timestamp = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true)
                 },

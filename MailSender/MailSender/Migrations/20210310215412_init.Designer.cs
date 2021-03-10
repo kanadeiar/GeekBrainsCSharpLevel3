@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MailSender.Migrations
 {
     [DbContext(typeof(MailSenderDB))]
-    [Migration("20210310214139_init")]
+    [Migration("20210310215412_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -344,8 +344,8 @@ namespace MailSender.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
 
                     b.Property<int>("Port")
                         .HasColumnType("int");

@@ -52,7 +52,7 @@ namespace MailSender.lib.Models
         }
         private string _password;
         /// <summary> Пароль пользователя </summary>
-        [Required, MaxLength(20)]
+        [Required, MaxLength(40)]
         public string Password
         {
             get => _password; 
