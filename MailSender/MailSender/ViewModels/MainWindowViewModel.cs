@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Timers;
 using MailSender.lib.Interfaces;
@@ -26,7 +25,7 @@ namespace MailSender.ViewModels
 
         #region Вспомогательные свойства
 
-        private string _title = "Geekbrains. Домашнее задание №5. Многопоточное программирование.";
+        private string _title = "Geekbrains. Домашнее задание №6. Асинхронное программирование.";
 
         /// <summary> Заголовок главного окна </summary>
         public string Title
@@ -36,7 +35,7 @@ namespace MailSender.ViewModels
         }
 
         private string _description =
-            "Geekbrains. Домашнее задание №5. Многопоточное программирование.";
+            "Geekbrains. Домашнее задание №6. Асинхронное программирование.";
 
         /// <summary> Описание приложения </summary>
         public string Description

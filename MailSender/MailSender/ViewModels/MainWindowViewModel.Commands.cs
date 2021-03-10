@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
+using System.Collections;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Windows;
@@ -186,8 +185,29 @@ namespace MailSender.ViewModels
 
         #region Команды работы с сервисом отправки сообщений
 
-        private ICommand _sendMessageCommand;
+        private CancellationTokenSource _AsyncSendCancellation; //отмена отправки сообщений`
 
+        private double _ProgressSendMessages;
+
+        /// <summary> Прогресс отправки сообщений </summary>
+        public double ProgressSendMessages
+        {
+            get => _ProgressSendMessages;
+            set => Set(ref _ProgressSendMessages, value);
+        }
+
+        #region Команда отправки сообщений
+
+        private bool _sendMessageCommandAsyncReady = true;
+
+        /// <summary> Занятость команды выполнением отправки сообщений </summary>
+        public bool SendMessageCommandAsyncReady
+        {
+            get => _sendMessageCommandAsyncReady;
+            set => Set(ref _sendMessageCommandAsyncReady, value);
+        }
+
+        private ICommand _sendMessageCommand;
         /// <summary> Команда отправки сообщения </summary>
         public ICommand SendMessageCommand => _sendMessageCommand ??=
             new LambdaCommand(OnSendMessageCommandExecute, CanSendMessageCommandExecute);
@@ -198,7 +218,80 @@ namespace MailSender.ViewModels
                    SelectedMessage != null;
         }
 
-        private void OnSendMessageCommandExecute(object p)
+        private async void OnSendMessageCommandExecute(object p)
+        {
+            if (string.IsNullOrEmpty(SelectedMessage.Text))
+            {
+                return;
+            }
+
+            if (string.IsNullOrEmpty(SelectedMessage.Subject))
+            {
+                return;
+            }
+            
+            Status = "Идет отправка сообщений";
+            SendMessageCommandAsyncReady = SendFastMessageCommandAsyncReady = false;
+            var server = SelectedServer;
+            var client = _MailService.GetSender(server.Address, server.Port, server.UseSsl, server.Login,
+                server.Password);
+            var sender = SelectedSender;
+            var recipient = SelectedRecipient;
+            var message = SelectedMessage;
+            var recipients = ((IList) p).Cast<Recipient>().Select(l => l.Address).ToArray();
+
+            _AsyncSendCancellation = new CancellationTokenSource();
+            var progress = new Progress<double>(
+                value =>
+                {
+                    ProgressSendMessages = value;
+                });
+
+            try
+            {
+                if (recipients.Length <= 1)
+                    await client.SendAsync(sender.Address, recipient.Address, message.Subject, message.Text,
+                            _AsyncSendCancellation.Token)
+                        .ConfigureAwait(true);
+                else
+                    await client.SendAsync(sender.Address, recipients, message.Subject, message.Text,
+                        _AsyncSendCancellation.Token, progress).ConfigureAwait(true);
+            }
+            catch (OperationCanceledException)
+            {
+                MessageBox.Show("Произошла отмена операции отправки сообщений", "Отмена операции", MessageBoxButton.OK,
+                    MessageBoxImage.Asterisk);
+            }
+            ProgressSendMessages = 1;
+            Status = "Готов, письма успешно отправлены!";
+            SendMessageCommandAsyncReady = SendFastMessageCommandAsyncReady = true;
+        }
+
+        #endregion
+
+        #region Команда очень быстрой отправки сообщений
+
+        private bool _SendFastMessageCommandAsyncReady = true;
+
+        /// <summary> Занятость команды выполнением очень быстрой отправки сообщений </summary>
+        public bool SendFastMessageCommandAsyncReady
+        {
+            get => _SendFastMessageCommandAsyncReady;
+            set => Set(ref _SendFastMessageCommandAsyncReady, value);
+        }
+
+        private ICommand _SendFastMessageCommand;
+        /// <summary> Команда быстрой отправки большого числа сообщений </summary>
+        public ICommand SendFastMessageCommand => _SendFastMessageCommand ??=
+            new LambdaCommand(OnSendFastMessageCommandExecuted, CanSendFastMessageCommandExecute);
+
+        private bool CanSendFastMessageCommandExecute(object p)
+        {
+            return SelectedServer != null && SelectedSender != null && SelectedRecipient != null &&
+                   SelectedMessage != null;
+        }
+
+        private async void OnSendFastMessageCommandExecuted(object p)
         {
             if (string.IsNullOrEmpty(SelectedMessage.Text))
             {
@@ -210,18 +303,49 @@ namespace MailSender.ViewModels
                 return;
             }
 
+            Status = "Идет очень-очень быстрая отправка сообщений";
+            SendMessageCommandAsyncReady = SendFastMessageCommandAsyncReady = false;
             var server = SelectedServer;
             var client = _MailService.GetSender(server.Address, server.Port, server.UseSsl, server.Login,
                 server.Password);
             var sender = SelectedSender;
             var recipient = SelectedRecipient;
             var message = SelectedMessage;
-            var recipients = ((IList) p).Cast<Recipient>().Select(l => l.Address).ToArray();
-            if (recipients.Length <= 1)
-                client.Send(sender.Address, recipient.Address, message.Subject, message.Text);
-            else
-                client.Send(sender.Address, recipients, message.Subject, message.Text);
+            var recipients = ((IList)p).Cast<Recipient>().Select(l => l.Address).ToArray();
+            try
+            {
+                await client.SendFastAsync(sender.Address, recipients, message.Subject, message.Text)
+                    .ConfigureAwait(true);
+            }
+            catch (OperationCanceledException)
+            {
+                MessageBox.Show("Произошла отмена операции отправки сообщений", "Отмена операции", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+            }
+            Status = "Готов, письма очень быстро отправлены!";
+            SendMessageCommandAsyncReady = SendFastMessageCommandAsyncReady = true;
         }
+
+        #endregion
+
+        #region Команда отмены отправки сообщений
+
+        private ICommand _CancelSendMessagesCommand;
+
+        /// <summary> Команда отмены отправки сообщений </summary>
+        public ICommand CancelSendMessagesCommand => _CancelSendMessagesCommand ??=
+            new LambdaCommand(OnCancelSendMessagesCommandExecuted, CanCancelSendMessagesCommandExecute);
+
+        private bool CanCancelSendMessagesCommandExecute(object p) => true;
+
+        private void OnCancelSendMessagesCommandExecuted(object p)
+        {
+            _AsyncSendCancellation?.Cancel();
+        }
+
+        #endregion
+
+
+        #region Команда планирования отправки сообщений
 
         private ICommand _schedulerSendMailMessageCommand;
         /// <summary> Команда добавления задания на отправку сообщения </summary>
@@ -229,7 +353,7 @@ namespace MailSender.ViewModels
             new LambdaCommand(OnSchedulerSendMessageCommandExecute, CanSchedulerSendMessageCommandExecute);
         private bool CanSchedulerSendMessageCommandExecute(object p)
         {
-            return SelectedDate != null && SelectedServer != null && SelectedSender != null && 
+            return SelectedServer != null && SelectedSender != null && 
                    SelectedRecipient != null && SelectedMessage != null;
         }
 
@@ -248,7 +372,7 @@ namespace MailSender.ViewModels
             var context = SynchronizationContext.Current;
             scheduler.EmailSended += (_, _) =>
             {
-                context.Send(x => SchedulerMailSenders.Remove((SchedulerMailSender) scheduler), null);
+                context?.Send(x => SchedulerMailSenders.Remove((SchedulerMailSender) scheduler), null);
             };
             SchedulerMailSenders.Add((SchedulerMailSender)scheduler);
         }
@@ -268,6 +392,8 @@ namespace MailSender.ViewModels
             scheduler.Stop();
             SchedulerMailSenders.Remove(scheduler);
         }
+
+        #endregion
 
         #endregion
 

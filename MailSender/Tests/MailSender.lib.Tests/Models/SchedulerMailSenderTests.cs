@@ -66,27 +66,27 @@ namespace MailSender.lib.Tests.Models
         {
             _testDateTime = DateTime.Now;
             var mock = new Mock<IMailSender>();
-            mock.Setup(d => d.Send(It.IsAny<string>(),It.IsAny<ICollection<string>>(),It.IsAny<string>(),It.IsAny<string>()));
+            mock.Setup(d => d.Send(It.IsAny<string>(),It.IsAny<ICollection<string>>(),It.IsAny<string>(),It.IsAny<string>(), null));
             _scheduler = new SchedulerMailSender(mock.Object);
 
             _scheduler.AddTask(_testDateTime, _testFrom, _testTos, _testSubject, _testMessage);
 
             Thread.Sleep(1100);
-            mock.Verify(m => m.Send(It.IsAny<string>(),It.IsAny<ICollection<string>>(),It.IsAny<string>(),It.IsAny<string>()), Times.Once);
+            mock.Verify(m => m.Send(It.IsAny<string>(),It.IsAny<ICollection<string>>(),It.IsAny<string>(),It.IsAny<string>(), null), Times.Once);
         }
         [TestMethod]
         public void Stop_Is_Not_CalledMock()
         {
             _testDateTime = DateTime.Now.AddSeconds(1);
             var mock = new Mock<IMailSender>();
-            mock.Setup(d => d.Send(It.IsAny<string>(),It.IsAny<ICollection<string>>(),It.IsAny<string>(),It.IsAny<string>()));
+            mock.Setup(d => d.Send(It.IsAny<string>(),It.IsAny<ICollection<string>>(),It.IsAny<string>(),It.IsAny<string>(), null));
             _scheduler = new SchedulerMailSender(mock.Object);
 
             _scheduler.AddTask(_testDateTime, _testFrom, _testTos, _testSubject, _testMessage);
             _scheduler.Stop();
             Thread.Sleep(2200);
 
-            mock.Verify(m => m.Send(It.IsAny<string>(),It.IsAny<ICollection<string>>(),It.IsAny<string>(),It.IsAny<string>()), Times.Never());
+            mock.Verify(m => m.Send(It.IsAny<string>(),It.IsAny<ICollection<string>>(),It.IsAny<string>(),It.IsAny<string>(), null), Times.Never());
         }
         [TestMethod]
         public void AddTask_Is_Called_Mock_In_5_Seconds()
@@ -94,7 +94,7 @@ namespace MailSender.lib.Tests.Models
             DateTime timeCall = new();
             _testDateTime = DateTime.Now.AddSeconds(5);
             var mock = new Mock<IMailSender>();
-            mock.Setup(d => d.Send(It.IsAny<string>(),It.IsAny<ICollection<string>>(),It.IsAny<string>(),It.IsAny<string>())).Callback((
+            mock.Setup(d => d.Send(It.IsAny<string>(),It.IsAny<ICollection<string>>(),It.IsAny<string>(),It.IsAny<string>(), null)).Callback((
                 () =>
                 {
                     timeCall = DateTime.Now;
@@ -105,7 +105,7 @@ namespace MailSender.lib.Tests.Models
 
             Thread.Sleep(6000);
 
-            mock.Verify(m => m.Send(It.IsAny<string>(),It.IsAny<ICollection<string>>(),It.IsAny<string>(),It.IsAny<string>()), Times.Once);
+            mock.Verify(m => m.Send(It.IsAny<string>(),It.IsAny<ICollection<string>>(),It.IsAny<string>(),It.IsAny<string>(), null), Times.Once);
             Assert.IsTrue(timeCall <= _testDateTime.AddSeconds(1) && timeCall >= _testDateTime.AddSeconds(-1));
         }
         [TestMethod]
