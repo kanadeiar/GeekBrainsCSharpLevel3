@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Timers;
 using MailSender.lib.Interfaces;
@@ -15,15 +16,15 @@ namespace MailSender.lib.Models
         /// <summary> Событие - письмо отправлено </summary>
         public event EventHandler EmailSended;
         /// <summary> Время отправления письма </summary>
-        public DateTime DateTimeSend { get; private set; }
-        /// <summary> Адрес отправителя </summary>
-        public string From { get; private set; }
-        /// <summary> Адрес получателя </summary>
-        public IEnumerable<string> Tos { get; private set; }
+        public DateTime DateTimeSend { get; set; } = DateTime.Now;
+        /// <summary> Адрес Email отправителя </summary>
+        public string From { get; set; }
+        /// <summary> Адрес Email получателя </summary>
+        public IEnumerable<string> Tos { get; set; }
         /// <summary> Тема письма </summary>
-        public string Subject { get; private set; }
+        public string Subject { get; set; }
         /// <summary> Текст письма </summary>
-        public string Text { get; private set; }
+        public string Text { get; set; }
         public SchedulerMailSender(IMailSender mailSender)
         {
             _mailSender = mailSender;

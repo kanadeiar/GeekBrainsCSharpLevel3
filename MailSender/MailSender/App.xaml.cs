@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
+using MailSender.Data.Stores.InDB;
 using MailSender.Data.Stores.InMemory;
 using MailSender.lib.Interfaces;
 using MailSender.lib.Models;
 using MailSender.lib.Services;
 using MailSender.ViewModels;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -15,23 +18,32 @@ namespace MailSender
     public partial class App : Application
     {
         private static IHost __Hosting;
+
         /// <summary> Создание хоста сервисов </summary>
-        public static IHost Hosting
-        {
-            get
-            {
-                if (__Hosting != null) return __Hosting;
-                var hostBuilder = Host.CreateDefaultBuilder(Environment.GetCommandLineArgs());
-                hostBuilder.ConfigureAppConfiguration(opt => opt.AddJsonFile("appsettings.json", false, true));
-                hostBuilder.ConfigureServices(ConfigureServices);
-                return __Hosting = hostBuilder.Build();
-            }
-        }
+        //public static IHost Hosting
+        //{
+        //    get
+        //    {
+        //        if (__Hosting != null) return __Hosting;
+        //        var hostBuilder = Host.CreateDefaultBuilder(Environment.GetCommandLineArgs());
+        //        hostBuilder.ConfigureAppConfiguration(opt => opt.AddJsonFile("appsettings.json", false, true));
+        //        hostBuilder.ConfigureServices(ConfigureServices);
+        //        return __Hosting = hostBuilder.Build();
+        //    }
+        //}
+        public static IHost Hosting => __Hosting
+            ??= CreateHostBuilder(Environment.GetCommandLineArgs()).Build();
+        public static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args)
+            .ConfigureAppConfiguration(opt => opt.AddJsonFile("appsettings.json", false, true))
+            .ConfigureServices(ConfigureServices);
         /// <summary> Сервисы приложения </summary>
         public static IServiceProvider Services => Hosting.Services;
 
         private static void ConfigureServices(HostBuilderContext host, IServiceCollection services)
         {
+            services.AddDbContext<MailSenderDB>(o => o
+                .UseSqlServer(host.Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddSingleton<MainWindowViewModel>();
             services.AddSingleton<StatisticViewModel>();
 #if DEBUG

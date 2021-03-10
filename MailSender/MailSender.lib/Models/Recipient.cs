@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using MailSender.lib.Models.Base;
 
 namespace MailSender.lib.Models
@@ -8,6 +10,7 @@ namespace MailSender.lib.Models
     {
         private string _name;
         /// <summary> Имя </summary>
+        [Required, MaxLength(20)]
         public string Name
         {
             get => _name; 
@@ -15,6 +18,7 @@ namespace MailSender.lib.Models
         }
         private string _address;
         /// <summary> Адрес email </summary>
+        [Required, MaxLength(30)]
         public string Address
         {
             get => _address; 
@@ -22,6 +26,7 @@ namespace MailSender.lib.Models
         }
         private string _description;
         /// <summary> Описание </summary>
+        [MaxLength(250)]
         public string Description
         {
             get => _description; 
@@ -30,7 +35,9 @@ namespace MailSender.lib.Models
 
         #region Валидация
 
+        [NotMapped]
         string IDataErrorInfo.Error => null;
+        [NotMapped]
         public string this[string propertyName]
         {
             get
