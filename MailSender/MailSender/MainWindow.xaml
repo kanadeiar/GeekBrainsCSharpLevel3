@@ -41,7 +41,6 @@
             </MenuItem>
             <MenuItem Header="Сервис">
                 <MenuItem Header="Загрузить данные" Command="{Binding LoadDataFileCommand}"/>
-                <MenuItem Header="Сохранить данные" Command="{Binding SaveDataFileCommand}"/>
                 <MenuItem Header="Настройка"/>
                 <MenuItem Header="Опции">
                     <CheckBox Content="Всегда наверху" Name="CheckBoxIsWindowTopMost"/>

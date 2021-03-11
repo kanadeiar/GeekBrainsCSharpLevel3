@@ -32,7 +32,7 @@ namespace MailSender
         private static void ConfigureServices(HostBuilderContext host, IServiceCollection services)
         {
             services.AddDbContext<MailSenderDb>(o => o
-                .UseLazyLoadingProxies() //использовать ленивую загрузку
+                //.UseLazyLoadingProxies() //использовать ленивую загрузку
                 .UseSqlServer(host.Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddSingleton<MainWindowViewModel>();

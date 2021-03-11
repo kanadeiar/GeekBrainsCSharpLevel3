@@ -33,15 +33,6 @@ namespace MailSender.ViewModels
             OnPropertyChanged(nameof(FilteredRecipients));
         }
 
-        private ICommand _saveDataFileCommand;
-
-        /// <summary> Команда сохранения данных </summary>
-        public ICommand SaveDataFileCommand => _saveDataFileCommand ??= new LambdaCommand(OnSaveDataFIleCommandExecute);
-
-        private void OnSaveDataFIleCommandExecute(object p)
-        {
-            SaveData();
-        }
 
         #endregion
 
@@ -61,21 +52,15 @@ namespace MailSender.ViewModels
                 out var login,
                 out var password))
                 return;
-            int newid = default;
-            if (Servers.Count != 0)
-                newid = Servers.Max(s => s.Id) + 1;
-            else
-                newid = 1;
             var server = new Server
             {
-                Id = newid,
                 Name = name,
                 Address = address,
                 Port = port,
                 UseSsl = ssl,
                 Description = description,
                 Login = login,
-                Password = password,
+                Password = password.Encrypt(),
             };
             Servers.Add(server);
         }
@@ -111,6 +96,7 @@ namespace MailSender.ViewModels
             server.Description = description;
             server.Login = login;
             server.Password = password.Encrypt();
+            _Servers.Update(server);
         }
         private ICommand _deleteServerCommand;
         /// <summary> Команда удаления сервера </summary>
@@ -134,14 +120,8 @@ namespace MailSender.ViewModels
                 out var address,
                 out var description))
                 return;
-            int newid = default;
-            if (Senders.Count != 0)
-                newid = Senders.Max(s => s.Id) + 1;
-            else
-                newid = 1;
             var sender = new Sender
             {
-                Id = newid,
                 Name = name,
                 Address = address,
                 Description = description,
@@ -168,6 +148,7 @@ namespace MailSender.ViewModels
             sender.Name = name;
             sender.Address = address;
             sender.Description = description;
+            _Senders.Update(sender);
         }
         private ICommand _deleteSenderCommand;
         /// <summary> Команда удвления отправителя </summary>
@@ -437,19 +418,33 @@ namespace MailSender.ViewModels
         #region Вспомогательные методы
 
  
-
+        /// <summary> Загрузка данных </summary>
         private void LoadData()
         {
+            UnmountLinks();
             Load(Servers, _Servers);
             Load(Senders, _Senders);
             Load(Recipients, _Recipients);
             Load(Messages, _Messages);
+            MountLinks();
         }
-
-        private void SaveData()
+        /// <summary> Монтаж связей между коллекциями и базами данных </summary>
+        private void MountLinks()
         {
-            
+            Servers.CollectionChanged += ServersOnCollectionChanged;
+            Senders.CollectionChanged += SendersOnCollectionChanged;
+            Recipients.CollectionChanged += RecipientsOnCollectionChanged;
+            Messages.CollectionChanged += MessagesOnCollectionChanged;
         }
+        /// <summary> Демонтаж связей между коллекциями и базами данных </summary>
+        private void UnmountLinks()
+        {
+            Servers.CollectionChanged -= ServersOnCollectionChanged;
+            Senders.CollectionChanged -= SendersOnCollectionChanged;
+            Recipients.CollectionChanged -= RecipientsOnCollectionChanged;
+            Messages.CollectionChanged -= MessagesOnCollectionChanged;
+        }
+        /// <summary> Заргузка информации из базы данных в коллекцию </summary>
         private static void Load<T>(ObservableCollection<T> collection, IRepository<T> repository) where T : Entity
         {
             collection.Clear();
@@ -457,10 +452,6 @@ namespace MailSender.ViewModels
                 collection.Add(item);
         }
 
-        private static void Save<T>(IRepository<T> repository, ObservableCollection<T> collection) where T : Entity
-        {
-
-        }
 
         #endregion
     }

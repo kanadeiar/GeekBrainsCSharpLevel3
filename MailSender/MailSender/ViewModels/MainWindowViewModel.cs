@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Timers;
 using MailSender.lib.Interfaces;
@@ -198,8 +199,61 @@ namespace MailSender.ViewModels
                 AutoReset = true,
                 Enabled = true,
             };
+            this.Servers.CollectionChanged += ServersOnCollectionChanged;
+            this.Senders.CollectionChanged += SendersOnCollectionChanged;
+            this.Recipients.CollectionChanged += RecipientsOnCollectionChanged;
+            this.Messages.CollectionChanged += MessagesOnCollectionChanged;
             _timer.Elapsed += OnTimerElapsed;
         }
-    }
 
+
+
+
+        private void ServersOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                _Servers.AddRange(e.NewItems?.Cast<Server>());
+            }
+            if (e.Action == NotifyCollectionChangedAction.Remove)
+            {
+                _Servers.RemoveRange(e.OldItems?.Cast<Server>());
+            }
+        }
+        private void SendersOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                _Senders.AddRange(e.NewItems?.Cast<Sender>());
+            }
+            if (e.Action == NotifyCollectionChangedAction.Remove)
+            {
+                _Senders.RemoveRange(e.OldItems?.Cast<Sender>());
+            }
+        }
+        private void RecipientsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                _Recipients.AddRange(e.NewItems?.Cast<Recipient>());
+            }
+            if (e.Action == NotifyCollectionChangedAction.Remove)
+            {
+                _Recipients.RemoveRange(e.OldItems?.Cast<Recipient>());
+            }
+        }
+        private void MessagesOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                _Messages.AddRange(e.NewItems?.Cast<Message>());
+            }
+            if (e.Action == NotifyCollectionChangedAction.Remove)
+            {
+                _Messages.RemoveRange(e.OldItems?.Cast<Message>());
+            }
+        }
+
+
+    }
 }

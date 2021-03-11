@@ -26,18 +26,28 @@ namespace MailSender.Data.Stores.InDB.Base
             _db.SaveChanges();
             return item.Id;
         }
+        public void AddRange(IEnumerable<T> items)
+        {
+            Set.AddRange(items);
+            _db.SaveChanges();
+        }
         public void Update(T item)
         {
             _db.Entry(item).State = EntityState.Modified;
             _db.SaveChanges();
         }
-        public bool Remove(int id)
+        public bool Delete(int id)
         {
             var item = GetById(id);
             if (item is null) return false;
             Set.Remove(item);
             _db.SaveChanges();
             return true;
+        }
+        public void RemoveRange(IEnumerable<T> items)
+        {
+            Set.RemoveRange(items);
+            _db.SaveChanges();
         }
     }
 }
