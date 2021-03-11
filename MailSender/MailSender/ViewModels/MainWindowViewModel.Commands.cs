@@ -63,6 +63,7 @@ namespace MailSender.ViewModels
                 Password = password.Encrypt(),
             };
             Servers.Add(server);
+            SelectedServer = server;
         }
         private ICommand _editServerCommand;
         /// <summary> Команда редактирования выбранного сервера </summary>
@@ -109,6 +110,7 @@ namespace MailSender.ViewModels
                 return;
             Servers.Remove(server);
         }
+
         private ICommand _createSenderCommand;
         /// <summary> Команда добавления новго отправителя </summary>
         public ICommand CreateSenderCommand => _createSenderCommand ??=
@@ -127,6 +129,7 @@ namespace MailSender.ViewModels
                 Description = description,
             };
             Senders.Add(sender);
+            SelectedSender = sender;
         }
         private ICommand _editSenderCommand;
         /// <summary> Команда редактирования отправителя </summary>
@@ -160,6 +163,40 @@ namespace MailSender.ViewModels
             if (!(p is Sender sender))
                 return;
             Senders.Remove(sender);
+        }
+
+        private ICommand _AddBlankRecipientCommand;
+        /// <summary> Команда добавления нового шаблона получателя </summary>
+        public ICommand AddBlankRecipientCommand => _AddBlankRecipientCommand ??=
+            new LambdaCommand(OnAddBlankRecipientCommandExecuted);
+        private void OnAddBlankRecipientCommandExecuted(object p)
+        {
+            var recipient = new Recipient
+            {
+                Name = "Шаблон",
+                Address = "test@test.ru",
+                Description = "Шаблон",
+            };
+            Recipients.Add(recipient);
+            SelectedRecipient = recipient;
+        }
+        private ICommand _SaveDataRecipientCommand;
+        /// <summary> Команда сохранения изменения в получателе </summary>
+        public ICommand SaveDataRecipientCommand => _SaveDataRecipientCommand ??=
+            new LambdaCommand(OnSaveDataRecipientCommandExecuted, CanSaveDataRecipientCommandExecute);
+        private bool CanSaveDataRecipientCommandExecute(object p) => p is Recipient;
+        private void OnSaveDataRecipientCommandExecuted(object p)
+        {
+            _Recipients.Update(SelectedRecipient);
+        }
+        private ICommand _DeleteSelectedRecipientCommand;
+        /// <summary> Команда удаления выбранного получателя </summary>
+        public ICommand DeleteSelectedRecipientCommand => _DeleteSelectedRecipientCommand ??=
+            new LambdaCommand(OnDeleteSelectedRecipientCommandExecuted, CanDeleteSelectedRecipientCommandExecute);
+        private bool CanDeleteSelectedRecipientCommandExecute(object p) => p is Recipient;
+        private void OnDeleteSelectedRecipientCommandExecuted(object p)
+        {
+            Recipients.Remove(SelectedRecipient);
         }
 
         #endregion

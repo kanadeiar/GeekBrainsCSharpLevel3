@@ -42,31 +42,43 @@ namespace MailSender.Controls
             get => (string)GetValue(HintDeleteElementRecipientsProperty);
             set => SetValue(HintDeleteElementRecipientsProperty, value);
         }
-        public static readonly DependencyProperty AddNewItemCommandRecipientsProperty = DependencyProperty.Register(
-            nameof(AddNewItemCommandRecipients), typeof(ICommand), typeof(ItemsToolBarUserControl), new PropertyMetadata(default(ICommand)));
+
+        public static readonly DependencyProperty AddNewRecipientCommandProperty = DependencyProperty.Register(
+            nameof(AddNewRecipientCommand), typeof(ICommand), typeof(RecipientsToolBarUserControl), new PropertyMetadata(default(ICommand)));
         [Description("Добавление нового элемента")]
-        public ICommand AddNewItemCommandRecipients
+        public ICommand AddNewRecipientCommand
         {
-            get => (ICommand) GetValue(AddNewItemCommandRecipientsProperty);
-            set => SetValue(AddNewItemCommandRecipientsProperty, value);
+            get => (ICommand) GetValue(AddNewRecipientCommandProperty);
+            set => SetValue(AddNewRecipientCommandProperty, value);
         }
 
-        public static readonly DependencyProperty SaveEditItemCommandRecipientsProperty = DependencyProperty.Register(
-            nameof(SaveEditItemCommandRecipients), typeof(ICommand), typeof(RecipientsToolBarUserControl), new PropertyMetadata(default(ICommand)));
-        [Description("Сохраниение изменений в получателе")]
-        public ICommand SaveEditItemCommandRecipients
-        {
-            get => (ICommand) GetValue(SaveEditItemCommandRecipientsProperty);
-            set => SetValue(SaveEditItemCommandRecipientsProperty, value);
-        }
-        public static readonly DependencyProperty DeleteItemCommandRecipientsProperty = DependencyProperty.Register(
-            nameof(DeleteItemCommandRecipients), typeof(ICommand), typeof(ItemsToolBarUserControl), new PropertyMetadata(default(ICommand)));
-        [Description("Удаление элемента")]
-        public ICommand DeleteItemCommandRecipients
-        {
-            get => (ICommand) GetValue(DeleteItemCommandRecipientsProperty);
-            set => SetValue(DeleteItemCommandRecipientsProperty, value);
-        }
+        //public static readonly DependencyProperty AddNewItemCommandRecipientsProperty = DependencyProperty.Register(
+        //    nameof(AddNewItemCommandRecipients), typeof(ICommand), typeof(ItemsToolBarUserControl), new PropertyMetadata(default(ICommand)));
+        //[Description("Добавление нового элемента")]
+        //public ICommand AddNewItemCommandRecipients
+        //{
+        //    get => (ICommand) GetValue(AddNewItemCommandRecipientsProperty);
+        //    set => SetValue(AddNewItemCommandRecipientsProperty, value);
+        //}
+
+        //public static readonly DependencyProperty SaveEditItemCommandRecipientsProperty = DependencyProperty.Register(
+        //    nameof(SaveEditItemCommandRecipients), typeof(ICommand), typeof(RecipientsToolBarUserControl), new PropertyMetadata(default(ICommand)));
+        //[Description("Сохраниение изменений в получателе")]
+        //public ICommand SaveEditItemCommandRecipients
+        //{
+        //    get => (ICommand) GetValue(SaveEditItemCommandRecipientsProperty);
+        //    set => SetValue(SaveEditItemCommandRecipientsProperty, value);
+        //}
+        //public static readonly DependencyProperty DeleteItemCommandRecipientsProperty = DependencyProperty.Register(
+        //    nameof(DeleteItemCommandRecipients), typeof(ICommand), typeof(ItemsToolBarUserControl), new PropertyMetadata(default(ICommand)));
+        //[Description("Удаление элемента")]
+        //public ICommand DeleteItemCommandRecipients
+        //{
+        //    get => (ICommand) GetValue(DeleteItemCommandRecipientsProperty);
+        //    set => SetValue(DeleteItemCommandRecipientsProperty, value);
+        //}
+
+
 
         public RecipientsToolBarUserControl() => InitializeComponent();
     }
