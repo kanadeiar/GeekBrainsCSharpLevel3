@@ -146,7 +146,8 @@
                                     GoToPlanFromToolBarCommandParameter="{Binding ElementName=TabItemPlan}"/>
                         </ToolBar>
                         <ToolBar Band="1">
-                            <controls:RecipientsToolBarUserControl Title="Получатели" HintAddElementRecipients="Добавить получателя" HintDeleteElementRecipients="Удалить получателя"/>
+                            <controls:RecipientsToolBarUserControl Title="Получатели" HintAddElementRecipients="Добавить получателя" HintDeleteElementRecipients="Удалить получателя"
+                                                                   />
                         </ToolBar>
                     </ToolBarTray>
                     <GroupBox Grid.Row="1" Header="Получатели">

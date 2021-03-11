@@ -18,6 +18,9 @@
             <Button Name="ButtonAdd" fa5:Awesome.Content="Solid_Plus" Foreground="Green" Height="40"
                     Command="{Binding AddNewItemCommandRecipients, RelativeSource={RelativeSource AncestorType=l:RecipientsToolBarUserControl}}"
                     ToolTip="{Binding HintAddElementRecipients , RelativeSource={RelativeSource AncestorType=l:RecipientsToolBarUserControl}}"/>
+            <Button Name="ButtonSave" fa5:Awesome.Content="Solid_Save" Foreground="Yellow" Height="40"
+                    Command="{Binding SaveEditItemCommandRecipients, RelativeSource={RelativeSource AncestorType=l:RecipientsToolBarUserControl}}"
+                    ToolTip="{Binding HintAddElementRecipients , RelativeSource={RelativeSource AncestorType=l:RecipientsToolBarUserControl}}"/>
             <Button Name="ButtonRemove" fa5:Awesome.Content="Solid_Trash" Foreground="Red" Height="40"
                     Command="{Binding  DeleteItemCommandRecipients, RelativeSource={RelativeSource AncestorType=l:RecipientsToolBarUserControl}}"
                     ToolTip="{Binding HintDeleteElementRecipients, RelativeSource={RelativeSource AncestorType=l:RecipientsToolBarUserControl}}"/>

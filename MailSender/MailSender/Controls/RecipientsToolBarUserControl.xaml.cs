@@ -26,6 +26,14 @@ namespace MailSender.Controls
             get => (string)GetValue(HintAddElementRecipientsProperty);
             set => SetValue(HintAddElementRecipientsProperty, value);
         }
+        public static readonly DependencyProperty HintSaveEditItemRecipientsProperty = DependencyProperty.Register(
+            nameof(HintSaveEditItemRecipients), typeof(string), typeof(RecipientsToolBarUserControl), new PropertyMetadata("Сохранение изменений"));
+        [Description("Подсказка сохранения изменений в получателе")]
+        public string HintSaveEditItemRecipients
+        {
+            get => (string) GetValue(HintSaveEditItemRecipientsProperty);
+            set => SetValue(HintSaveEditItemRecipientsProperty, value);
+        }
         public static readonly DependencyProperty HintDeleteElementRecipientsProperty = DependencyProperty.Register(
             nameof(HintDeleteElementRecipients), typeof(string), typeof(ItemsToolBarUserControl), new PropertyMetadata("Удаление элемента"));
         [Description("Подсказка удаления элемента")]
@@ -41,6 +49,15 @@ namespace MailSender.Controls
         {
             get => (ICommand) GetValue(AddNewItemCommandRecipientsProperty);
             set => SetValue(AddNewItemCommandRecipientsProperty, value);
+        }
+
+        public static readonly DependencyProperty SaveEditItemCommandRecipientsProperty = DependencyProperty.Register(
+            nameof(SaveEditItemCommandRecipients), typeof(ICommand), typeof(RecipientsToolBarUserControl), new PropertyMetadata(default(ICommand)));
+        [Description("Сохраниение изменений в получателе")]
+        public ICommand SaveEditItemCommandRecipients
+        {
+            get => (ICommand) GetValue(SaveEditItemCommandRecipientsProperty);
+            set => SetValue(SaveEditItemCommandRecipientsProperty, value);
         }
         public static readonly DependencyProperty DeleteItemCommandRecipientsProperty = DependencyProperty.Register(
             nameof(DeleteItemCommandRecipients), typeof(ICommand), typeof(ItemsToolBarUserControl), new PropertyMetadata(default(ICommand)));
