@@ -145,13 +145,6 @@
                                     GoToPlanFromToolBarCommand="{Binding ToTabItemCommand}"
                                     GoToPlanFromToolBarCommandParameter="{Binding ElementName=TabItemPlan}"/>
                         </ToolBar>
-                        <ToolBar Band="1">
-                            <controls:RecipientsToolBarUserControl Title="Получатели" HintAddElementRecipients="Добавить получателя" 
-                                                                   HintSaveEditItemRecipients="Сохранить получателя" HintDeleteElementRecipients="Удалить получателя"
-                                      AddNewItemCommandRecipients="{Binding AddBlankRecipientCommand}"/>
-                            <!--SaveEditItemCommandRecipients="{Binding SaveDataRecipientCommand}"
-                                      DeleteItemCommandRecipients="{Binding DeleteSelectedRecipientCommand}"/>-->
-                        </ToolBar>
                     </ToolBarTray>
                     <GroupBox Grid.Row="1" Header="Получатели">
                         <Grid>
