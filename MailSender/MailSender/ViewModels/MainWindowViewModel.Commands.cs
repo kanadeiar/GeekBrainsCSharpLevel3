@@ -198,6 +198,39 @@ namespace MailSender.ViewModels
         {
             Recipients.Remove(SelectedRecipient);
         }
+        
+        private ICommand _AddMessageCommand;
+        /// <summary> Команда добавления нового письма </summary>
+        public ICommand AddMessageCommand => _AddMessageCommand ??=
+            new LambdaCommand(OnAddMessageCommandExecuted);
+        private void OnAddMessageCommandExecuted(object p)
+        {
+            var message = new Message
+            {
+                Subject = "Шаблон",
+                Text = "Шаблонный текст",
+            };
+            Messages.Add(message);
+            SelectedMessage = message;
+        }
+        private ICommand _SaveMessageCommand;
+        /// <summary> Команда сохранения сообщения </summary>
+        public ICommand SaveMessageCommand => _SaveMessageCommand ??=
+            new LambdaCommand(OnSaveMessageCommandExecuted, CanSaveMessageCommandExecute);
+        private bool CanSaveMessageCommandExecute(object p) => p is Message;
+        private void OnSaveMessageCommandExecuted(object p)
+        {
+            _Messages.Update(SelectedMessage);
+        }
+        private ICommand _DeleteMessageCommand;
+        /// <summary> Команда удаления сообщения </summary>
+        public ICommand DeleteMessageCommand => _DeleteMessageCommand ??=
+            new LambdaCommand(OnDeleteMessageCommandExecuted, CanDeleteMessageCommandExecute);
+        private bool CanDeleteMessageCommandExecute(object p) => p is Message;
+        private void OnDeleteMessageCommandExecuted(object p)
+        {
+            Messages.Remove(SelectedMessage);
+        }
 
         #endregion
 
