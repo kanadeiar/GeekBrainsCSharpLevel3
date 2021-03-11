@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MailSender.Migrations
 {
-    [DbContext(typeof(MailSenderDB))]
+    [DbContext(typeof(MailSenderDb))]
     partial class MailSenderDBModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

@@ -436,12 +436,7 @@ namespace MailSender.ViewModels
 
         #region Вспомогательные методы
 
-        private static void Load<T>(ObservableCollection<T> collection, IRepository<T> repository) where T : Entity
-        {
-            collection.Clear();
-            foreach (var item in repository.GetAll())
-                collection.Add(item);
-        }
+ 
 
         private void LoadData()
         {
@@ -453,7 +448,18 @@ namespace MailSender.ViewModels
 
         private void SaveData()
         {
-            //TODO сохранение данных нужно сделать!
+            
+        }
+        private static void Load<T>(ObservableCollection<T> collection, IRepository<T> repository) where T : Entity
+        {
+            collection.Clear();
+            foreach (var item in repository.GetAll())
+                collection.Add(item);
+        }
+
+        private static void Save<T>(IRepository<T> repository, ObservableCollection<T> collection) where T : Entity
+        {
+
         }
 
         #endregion

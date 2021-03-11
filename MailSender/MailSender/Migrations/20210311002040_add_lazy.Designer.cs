@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MailSender.Migrations
 {
     [DbContext(typeof(MailSenderDb))]
-    [Migration("20210310215412_init")]
-    partial class init
+    [Migration("20210311002040_add_lazy")]
+    partial class add_lazy
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -131,12 +131,17 @@ namespace MailSender.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
+                    b.Property<int?>("SchedulerId")
+                        .HasColumnType("int");
+
                     b.Property<byte[]>("Timestamp")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("SchedulerId");
 
                     b.ToTable("Recipients");
 
@@ -211,6 +216,41 @@ namespace MailSender.Migrations
                             Description = "Тестовый получатель10",
                             Name = "Получатель10"
                         });
+                });
+
+            modelBuilder.Entity("MailSender.lib.Models.Scheduler", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("DateTimeSend")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("MessageId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SenderId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ServerId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("Timestamp")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MessageId");
+
+                    b.HasIndex("SenderId");
+
+                    b.HasIndex("ServerId");
+
+                    b.ToTable("Scheduler");
                 });
 
             modelBuilder.Entity("MailSender.lib.Models.Sender", b =>
@@ -407,6 +447,39 @@ namespace MailSender.Migrations
                             Port = 25,
                             UseSsl = false
                         });
+                });
+
+            modelBuilder.Entity("MailSender.lib.Models.Recipient", b =>
+                {
+                    b.HasOne("MailSender.lib.Models.Scheduler", null)
+                        .WithMany("Recipients")
+                        .HasForeignKey("SchedulerId");
+                });
+
+            modelBuilder.Entity("MailSender.lib.Models.Scheduler", b =>
+                {
+                    b.HasOne("MailSender.lib.Models.Message", "Message")
+                        .WithMany()
+                        .HasForeignKey("MessageId");
+
+                    b.HasOne("MailSender.lib.Models.Sender", "Sender")
+                        .WithMany()
+                        .HasForeignKey("SenderId");
+
+                    b.HasOne("MailSender.lib.Models.Server", "Server")
+                        .WithMany()
+                        .HasForeignKey("ServerId");
+
+                    b.Navigation("Message");
+
+                    b.Navigation("Sender");
+
+                    b.Navigation("Server");
+                });
+
+            modelBuilder.Entity("MailSender.lib.Models.Scheduler", b =>
+                {
+                    b.Navigation("Recipients");
                 });
 #pragma warning restore 612, 618
         }

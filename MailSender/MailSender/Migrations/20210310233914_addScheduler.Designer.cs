@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MailSender.Migrations
 {
-    [DbContext(typeof(MailSenderDB))]
+    [DbContext(typeof(MailSenderDb))]
     [Migration("20210310233914_addScheduler")]
     partial class addScheduler
     {

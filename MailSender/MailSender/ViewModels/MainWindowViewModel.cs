@@ -21,6 +21,7 @@ namespace MailSender.ViewModels
         private readonly IRepository<Sender> _Senders;
         private readonly IRepository<Recipient> _Recipients;
         private readonly IRepository<Message> _Messages;
+        private readonly IRepository<Scheduler> _Schedulers; //задания из хранилища, неактивные
         
         #region Свойства
 
@@ -68,7 +69,7 @@ namespace MailSender.ViewModels
         /// <summary> Сообщения электронной почты </summary>
         public ObservableCollection<Message> Messages { get; } = new();
 
-        /// <summary> Задания на рассылку почты </summary>
+        /// <summary> Задания на рассылку почты активные </summary>
         public ObservableCollection<SchedulerMailSender> SchedulerMailSenders { get; } = new();
 
 
@@ -182,13 +183,14 @@ namespace MailSender.ViewModels
         #endregion
 
         public MainWindowViewModel(IMailService mailService, IRepository<Server> Servers, IRepository<Sender> Senders,
-            IRepository<Recipient> Recipients, IRepository<Message> Messages, ISchedulerMailService SchedulerService)
+            IRepository<Recipient> Recipients, IRepository<Message> Messages, IRepository<Scheduler> Schedulers, ISchedulerMailService SchedulerService)
         {
             _Servers = Servers;
             _Senders = Senders;
             _Recipients = Recipients;
             _Messages = Messages;
             _MailService = mailService;
+            _Schedulers = Schedulers;
             _SchedulerService = SchedulerService;
             _timer = new Timer
             {

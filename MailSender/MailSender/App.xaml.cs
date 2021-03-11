@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Windows;
 using MailSender.Data.Stores.InDB;
+using MailSender.Data.Stores.InDB.Base;
 using MailSender.Data.Stores.InMemory;
 using MailSender.lib.Interfaces;
 using MailSender.lib.Models;
@@ -30,7 +31,7 @@ namespace MailSender
 
         private static void ConfigureServices(HostBuilderContext host, IServiceCollection services)
         {
-            services.AddDbContext<MailSenderDB>(o => o
+            services.AddDbContext<MailSenderDb>(o => o
                 .UseLazyLoadingProxies() //использовать ленивую загрузку
                 .UseSqlServer(host.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -43,10 +44,12 @@ namespace MailSender
 #endif
             services.AddSingleton<IEncryptService, Rfc2898Encryptor>();
 
-            services.AddSingleton<IRepository<Server>, ServersRepositoryInMem>();
-            services.AddSingleton<IRepository<Sender>, SendersRepositoryInMem>();
-            services.AddSingleton<IRepository<Recipient>, RecipientsRepositoryInMem>();
-            services.AddSingleton<IRepository<Message>, MessagesRepositoryInMem>();
+            //services.AddSingleton<IRepository<Server>, ServersRepositoryInMem>();
+            //services.AddSingleton<IRepository<Sender>, SendersRepositoryInMem>();
+            //services.AddSingleton<IRepository<Recipient>, RecipientsRepositoryInMem>();
+            //services.AddSingleton<IRepository<Message>, MessagesRepositoryInMem>();
+            
+            services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
 
             services.AddSingleton<IStatistic, MemoryStatisticService>();
 

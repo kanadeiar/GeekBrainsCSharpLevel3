@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MailSender.Data.Stores.InDB
 {
-    public class MailSenderDB : DbContext
+    public class MailSenderDb : DbContext
     {
         public DbSet<Server> Servers { get; set; }
         public DbSet<Sender> Senders { get; set; }
@@ -14,7 +14,7 @@ namespace MailSender.Data.Stores.InDB
         public DbSet<Message> Messages { get; set; }
         public DbSet<Scheduler> Scheduler { get; set; }
 
-        public MailSenderDB(DbContextOptions<MailSenderDB> options) : base(options)
+        public MailSenderDb(DbContextOptions<MailSenderDb> options) : base(options)
         {
         }
 
