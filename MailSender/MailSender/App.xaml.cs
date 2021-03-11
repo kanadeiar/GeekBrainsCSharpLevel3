@@ -20,17 +20,6 @@ namespace MailSender
         private static IHost __Hosting;
 
         /// <summary> Создание хоста сервисов </summary>
-        //public static IHost Hosting
-        //{
-        //    get
-        //    {
-        //        if (__Hosting != null) return __Hosting;
-        //        var hostBuilder = Host.CreateDefaultBuilder(Environment.GetCommandLineArgs());
-        //        hostBuilder.ConfigureAppConfiguration(opt => opt.AddJsonFile("appsettings.json", false, true));
-        //        hostBuilder.ConfigureServices(ConfigureServices);
-        //        return __Hosting = hostBuilder.Build();
-        //    }
-        //}
         public static IHost Hosting => __Hosting
             ??= CreateHostBuilder(Environment.GetCommandLineArgs()).Build();
         public static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args)
@@ -42,6 +31,7 @@ namespace MailSender
         private static void ConfigureServices(HostBuilderContext host, IServiceCollection services)
         {
             services.AddDbContext<MailSenderDB>(o => o
+                .UseLazyLoadingProxies() //использовать ленивую загрузку
                 .UseSqlServer(host.Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddSingleton<MainWindowViewModel>();
