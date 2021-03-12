@@ -60,19 +60,70 @@ namespace MailSender.ViewModels
 
         /// <summary> Почтовые сервера с которых отправляется почта </summary>
         public ObservableCollection<Server> Servers { get; } = new();
-
+        private void ServersOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                _Servers.AddRange(e.NewItems?.Cast<Server>());
+            }
+            if (e.Action == NotifyCollectionChangedAction.Remove)
+            {
+                _Servers.RemoveRange(e.OldItems?.Cast<Server>());
+            }
+        }
         /// <summary> Отправители в почтовом сообщении </summary>
         public ObservableCollection<Sender> Senders { get; } = new();
-
+        private void SendersOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                _Senders.AddRange(e.NewItems?.Cast<Sender>());
+            }
+            if (e.Action == NotifyCollectionChangedAction.Remove)
+            {
+                _Senders.RemoveRange(e.OldItems?.Cast<Sender>());
+            }
+        }
         /// <summary> Получатели почтового сообщения </summary>
         public ObservableCollection<Recipient> Recipients { get; } = new();
-
+        private void RecipientsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                _Recipients.AddRange(e.NewItems?.Cast<Recipient>());
+            }
+            if (e.Action == NotifyCollectionChangedAction.Remove)
+            {
+                _Recipients.RemoveRange(e.OldItems?.Cast<Recipient>());
+            }
+        }
         /// <summary> Сообщения электронной почты </summary>
         public ObservableCollection<Message> Messages { get; } = new();
-
+        private void MessagesOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                _Messages.AddRange(e.NewItems?.Cast<Message>());
+            }
+            if (e.Action == NotifyCollectionChangedAction.Remove)
+            {
+                _Messages.RemoveRange(e.OldItems?.Cast<Message>());
+            }
+        }
         /// <summary> Задания на рассылку почты активные </summary>
         public ObservableCollection<SchedulerMailSender> SchedulerMailSenders { get; } = new();
+        private void SchedulerMailSendersOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                _Schedulers.AddRange(e.NewItems?.Cast<SchedulerMailSender>().Select(s => s.Scheduler));
+            }
 
+            if (e.Action == NotifyCollectionChangedAction.Remove)
+            {
+                _Schedulers.RemoveRange(e.OldItems?.Cast<SchedulerMailSender>().Select(s => s.Scheduler));
+            }
+        }
 
         private Server _selectedServer;
 
@@ -185,8 +236,6 @@ namespace MailSender.ViewModels
 
         public MainWindowViewModel(IMailService mailService, IRepository<Server> Servers, IRepository<Sender> Senders,
             IRepository<Recipient> Recipients, IRepository<Message> Messages, IRepository<Scheduler> Schedulers, ISchedulerMailService SchedulerService)
-        //public MainWindowViewModel(IMailService mailService, IRepository<Server> Servers, IRepository<Sender> Senders,
-        //    IRepository<Recipient> Recipients, IRepository<Message> Messages, ISchedulerMailService SchedulerService)
         {
             _Servers = Servers;
             _Senders = Senders;
@@ -205,57 +254,8 @@ namespace MailSender.ViewModels
             this.Senders.CollectionChanged += SendersOnCollectionChanged;
             this.Recipients.CollectionChanged += RecipientsOnCollectionChanged;
             this.Messages.CollectionChanged += MessagesOnCollectionChanged;
+            this.SchedulerMailSenders.CollectionChanged += SchedulerMailSendersOnCollectionChanged;
             _timer.Elapsed += OnTimerElapsed;
         }
-
-
-
-
-        private void ServersOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-        {
-            if (e.Action == NotifyCollectionChangedAction.Add)
-            {
-                _Servers.AddRange(e.NewItems?.Cast<Server>());
-            }
-            if (e.Action == NotifyCollectionChangedAction.Remove)
-            {
-                _Servers.RemoveRange(e.OldItems?.Cast<Server>());
-            }
-        }
-        private void SendersOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-        {
-            if (e.Action == NotifyCollectionChangedAction.Add)
-            {
-                _Senders.AddRange(e.NewItems?.Cast<Sender>());
-            }
-            if (e.Action == NotifyCollectionChangedAction.Remove)
-            {
-                _Senders.RemoveRange(e.OldItems?.Cast<Sender>());
-            }
-        }
-        private void RecipientsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-        {
-            if (e.Action == NotifyCollectionChangedAction.Add)
-            {
-                _Recipients.AddRange(e.NewItems?.Cast<Recipient>());
-            }
-            if (e.Action == NotifyCollectionChangedAction.Remove)
-            {
-                _Recipients.RemoveRange(e.OldItems?.Cast<Recipient>());
-            }
-        }
-        private void MessagesOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-        {
-            if (e.Action == NotifyCollectionChangedAction.Add)
-            {
-                _Messages.AddRange(e.NewItems?.Cast<Message>());
-            }
-            if (e.Action == NotifyCollectionChangedAction.Remove)
-            {
-                _Messages.RemoveRange(e.OldItems?.Cast<Message>());
-            }
-        }
-
-
     }
 }
