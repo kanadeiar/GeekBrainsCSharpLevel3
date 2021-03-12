@@ -11,8 +11,10 @@ using MailSender.lib.Interfaces;
 using MailSender.lib.Models;
 using MailSender.lib.Models.Base;
 using MailSender.lib.Services;
+using MailSender.Raport;
 using MailSender.ViewModels.Base;
 using MailSender.Windows;
+using Microsoft.Win32;
 
 namespace MailSender.ViewModels
 {
@@ -484,6 +486,34 @@ namespace MailSender.ViewModels
         {
             if (!(p is TabItem tabItem)) return;
             tabItem.IsSelected = true;
+        }
+
+        private ICommand _GenerateRecipientsRaportCommand;
+
+        /// <summary> Команда создания отчета о получателях </summary>
+        public ICommand GenerateRecipientsRaportCommand => _GenerateRecipientsRaportCommand ??=
+            new LambdaCommand(OnGenerateRecipientsRaportCommandExecuted, CanGenerateRecipientsRaportCommandExecute);
+
+        private bool CanGenerateRecipientsRaportCommandExecute(object p) => Recipients.Count > 0;
+
+        private void OnGenerateRecipientsRaportCommandExecuted(object p)
+        {
+            SaveFileDialog dialog = new SaveFileDialog
+            {
+                Title = "Файл в который записать получателей в формате Word",
+                FileName = "Мой отчет.docx",
+                Filter = "Word (*.docx)|*.docx|Все файлы (*.*)|*.*",
+            };
+            if (dialog.ShowDialog() == false)
+                return;
+
+            var raport = new RecipientsRaport();
+            raport.Recipients = Recipients.Select(r => new RecipientsRaport.WordRaport
+            {
+                Name = r.Name,
+                Address = r.Address,
+            });
+            raport.CreatePackage(dialog.FileName);
         }
 
         #endregion

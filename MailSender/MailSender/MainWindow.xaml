@@ -41,6 +41,8 @@
             </MenuItem>
             <MenuItem Header="Сервис">
                 <MenuItem Header="Загрузить данные" Command="{Binding LoadDataFileCommand}"/>
+                <MenuItem Header="Получить отчет о получателях" Command="{Binding GenerateRecipientsRaportCommand}"/>
+                <Separator/>
                 <MenuItem Header="Настройка"/>
                 <MenuItem Header="Опции">
                     <CheckBox Content="Всегда наверху" Name="CheckBoxIsWindowTopMost"/>
@@ -144,6 +146,19 @@
                             <controls:ToPlanToolBarUserControl Title="Планировщик" HintButtonToPlanToolBar="Перейти к планированию"
                                     GoToPlanFromToolBarCommand="{Binding ToTabItemCommand}"
                                     GoToPlanFromToolBarCommandParameter="{Binding ElementName=TabItemPlan}"/>
+                        </ToolBar>
+                        <ToolBar Band="1" Header="Отчет">
+                            <ToolBar.Resources>
+                                <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}">
+                                </Style>
+                            </ToolBar.Resources>
+                            <Button ToolTip="Сгенерировать отчет получателей писем"
+                                    Command="{Binding GenerateRecipientsRaportCommand}">
+                                <StackPanel Orientation="Horizontal" Cursor="Hand">
+                                    <fa:FontAwesome Icon="Brands_RaspberryPi" Foreground="Red" Margin="5,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Получатели"/>
+                                </StackPanel>
+                            </Button>
                         </ToolBar>
                     </ToolBarTray>
                     <GroupBox Grid.Row="1" Header="Получатели">
