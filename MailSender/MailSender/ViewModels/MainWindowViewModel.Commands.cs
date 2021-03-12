@@ -428,11 +428,14 @@ namespace MailSender.ViewModels
             var context = SynchronizationContext.Current;
             schedulerMailSender.MissionCompleted += (_, _) =>
             {
-                context?.Send(x => SchedulerMailSenders.Remove((SchedulerMailSender) schedulerMailSender), null);
-                _Schedulers.Delete(scheduler.Id);
+                context?.Send(x =>
+                {
+                    _Schedulers.Delete(scheduler.Id);
+                    SchedulerMailSenders.Remove((SchedulerMailSender) schedulerMailSender);
+                }, null);
             };
-            SchedulerMailSenders.Add((SchedulerMailSender)schedulerMailSender);
             _Schedulers.Add(scheduler);
+            SchedulerMailSenders.Add((SchedulerMailSender)schedulerMailSender);
         }
 
         private ICommand _SchedulerDeleteMessageCommand;
@@ -447,6 +450,7 @@ namespace MailSender.ViewModels
         {
             if (!(p is SchedulerMailSender scheduler))
                 return;
+            _Schedulers.Delete(scheduler.Scheduler.Id);
             scheduler.Stop();
             SchedulerMailSenders.Remove(scheduler);
         }
@@ -539,8 +543,11 @@ namespace MailSender.ViewModels
                 var context = SynchronizationContext.Current;
                 schedulerMailSender.MissionCompleted += (_, _) =>
                 {
-                    context?.Send(x => collection.Remove((SchedulerMailSender)schedulerMailSender), null);
-                    repository.Delete(scheduler.Id);
+                    context?.Send(x =>
+                    {
+                        repository.Delete(scheduler.Id);
+                        collection.Remove((SchedulerMailSender) schedulerMailSender);
+                    }, null);
                 };
                 collection.Add((SchedulerMailSender)schedulerMailSender);
             }
@@ -548,5 +555,4 @@ namespace MailSender.ViewModels
 
         #endregion
     }
-
 }
