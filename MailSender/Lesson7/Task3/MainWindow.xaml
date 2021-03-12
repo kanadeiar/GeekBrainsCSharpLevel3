@@ -5,11 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Task3"
         mc:Ignorable="d"
-
-        Title="Продажа билетов" 
-        
-        Height="500" Width="600" WindowStartupLocation="CenterScreen" Background="BlanchedAlmond" ResizeMode="CanResizeWithGrip">
+        DataContext="{Binding MainWindowViewModel, Source={StaticResource Locator}}"
+        Title="{Binding Title}" 
+        Height="500" Width="700" WindowStartupLocation="CenterScreen" Background="BlanchedAlmond" ResizeMode="CanResizeWithGrip">
     <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Главное меню">
+                <MenuItem Header="Выход" Command="{Binding CloseAppCommand}"/>
+            </MenuItem>
+            <MenuItem Header="Справка">
+                <MenuItem Header="О программе ..." Command="{Binding ShowDialogCommand}"
+                          CommandParameter="Программа для продажи билетов в кино"/>
+            </MenuItem>
+        </Menu>
         <Grid DockPanel.Dock="Top" Background="PaleGreen">
             <TextBlock Text="Задание №3. Написать программу для продажи билетов в кино." Height="30" FontSize="18" 
                        HorizontalAlignment="Center" Margin="0" TextWrapping="Wrap"/>
@@ -18,6 +26,7 @@
             <TextBlock Text="Продажа выполняется следующим образом: кассир выбирает киносеанс и указывает количество покупаемых билетов. Информация о продажах сохраняется базу данных для последующего анализа. Для заказа сохраняется количество билетов и время продажи. Дополнительно может быть предусмотрено редактирования списка киносеансов. Для киносеанса заполняется время начала и название фильма." TextWrapping="Wrap" Margin="5,0"/>
         </Grid>
         <Grid>
+
 
         </Grid>
 

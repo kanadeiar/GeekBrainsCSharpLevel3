@@ -10,6 +10,8 @@ namespace Task3
         public MainWindow()
         {
             InitializeComponent();
+
+            
         }
     }
 }
