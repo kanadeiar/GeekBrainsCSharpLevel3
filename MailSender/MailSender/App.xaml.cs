@@ -11,6 +11,7 @@ using MailSender.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 
 namespace MailSender
@@ -32,11 +33,11 @@ namespace MailSender
         private static void ConfigureServices(HostBuilderContext host, IServiceCollection services)
         {
             services.AddDbContext<MailSenderDb>(o => o
-                //.UseLazyLoadingProxies() //использовать ленивую загрузку
+                .UseLazyLoadingProxies() //использовать ленивую загрузку
                 .UseSqlServer(host.Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddSingleton<MainWindowViewModel>();
-            services.AddSingleton<StatisticViewModel>();
+            services.AddScoped<MainWindowViewModel>();
+            services.AddScoped<StatisticViewModel>();
 #if DEBUG
             services.AddTransient<IMailService, DebugMailService>();
 #else
@@ -48,23 +49,13 @@ namespace MailSender
             //services.AddSingleton<IRepository<Sender>, SendersRepositoryInMem>();
             //services.AddSingleton<IRepository<Recipient>, RecipientsRepositoryInMem>();
             //services.AddSingleton<IRepository<Message>, MessagesRepositoryInMem>();
-            
+            //services.AddSingleton<IRepository<Scheduler>, SchedulersRepositoryInMem>();
+
             services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
 
             services.AddSingleton<IStatistic, MemoryStatisticService>();
 
             services.AddSingleton<ISchedulerMailService, SchedulerMailService>();
-
-//#if DEBUG
-//            var storage = new DebugDataStorage();
-//#else
-//            var storage = new XmlFileDataStorage("storage.xml");
-//#endif
-//            services.AddSingleton<IServerStorage>(storage);
-//            services.AddSingleton<ISenderStorage>(storage);
-//            services.AddSingleton<IRecipientStorage>(storage);
-//            services.AddSingleton<IMessageStorage>(storage);
-
 
         }
     }

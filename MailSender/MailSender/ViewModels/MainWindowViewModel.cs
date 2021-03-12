@@ -185,6 +185,8 @@ namespace MailSender.ViewModels
 
         public MainWindowViewModel(IMailService mailService, IRepository<Server> Servers, IRepository<Sender> Senders,
             IRepository<Recipient> Recipients, IRepository<Message> Messages, IRepository<Scheduler> Schedulers, ISchedulerMailService SchedulerService)
+        //public MainWindowViewModel(IMailService mailService, IRepository<Server> Servers, IRepository<Sender> Senders,
+        //    IRepository<Recipient> Recipients, IRepository<Message> Messages, ISchedulerMailService SchedulerService)
         {
             _Servers = Servers;
             _Senders = Senders;
