@@ -35,6 +35,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FilesGenerator", "Lesson6\F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailSender.Raport", "MailSender.Raport\MailSender.Raport.csproj", "{D55F2F18-8181-4CEC-AFAC-C90CD11637A5}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lesson7", "lesson7", "{0B6CEB90-452C-48A9-8E44-3D754A10B198}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task3", "Lesson7\Task3\Task3.csproj", "{C8CE5866-CE3E-4BF2-9DDC-D10401D4173F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -93,6 +97,10 @@ Global
 		{D55F2F18-8181-4CEC-AFAC-C90CD11637A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D55F2F18-8181-4CEC-AFAC-C90CD11637A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D55F2F18-8181-4CEC-AFAC-C90CD11637A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8CE5866-CE3E-4BF2-9DDC-D10401D4173F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8CE5866-CE3E-4BF2-9DDC-D10401D4173F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8CE5866-CE3E-4BF2-9DDC-D10401D4173F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8CE5866-CE3E-4BF2-9DDC-D10401D4173F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -108,6 +116,7 @@ Global
 		{BA7E523D-BE1C-4E43-A6A8-3108D178A7C0} = {E085A1AD-C558-4889-AFBB-8B0927AA29C2}
 		{3AF4260F-A67F-45CC-83F2-EE800CCC4FA3} = {E085A1AD-C558-4889-AFBB-8B0927AA29C2}
 		{1FCAC4C9-94C7-475C-BC79-7E1C9BEBB12F} = {E085A1AD-C558-4889-AFBB-8B0927AA29C2}
+		{C8CE5866-CE3E-4BF2-9DDC-D10401D4173F} = {0B6CEB90-452C-48A9-8E44-3D754A10B198}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {87085C93-49F8-4836-92D5-181E77F6C29A}
