@@ -257,7 +257,7 @@
                                         CommandParameter="{Binding SelectedMessage}">
                                 </Button>
                             </UniformGrid>
-                            <ListBox Grid.Row="1" Name="ListBoxMessages" SelectedIndex="0" MinWidth="160" SelectionMode="Single" VirtualizingStackPanel.IsVirtualizing="True"
+                            <ListBox Grid.Row="1" Name="ListBoxMessages" SelectedIndex="0" MinWidth="160" SelectionMode="Single" VirtualizingStackPanel.IsVirtualizing="True" Margin="0,10,0,0"
                                      ItemsSource="{Binding Messages}" 
                                      SelectedItem="{Binding SelectedMessage}">
                                 <ListBox.ItemContainerStyle>

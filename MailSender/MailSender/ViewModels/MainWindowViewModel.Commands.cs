@@ -395,7 +395,6 @@ namespace MailSender.ViewModels
 
         #endregion
 
-
         #region Команда планирования отправки сообщений
 
         private ICommand _schedulerSendMailMessageCommand;
@@ -430,8 +429,10 @@ namespace MailSender.ViewModels
             schedulerMailSender.MissionCompleted += (_, _) =>
             {
                 context?.Send(x => SchedulerMailSenders.Remove((SchedulerMailSender) schedulerMailSender), null);
+                _Schedulers.Delete(scheduler.Id);
             };
             SchedulerMailSenders.Add((SchedulerMailSender)schedulerMailSender);
+            _Schedulers.Add(scheduler);
         }
 
         private ICommand _SchedulerDeleteMessageCommand;
@@ -496,6 +497,7 @@ namespace MailSender.ViewModels
             Load(Senders, _Senders);
             Load(Recipients, _Recipients);
             Load(Messages, _Messages);
+            LoadSchedulers(SchedulerMailSenders, _Schedulers, _MailService, _SchedulerService);
             MountLinks();
         }
         /// <summary> Монтаж связей между коллекциями и базами данных </summary>
@@ -514,7 +516,7 @@ namespace MailSender.ViewModels
             Recipients.CollectionChanged -= RecipientsOnCollectionChanged;
             Messages.CollectionChanged -= MessagesOnCollectionChanged;
         }
-        /// <summary> Заргузка информации из базы данных в коллекцию </summary>
+        /// <summary> Загрузка информации из базы данных в коллекцию </summary>
         private static void Load<T>(ObservableCollection<T> collection, IRepository<T> repository) where T : Entity
         {
             collection.Clear();
@@ -522,6 +524,27 @@ namespace MailSender.ViewModels
                 collection.Add(item);
         }
 
+        private static void LoadSchedulers(ObservableCollection<SchedulerMailSender> collection,
+            IRepository<Scheduler> repository, IMailService mailService, ISchedulerMailService schedulerService)
+        {
+            collection.Clear();
+            foreach (var scheduler in repository.GetAll())
+            {
+                var server = scheduler.Server;
+                var client = mailService.GetSender(server.Address, server.Port, server.UseSsl, server.Login,
+                    server.Password);
+                var schedulerMailSender = schedulerService.GetScheduler(client);
+                schedulerMailSender.Start(scheduler);
+
+                var context = SynchronizationContext.Current;
+                schedulerMailSender.MissionCompleted += (_, _) =>
+                {
+                    context?.Send(x => collection.Remove((SchedulerMailSender)schedulerMailSender), null);
+                    repository.Delete(scheduler.Id);
+                };
+                collection.Add((SchedulerMailSender)schedulerMailSender);
+            }
+        }
 
         #endregion
     }

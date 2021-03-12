@@ -7,6 +7,7 @@ using System.Linq;
 using System.Timers;
 using MailSender.lib.Interfaces;
 using MailSender.lib.Models;
+using MailSender.lib.Service;
 using MailSender.lib.Services;
 using MailSender.ViewModels.Base;
 
@@ -112,18 +113,7 @@ namespace MailSender.ViewModels
         }
         /// <summary> Задания на рассылку почты активные </summary>
         public ObservableCollection<SchedulerMailSender> SchedulerMailSenders { get; } = new();
-        private void SchedulerMailSendersOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-        {
-            if (e.Action == NotifyCollectionChangedAction.Add)
-            {
-                _Schedulers.AddRange(e.NewItems?.Cast<SchedulerMailSender>().Select(s => s.Scheduler));
-            }
 
-            if (e.Action == NotifyCollectionChangedAction.Remove)
-            {
-                _Schedulers.RemoveRange(e.OldItems?.Cast<SchedulerMailSender>().Select(s => s.Scheduler));
-            }
-        }
 
         private Server _selectedServer;
 
@@ -254,7 +244,6 @@ namespace MailSender.ViewModels
             this.Senders.CollectionChanged += SendersOnCollectionChanged;
             this.Recipients.CollectionChanged += RecipientsOnCollectionChanged;
             this.Messages.CollectionChanged += MessagesOnCollectionChanged;
-            this.SchedulerMailSenders.CollectionChanged += SchedulerMailSendersOnCollectionChanged;
             _timer.Elapsed += OnTimerElapsed;
         }
     }
