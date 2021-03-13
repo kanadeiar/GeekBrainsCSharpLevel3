@@ -28,18 +28,24 @@
         </Grid>
         <TabControl Background="Azure">
             <TabItem Header="Продажа билетов">
-
+                <v:AddNewOrderView Margin="10"/>
             </TabItem>
             <TabItem Header="Редактирование киносеансов">
-                <v:EditMovieShowsView/>
+                <v:EditMovieShowsView Margin="10"/>
             </TabItem>
             <TabItem Header="Данные по продажам">
-
+                <GroupBox Header="Данные по всем продажам билетов">
+                    <DataGrid AutoGenerateColumns="False" GridLinesVisibility="Vertical" IsReadOnly="True" SelectionMode="Single" AlternatingRowBackground="Aquamarine"
+                              ItemsSource="{Binding Orders}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Время продажи" Binding="{Binding DateTime, StringFormat=dd.MM.yyyy HH:mm}"/>
+                            <DataGridTextColumn Header="Количество" Binding="{Binding Count}"/>
+                            <DataGridTextColumn Header="Время сеанса" Binding="{Binding MovieShow.BeginTime, StringFormat=HH ч. mm м.}"/>
+                            <DataGridTextColumn Header="Название сеанса" Binding="{Binding MovieShow.Name}" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </GroupBox>
             </TabItem>
-            
-
-
         </TabControl>
-
     </DockPanel>
 </Window>

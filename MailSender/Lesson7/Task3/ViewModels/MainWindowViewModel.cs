@@ -45,7 +45,14 @@ namespace Task3.ViewModels
             set => Set(ref _selectedEditMovieShow, value);
         }
 
-        
+        private Order _NewOrder = new() {Count = 0, DateTime = DateTime.Now, MovieShow = default};
+
+        /// <summary> Новый заказ </summary>
+        public Order NewOrder
+        {
+            get => _NewOrder;
+            set => Set(ref _NewOrder, value);
+        }
 
         #endregion
 
@@ -59,6 +66,7 @@ namespace Task3.ViewModels
             _MovieShows = MovieShows;
             _Orders = Orders;
             LoadData();
+
         }
 
         #region Команды
@@ -101,16 +109,36 @@ namespace Task3.ViewModels
             MovieShows.Remove(SelectedEditMovieShow);
         }
 
+        private ICommand _AddNewOrderCommand;
+        /// <summary> Команда добавления нового заказа </summary>
+        public ICommand AddNewOrderCommand => _AddNewOrderCommand ??=
+            new LambdaCommand(OnAddNewOrderCommandExecuted, CanAddNewOrderCommandExecute);
+        private bool CanAddNewOrderCommandExecute(object p) => true;
+        private void OnAddNewOrderCommandExecuted(object p)
+        {
+            if (NewOrder.DateTime == default) return;
+            if (NewOrder.MovieShow == null) return;
+            _Orders.Add(NewOrder);
+            Orders.Add(NewOrder);
+            NewOrder = new() {Count = 0, DateTime = DateTime.Now, MovieShow = default};
+        }
+        private ICommand _ClearOrderCommand;
+        /// <summary> Команда очистки заказа </summary>
+        public ICommand ClearOrderCommand => _ClearOrderCommand ??=
+            new LambdaCommand(OnClearOrderCommandExecuted);
+        private void OnClearOrderCommandExecuted(object p)
+        {
+            NewOrder.DateTime = DateTime.Now;
+            NewOrder.Count = 0;
+            NewOrder.MovieShow = null;
+        }
+
         #endregion
 
         private ICommand _LoadDataCommand;
-
         /// <summary> Команда загрузки данных </summary>
         public ICommand LoadDataCommand => _LoadDataCommand ??=
-            new LambdaCommand(OnLoadDataCommandExecuted, CanLoadDataCommandExecute);
-
-        private bool CanLoadDataCommandExecute(object p) => true;
-
+            new LambdaCommand(OnLoadDataCommandExecuted);
         private void OnLoadDataCommandExecuted(object p)
         {
             LoadData();
@@ -119,27 +147,20 @@ namespace Task3.ViewModels
 
 
         private ICommand _ShowDialogCommand;
-
         /// <summary> Команда показа диалога </summary>
         public ICommand ShowDialogCommand => _ShowDialogCommand ??=
             new LambdaCommand(OnShowDialogCommandExecuted, CanShowDialogCommandExecute);
-
         private bool CanShowDialogCommandExecute(object p) => true;
-
         private void OnShowDialogCommandExecuted(object p)
         {
             var message = p as string ?? "Собщение от команды";
             App.Services.GetService<IDialogService>()?.ShowInfo(message);
         }
-
         private ICommand _CloseAppCommand;
-
         /// <summary> Выход из приложения </summary>
         public ICommand CloseAppCommand => _CloseAppCommand ??=
             new LambdaCommand(OnCloseAppCommandExecuted, CanCloseAppCommandExecute);
-
         private bool CanCloseAppCommandExecute(object p) => true;
-
         private void OnCloseAppCommandExecuted(object p)
         {
             Application.Current.Shutdown();

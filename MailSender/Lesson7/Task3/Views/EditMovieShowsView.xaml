@@ -40,13 +40,15 @@
                 </Grid>
 
                 <UniformGrid Rows="1">
-                    <Button Content="Добавить" Height="40"
+                    <Button Content="Добавить" Height="40" MaxWidth="80"
                             Command="{Binding AddMovieShowCommand}"/>
-                    <Button Content="Сохранить" Height="40"
+                    <Button Content="Сохранить" Height="40" MaxWidth="80"
                             Command="{Binding EditMovieShowCommand}"/>
-                    <Button Content="Удалить" Height="40"
+                    <Button Content="Удалить" Height="40" MaxWidth="80"
                             Command="{Binding DeleteMovieShowCommand}"/>
                 </UniformGrid>
+                <Button Content="Обновить данные" Height="40" MaxWidth="120"
+                        Command="{Binding LoadDataCommand}"/>
             </StackPanel>
         </GroupBox>
 

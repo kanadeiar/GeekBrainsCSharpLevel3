@@ -1,0 +1,56 @@
+﻿<UserControl x:Class="Task3.Views.AddNewOrderView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:m="clr-namespace:Task3.Models"
+             xmlns:local="clr-namespace:Task3.Views"
+             mc:Ignorable="d" 
+             DataContext="{Binding MainWindowViewModel, Source={StaticResource Locator}}"
+             d:DesignHeight="450" d:DesignWidth="700">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="Дата продажи:" VerticalAlignment="Center"/>
+        <TextBox Grid.Column="1" 
+                 Text="{Binding NewOrder.DateTime}" Margin="5" Width="300" HorizontalAlignment="Left"/>
+        <TextBlock Grid.Row="1" Text="Количество билетов:" VerticalAlignment="Center"/>
+        <TextBox Grid.Row="1" Grid.Column="1" 
+                 Text="{Binding NewOrder.Count}" Margin="5" Width="300" HorizontalAlignment="Left"/>
+        <TextBlock Grid.Row="2" Text="Киносеанс:" VerticalAlignment="Center"/>
+        <ComboBox Grid.Column="1" Grid.Row="2" Width="300" HorizontalAlignment="Left" Margin="5"
+                  ItemsSource="{Binding MovieShows}"
+                  SelectedItem="{Binding NewOrder.MovieShow}">
+            <ComboBox.ItemTemplate>
+                <DataTemplate DataType="m:MovieShow">
+                    <TextBlock>
+                        <TextBlock Text="{Binding BeginTime, StringFormat=HH:mm }"/>
+                        <TextBlock Text="{Binding Name}"/>
+                    </TextBlock>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <UniformGrid Grid.Row="3" Grid.ColumnSpan="2" Rows="1">
+            <Button HorizontalAlignment="Center" Padding="10" Margin="10"
+                    Command="{Binding AddNewOrderCommand}">
+                <TextBlock Text="Добавить эти новые данные"/>
+            </Button>
+            <Button HorizontalAlignment="Center" Padding="10" Margin="10"
+                    Command="{Binding ClearOrderCommand}">
+                <TextBlock Text="Очистить форму"/>
+            </Button>
+        </UniformGrid>
+
+
+
+    </Grid>
+</UserControl>
