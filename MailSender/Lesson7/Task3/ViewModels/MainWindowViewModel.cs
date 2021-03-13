@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using Microsoft.Extensions.DependencyInjection;
 using Task3.Commands;
+using Task3.Data;
 using Task3.Interfaces;
 using Task3.ViewModels.Base;
 
@@ -28,10 +30,32 @@ namespace Task3.ViewModels
 
         public MainWindowViewModel()
         {
-            
+            using var db = new CinemaBoxDb();
+            CinemaBoxDb.InitDb(db);
         }
 
         #region Команды
+
+        private ICommand _TestCommand;
+
+        /// <summary> test </summary>
+        public ICommand TestCommand => _TestCommand ??=
+            new LambdaCommand(OnTestCommandExecuted, CanTestCommandExecute);
+
+        private bool CanTestCommandExecute(object p) => true;
+
+        private void OnTestCommandExecuted(object p)
+        {
+            using (var db = new CinemaBoxDb())
+            {
+                var count = db.Orders.Count();
+                MessageBox.Show($"count = {count}");
+            }
+
+            
+
+        }
+
 
         private ICommand _ShowDialogCommand;
 

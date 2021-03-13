@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:v="clr-namespace:Task3.Views"
         xmlns:local="clr-namespace:Task3"
         mc:Ignorable="d"
         DataContext="{Binding MainWindowViewModel, Source={StaticResource Locator}}"
@@ -25,10 +26,20 @@
         <Grid DockPanel.Dock="Top">
             <TextBlock Text="Продажа выполняется следующим образом: кассир выбирает киносеанс и указывает количество покупаемых билетов. Информация о продажах сохраняется базу данных для последующего анализа. Для заказа сохраняется количество билетов и время продажи. Дополнительно может быть предусмотрено редактирования списка киносеансов. Для киносеанса заполняется время начала и название фильма." TextWrapping="Wrap" Margin="5,0"/>
         </Grid>
-        <Grid>
+        <TabControl Background="Azure">
+            <TabItem Header="Продажа билетов">
+
+            </TabItem>
+            <TabItem Header="Редактирование киносеансов">
+                <v:EditMovieShowsView/>
+            </TabItem>
+            <TabItem Header="Данные по продажам">
+
+            </TabItem>
+            
 
 
-        </Grid>
+        </TabControl>
 
     </DockPanel>
 </Window>
