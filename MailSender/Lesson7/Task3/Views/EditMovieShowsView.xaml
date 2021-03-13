@@ -8,6 +8,49 @@
              DataContext="{Binding MainWindowViewModel, Source={StaticResource Locator}}"
              d:DesignHeight="450" d:DesignWidth="700">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <DataGrid AutoGenerateColumns="False" GridLinesVisibility="Vertical" IsReadOnly="True" SelectionMode="Single" AlternatingRowBackground="Aquamarine"
+                  ItemsSource="{Binding MovieShows}"
+                  SelectedItem="{Binding SelectedEditMovieShow}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Время начала" Binding="{Binding BeginTime, StringFormat=HH ч. mm м.}" />
+                <DataGridTextColumn Header="Название сеанса" Binding="{Binding Name}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <GridSplitter Grid.Column="0" Width="3" Background="Transparent"/>
+        <GroupBox Grid.Column="1" Header="Редактирование киносеанса">
+            <StackPanel>
+                <Grid Margin="0,20,0,40" DataContext="{Binding SelectedEditMovieShow}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Время" VerticalAlignment="Center"/>
+                    <TextBox Grid.Column="1" Text="{Binding BeginTime}" Margin="5"/>
+                    <TextBlock Grid.Row="1" Text="Название" VerticalAlignment="Center"/>
+                    <TextBox Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding Name}" Margin="5"/>
+                </Grid>
+
+                <UniformGrid Rows="1">
+                    <Button Content="Добавить" Height="40"
+                            Command="{Binding AddMovieShowCommand}"/>
+                    <Button Content="Сохранить" Height="40"
+                            Command="{Binding EditMovieShowCommand}"/>
+                    <Button Content="Удалить" Height="40"
+                            Command="{Binding DeleteMovieShowCommand}"/>
+                </UniformGrid>
+            </StackPanel>
+        </GroupBox>
+
+
+
     </Grid>
 </UserControl>
