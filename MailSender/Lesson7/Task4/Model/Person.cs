@@ -3,7 +3,7 @@ using Task4.Model.Base;
 
 namespace Task4.Model
 {
-    class Person : Entity
+    public class Person : Entity
     {
         private string _SNP;
         /// <summary> Ф.И.О. </summary>
