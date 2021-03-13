@@ -1,0 +1,42 @@
+﻿<Window x:Class="Task4.Windows.PersonEditWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Task4.Windows"
+        mc:Ignorable="d"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        Title="{Binding LocTitle}" Height="250" Width="300" WindowStartupLocation="CenterOwner" ShowInTaskbar="False">
+    <DockPanel>
+        <GroupBox Header="Ввод данных" DockPanel.Dock="Top">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Ф.И.О.:" VerticalAlignment="Center"/>
+                <TextBox Grid.Column="1" Margin="5"
+                         Text="{Binding SNP, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBlock Grid.Row="1" Text="Email адрес:" VerticalAlignment="Center"/>
+                <TextBox Grid.Column="1" Grid.Row="1" Margin="5"
+                         Text="{Binding Address}"/>
+                <TextBlock Grid.Row="2" Text="Телефон:" VerticalAlignment="Center"/>
+                <TextBox Grid.Column="1" Grid.Row="2" Margin="5"
+                         Text="{Binding Phone}"/>
+            </Grid>
+        </GroupBox>
+        <UniformGrid DockPanel.Dock="Bottom" Rows="1" 
+                     HorizontalAlignment="Right"
+                     Margin="10"
+                     Button.Click="WindowButton_Click">
+            <Button Content="OK" IsDefault="True" Margin="3,0" Height="40" Padding="10"/>
+            <Button Content="Отмена" IsCancel="True" Margin="3,0" Height="40" Padding="10"/>
+        </UniformGrid>
+    </DockPanel>
+</Window>

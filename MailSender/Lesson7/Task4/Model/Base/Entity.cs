@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 
 namespace Task4.Model.Base
 {
-    abstract class Entity : INotifyPropertyChanged
+    public abstract class Entity : INotifyPropertyChanged
     {
         public int Id { get; set; }
         [Timestamp]

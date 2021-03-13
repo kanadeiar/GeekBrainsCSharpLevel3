@@ -21,10 +21,28 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <StackPanel Orientation="Horizontal">
-                <Button Content="Открыть CSV-файл" Height="40" Margin="5"/>
+            <StackPanel Orientation="Horizontal" Margin="10,0">
+                <Button Content="Добавить данные из CSV-файла" Padding="5" Height="40" Margin="1,5"
+                        Command="{Binding AddDataFromFileCommand}"/>
+                <TextBlock Text="Редактирование:" VerticalAlignment="Center"/>
+                <Button Content="Добавить" Padding="5" Height="40" Margin="1,5"
+                        Command="{Binding AddNewPersonCommand}"/>
+                <Button Content="Редактировать" Padding="5" Height="40" Margin="1, 5"
+                        Command="{Binding EditSelectedPersonCommand}"
+                        CommandParameter="{Binding SelectedPerson}"/>
+                <Button Content="Удалить" Padding="5" Height="40" Margin="1, 5"
+                        Command="{Binding DeleteSelectedPersonCommand}"
+                        CommandParameter="{Binding SelectedPerson}"/>
             </StackPanel>
-
+            <DataGrid Grid.Row="1" Margin="5" AutoGenerateColumns="False" GridLinesVisibility="Vertical" SelectionMode="Single" AlternatingRowBackground="Aquamarine" IsReadOnly="True"
+                      ItemsSource="{Binding Persons}"
+                      SelectedItem="{Binding SelectedPerson}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Ф.И.О." Binding="{Binding SNP}" Width="150"/>
+                    <DataGridTextColumn Header="Адрес" Binding="{Binding Address}" Width="150"/>
+                    <DataGridTextColumn Header="Телефон" Binding="{Binding Phone}" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
         </Grid>
     </DockPanel>
 </Window>
