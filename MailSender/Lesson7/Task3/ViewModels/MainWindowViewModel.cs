@@ -16,8 +16,7 @@ namespace Task3.ViewModels
     {
         private readonly IRepository<MovieShow> _MovieShows;
         private readonly IRepository<Order> _Orders;
-
-
+        
         #region Свойства
 
         /// <summary> Киносеансы </summary>
@@ -52,10 +51,7 @@ namespace Task3.ViewModels
         }
 
         #endregion
-
-
-
-
+        
         public MainWindowViewModel(IRepository<MovieShow> MovieShows, IRepository<Order> Orders)
         {
             using var db = new CinemaBoxDb();
@@ -63,7 +59,6 @@ namespace Task3.ViewModels
             _MovieShows = MovieShows;
             _Orders = Orders;
             LoadData();
-
         }
 
         #region Команды

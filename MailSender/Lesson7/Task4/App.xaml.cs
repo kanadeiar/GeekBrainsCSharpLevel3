@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
+using Task4.Data;
+using Task4.Interfaces;
+using Task4.Model;
 using Task4.ViewsModels;
 
 namespace Task4
@@ -22,10 +25,11 @@ namespace Task4
         /// <param name="services">сервисы приложения</param>
         private static void InitializeServices(IServiceCollection services)
         {
+            services.AddDbContext<PersonDB>();
 
             services.AddScoped<MainWindowViewModel>();
 
-
+            services.AddScoped<IRepository<Person>, PersonsPerository>();
 
         }
     }
