@@ -10,8 +10,11 @@ namespace Task3
         static void Main(string[] args)
         {
             ToRussian();
+            Console.WriteLine("Задание № 3");
+            Console.WriteLine(@"Есть таблица Users. Столбцы в ней: Id, Name. Написать SQL-запрос, который выведет имена пользователей, начинающиеся
+на A, которые встречаются в таблице более одного раза, и их количество.");
 
-            Console.WriteLine("Пересоздать таблицу с тестовыми данными Users в базе данных Task3.DB ? (Y)");
+            Console.WriteLine("\n\nПересоздать таблицу с тестовыми данными Users в базе данных Task3.DB ? (Y)");
             var comm = Console.ReadLine();
             if (comm != null && comm.Contains('y', StringComparison.CurrentCultureIgnoreCase))
             {
@@ -22,11 +25,34 @@ namespace Task3
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine("Облом! " + e.Message);
+                    Console.WriteLine("Не удалось пересоздать таблицу!\n" + e.Message);
                 }
             }
 
-            
+            Console.WriteLine("Результат выполнения SQL запроса:");
+
+            using (SqlConnection connection = new SqlConnection())
+            {
+                connection.ConnectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Task3.DB";
+                connection.Open();
+                string sql = @"SELECT [Users].[name], count(*) as [count] 
+FROM [Users]
+WHERE [name] LIKE N'А%'
+GROUP BY [Users].[name]
+HAVING count(*) > 1;";
+                SqlCommand command = new SqlCommand(sql, connection);
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    int name = reader.GetOrdinal("name");
+                    int count = reader.GetOrdinal("count");
+                    while (reader.Read())
+                    {
+                        Console.WriteLine($"{reader[name]} - {reader[count]} штук");
+                    }
+                    Console.WriteLine($"Их общее количество: {reader.FieldCount} штуки");
+                }
+                connection.Close();
+            }
 
 
             Console.WriteLine("\nНажмите любую кнопку ...");
@@ -52,6 +78,12 @@ INSERT INTO Users(name)
 	VALUES (N'Аноним1');
 INSERT INTO Users(name)
 	VALUES (N'Антон1');
+INSERT INTO Users(name)
+	VALUES (N'Андрей');
+INSERT INTO Users(name)
+	VALUES (N'Андрей');
+INSERT INTO Users(name)
+	VALUES (N'Андрей');
 --Остальные Тестовые данные запихиваем в эту таблицу
 DECLARE @count_users INT = 100;
 DECLARE @i INT = 1;
