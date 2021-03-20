@@ -39,7 +39,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lesson7", "lesson7", "{0B6C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Task3", "Lesson7\Task3\Task3.csproj", "{C8CE5866-CE3E-4BF2-9DDC-D10401D4173F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task4", "Lesson7\Task4\Task4.csproj", "{B36AF479-4B6B-4897-B0A0-02678CFB5D37}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Task4", "Lesson7\Task4\Task4.csproj", "{B36AF479-4B6B-4897-B0A0-02678CFB5D37}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lesson8", "lesson8", "{EEAE4A2E-6B8B-4D6F-9D61-73E051ED4569}"
+	ProjectSection(SolutionItems) = preProject
+		Lesson8\Задание№1.jpg = Lesson8\Задание№1.jpg
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
