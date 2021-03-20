@@ -1,0 +1,51 @@
+﻿<Window x:Class="Task3.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:v="clr-namespace:Task3.Views"
+        xmlns:local="clr-namespace:Task3"
+        mc:Ignorable="d"
+        DataContext="{Binding MainWindowViewModel, Source={StaticResource Locator}}"
+        Title="{Binding Title}" 
+        Height="500" Width="700" WindowStartupLocation="CenterScreen" Background="BlanchedAlmond" ResizeMode="CanResizeWithGrip">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Главное меню">
+                <MenuItem Header="Выход" Command="{Binding CloseAppCommand}"/>
+            </MenuItem>
+            <MenuItem Header="Справка">
+                <MenuItem Header="О программе ..." Command="{Binding ShowDialogCommand}"
+                          CommandParameter="Программа для продажи билетов в кино"/>
+            </MenuItem>
+        </Menu>
+        <Grid DockPanel.Dock="Top" Background="PaleGreen">
+            <TextBlock Text="Задание №3. Написать программу для продажи билетов в кино." Height="30" FontSize="18" 
+                       HorizontalAlignment="Center" Margin="0" TextWrapping="Wrap"/>
+        </Grid>
+        <Grid DockPanel.Dock="Top">
+            <TextBlock Text="Продажа выполняется следующим образом: кассир выбирает киносеанс и указывает количество покупаемых билетов. Информация о продажах сохраняется базу данных для последующего анализа. Для заказа сохраняется количество билетов и время продажи. Дополнительно может быть предусмотрено редактирования списка киносеансов. Для киносеанса заполняется время начала и название фильма." TextWrapping="Wrap" Margin="5,0"/>
+        </Grid>
+        <TabControl Background="Azure">
+            <TabItem Header="Продажа билетов">
+                <v:AddNewOrderView Margin="10"/>
+            </TabItem>
+            <TabItem Header="Редактирование киносеансов">
+                <v:EditMovieShowsView Margin="10"/>
+            </TabItem>
+            <TabItem Header="Данные по продажам">
+                <GroupBox Header="Данные по всем продажам билетов">
+                    <DataGrid AutoGenerateColumns="False" GridLinesVisibility="Vertical" IsReadOnly="True" SelectionMode="Single" AlternatingRowBackground="Aquamarine"
+                              ItemsSource="{Binding Orders}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Время продажи" Binding="{Binding DateTime, StringFormat=dd.MM.yyyy HH:mm}"/>
+                            <DataGridTextColumn Header="Количество" Binding="{Binding Count}"/>
+                            <DataGridTextColumn Header="Время сеанса" Binding="{Binding MovieShow.BeginTime, StringFormat=HH ч. mm м.}"/>
+                            <DataGridTextColumn Header="Название сеанса" Binding="{Binding MovieShow.Name}" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </GroupBox>
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+</Window>

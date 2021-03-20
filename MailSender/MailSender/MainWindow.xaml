@@ -41,7 +41,8 @@
             </MenuItem>
             <MenuItem Header="Сервис">
                 <MenuItem Header="Загрузить данные" Command="{Binding LoadDataFileCommand}"/>
-                <MenuItem Header="Сохранить данные" Command="{Binding SaveDataFileCommand}"/>
+                <MenuItem Header="Получить отчет о получателях" Command="{Binding GenerateRecipientsRaportCommand}"/>
+                <Separator/>
                 <MenuItem Header="Настройка"/>
                 <MenuItem Header="Опции">
                     <CheckBox Content="Всегда наверху" Name="CheckBoxIsWindowTopMost"/>
@@ -146,8 +147,18 @@
                                     GoToPlanFromToolBarCommand="{Binding ToTabItemCommand}"
                                     GoToPlanFromToolBarCommandParameter="{Binding ElementName=TabItemPlan}"/>
                         </ToolBar>
-                        <ToolBar Band="1">
-                            <controls:RecipientsToolBarUserControl Title="Получатели" HintAddElementRecipients="Добавить получателя" HintDeleteElementRecipients="Удалить получателя"/>
+                        <ToolBar Band="1" Header="Отчет">
+                            <ToolBar.Resources>
+                                <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}">
+                                </Style>
+                            </ToolBar.Resources>
+                            <Button ToolTip="Сгенерировать отчет получателей писем"
+                                    Command="{Binding GenerateRecipientsRaportCommand}">
+                                <StackPanel Orientation="Horizontal" Cursor="Hand">
+                                    <fa:FontAwesome Icon="Brands_RaspberryPi" Foreground="Red" Margin="5,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Получатели"/>
+                                </StackPanel>
+                            </Button>
                         </ToolBar>
                     </ToolBarTray>
                     <GroupBox Grid.Row="1" Header="Получатели">
@@ -199,7 +210,7 @@
                                                         CommandParameter="{Binding}"/>
                                                 <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="0,0,50,0">
                                                     <TextBlock Text="Дата отправки: " VerticalAlignment="Center"/>
-                                                    <TextBlock Text="{Binding DateTimeSend, StringFormat=dd.MM.yyyy HH:mm}" VerticalAlignment="Center"/>
+                                                    <TextBlock Text="{Binding Scheduler.DateTimeSend, StringFormat=dd.MM.yyyy HH:mm}" VerticalAlignment="Center"/>
                                                 </StackPanel>
                                             </Grid>
                                         </GroupBox.Header>
@@ -215,17 +226,17 @@
                                                 <RowDefinition/>
                                             </Grid.RowDefinitions>
                                             <TextBlock Grid.Column="0" Grid.Row="0" Text="Отправитель:"/>
-                                            <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding From}"/>
+                                            <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Scheduler.Sender.Address}"/>
                                             <TextBlock Grid.Column="0" Grid.Row="1" Text="Получатели:"/>
-                                            <ItemsControl Grid.Column="1" Grid.Row="1" ItemsSource="{Binding Tos}">
+                                            <ItemsControl Grid.Column="1" Grid.Row="1" ItemsSource="{Binding Scheduler.Recipients}">
                                                 <ItemsControl.ItemTemplate>
                                                     <DataTemplate>
-                                                        <TextBlock Text="{Binding }"/>
+                                                        <TextBlock Text="{Binding Address}"/>
                                                     </DataTemplate>
                                                 </ItemsControl.ItemTemplate>
                                             </ItemsControl>
                                             <TextBlock Grid.Column="0" Grid.Row="3" Text="Заголовок сообщения:"/>
-                                            <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Subject}"/>
+                                            <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Scheduler.Message.Subject}"/>
                                         </Grid>
                                     </GroupBox>
                                 </Border>
@@ -239,31 +250,51 @@
             <TabItem Header="Письма" Name="TabItemLetter">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" MinWidth="150"/>
+                        <ColumnDefinition Width="Auto" MinWidth="200"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <GroupBox Grid.Column="0" Grid.Row="0" Header="Письма">
-                        <ListBox Name="ListBoxMessages" SelectedIndex="0" MinWidth="160" SelectionMode="Single" VirtualizingStackPanel.IsVirtualizing="True"
-                                 ItemsSource="{Binding Messages}" 
-                                 SelectedItem="{Binding SelectedMessage}">
-                            <ListBox.ItemContainerStyle>
-                                <Style TargetType="ListBoxItem" BasedOn="{StaticResource MaterialDesignListBoxItem}">
-                                    <Style.Triggers>
-                                        <Trigger Property="IsSelected" Value="True">
-                                            <Setter Property="Foreground" Value="Green"/>
-                                            <Setter Property="FontWeight" Value="Bold"/>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </ListBox.ItemContainerStyle>
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <VirtualizingStackPanel>
-                                        <TextBlock Text="{Binding Subject}"/>
-                                    </VirtualizingStackPanel>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <UniformGrid Rows="1">
+                                <Button ToolTip="Создать новое письмо" Margin="1" fa:Awesome.Content="Solid_Plus" Foreground="Green" 
+                                        Command="{Binding AddMessageCommand}">
+                                </Button>
+                                <Button ToolTip="Сохранить изменения в письме" Margin="1" fa:Awesome.Content="Regular_Save" Foreground="Blue" 
+                                        Command="{Binding SaveMessageCommand}"
+                                        CommandParameter="{Binding SelectedMessage}">
+                                </Button>
+                                <Button ToolTip="Удалить выбранное письмо" Margin="1" fa:Awesome.Content="Solid_Trash" Foreground="Red"
+                                        Command="{Binding DeleteMessageCommand}"
+                                        CommandParameter="{Binding SelectedMessage}">
+                                </Button>
+                            </UniformGrid>
+                            <ListBox Grid.Row="1" Name="ListBoxMessages" SelectedIndex="0" MinWidth="160" SelectionMode="Single" VirtualizingStackPanel.IsVirtualizing="True" Margin="0,10,0,0"
+                                     ItemsSource="{Binding Messages}" 
+                                     SelectedItem="{Binding SelectedMessage}">
+                                <ListBox.ItemContainerStyle>
+                                    <Style TargetType="ListBoxItem" BasedOn="{StaticResource MaterialDesignListBoxItem}">
+                                        <Style.Triggers>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter Property="Foreground" Value="Green"/>
+                                                <Setter Property="FontWeight" Value="Bold"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ListBox.ItemContainerStyle>
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <VirtualizingStackPanel>
+                                            <TextBlock Text="{Binding Subject}"/>
+                                        </VirtualizingStackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+
+                        </Grid>
                     </GroupBox>
                     <DockPanel Grid.Column="1">
                         <GroupBox DockPanel.Dock="Top" Header="Редактирование письма">

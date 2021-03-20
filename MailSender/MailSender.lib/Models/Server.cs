@@ -1,5 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.RegularExpressions;
 using MailSender.lib.Models.Base;
 
@@ -10,6 +12,7 @@ namespace MailSender.lib.Models
     {
         private string _name;
         /// <summary> Имя сервера </summary>
+        [Required, MaxLength(30)]
         public string Name
         {
             get => _name; 
@@ -17,6 +20,7 @@ namespace MailSender.lib.Models
         }
         private string _address;
         /// <summary> Адрес сервера </summary>
+        [Required, MaxLength(30)]
         public string Address
         {
             get => _address; 
@@ -24,6 +28,7 @@ namespace MailSender.lib.Models
         }
         private int _port;
         /// <summary> Порт сервера </summary>
+        [Required, DefaultValue(25)]
         public int Port
         {
             get => _port; 
@@ -31,6 +36,7 @@ namespace MailSender.lib.Models
         }
         private bool _useSsl;
         /// <summary> Шифрование </summary>
+        [Required, DefaultValue(false)]
         public bool UseSsl
         {
             get => _useSsl; 
@@ -38,6 +44,7 @@ namespace MailSender.lib.Models
         }
         private string _login;
         /// <summary> Логин пользователя </summary>
+        [Required, MaxLength(30)]
         public string Login
         {
             get => _login; 
@@ -45,6 +52,7 @@ namespace MailSender.lib.Models
         }
         private string _password;
         /// <summary> Пароль пользователя </summary>
+        [Required, MaxLength(40)]
         public string Password
         {
             get => _password; 
@@ -52,6 +60,7 @@ namespace MailSender.lib.Models
         }
         private string _description;
         /// <summary> Описание сервера </summary>
+        [MaxLength(250)]
         public string Description
         {
             get => _description; 
@@ -60,8 +69,9 @@ namespace MailSender.lib.Models
 
         #region Валидация
 
+        [NotMapped]
         string IDataErrorInfo.Error => null;
-
+        [NotMapped]
         public string this[string propertyName]
         {
             get
@@ -98,6 +108,7 @@ namespace MailSender.lib.Models
                     case nameof(Password):
                         var password = Password;
                         if (password is null) return "Значение пароля пользователя не может быть пустой строкой";
+                        if (password.Length > 20) return "Значение пароля не может быть длиннее 20 символов";
                         if (password.Length < 6) return "Значение пароля не может быть короче 6 символов";
                         if (!new Regex(@"^\w+[A-za-z\d]+$").IsMatch(password)) 
                             return "Пароль не может быть таким простым";

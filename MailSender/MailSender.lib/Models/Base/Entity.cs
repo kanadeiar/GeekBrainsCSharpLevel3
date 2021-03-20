@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
 
 namespace MailSender.lib.Models.Base
@@ -7,6 +9,8 @@ namespace MailSender.lib.Models.Base
     public abstract class Entity : INotifyPropertyChanged
     {
         public int Id { get; set; }
+        [Timestamp]
+        public byte[] Timestamp { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

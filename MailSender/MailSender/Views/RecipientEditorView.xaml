@@ -75,8 +75,14 @@
             </TextBox.Text>
         </TextBox>
         <UniformGrid Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Rows="1" HorizontalAlignment="Center">
-            <Button ToolTip="Сохранить изменения получателя" fa5:Awesome.Content="Regular_Save" Foreground="Blue" Margin="5,0" Padding="40,0" Height="40"/>
-            <Button ToolTip="Создать получателя" fa5:Awesome.Content="Solid_Plus" Foreground="Green" Margin="5, 0" Padding="40,0" Height="40"/>
+            <Button ToolTip="Создать получателя" fa5:Awesome.Content="Solid_Plus" Foreground="Green" Margin="5, 0" Padding="30,0" Height="40"
+                    Command="{Binding AddBlankRecipientCommand}"/>
+            <Button ToolTip="Сохранить изменения получателя" fa5:Awesome.Content="Regular_Save" Foreground="Blue" Margin="5,0" Padding="30,0" Height="40"
+                    Command="{Binding SaveDataRecipientCommand}"
+                    CommandParameter="{Binding SelectedRecipient}"/>
+            <Button ToolTip="Удалить получателя" fa5:Awesome.Content="Solid_Trash" Foreground="Red" Margin="5, 0" Padding="30,0" Height="40"
+                    Command="{Binding DeleteSelectedRecipientCommand}"
+                    CommandParameter="{Binding SelectedRecipient}"/>
         </UniformGrid>
     </Grid>
 </UserControl>

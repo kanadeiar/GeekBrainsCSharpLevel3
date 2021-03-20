@@ -11,8 +11,10 @@ using MailSender.lib.Interfaces;
 using MailSender.lib.Models;
 using MailSender.lib.Models.Base;
 using MailSender.lib.Services;
+using MailSender.Raport;
 using MailSender.ViewModels.Base;
 using MailSender.Windows;
+using Microsoft.Win32;
 
 namespace MailSender.ViewModels
 {
@@ -33,15 +35,6 @@ namespace MailSender.ViewModels
             OnPropertyChanged(nameof(FilteredRecipients));
         }
 
-        private ICommand _saveDataFileCommand;
-
-        /// <summary> Команда сохранения данных </summary>
-        public ICommand SaveDataFileCommand => _saveDataFileCommand ??= new LambdaCommand(OnSaveDataFIleCommandExecute);
-
-        private void OnSaveDataFIleCommandExecute(object p)
-        {
-            SaveData();
-        }
 
         #endregion
 
@@ -61,23 +54,18 @@ namespace MailSender.ViewModels
                 out var login,
                 out var password))
                 return;
-            int newid = default;
-            if (Servers.Count != 0)
-                newid = Servers.Max(s => s.Id) + 1;
-            else
-                newid = 1;
             var server = new Server
             {
-                Id = newid,
                 Name = name,
                 Address = address,
                 Port = port,
                 UseSsl = ssl,
                 Description = description,
                 Login = login,
-                Password = password,
+                Password = password.Encrypt(),
             };
             Servers.Add(server);
+            SelectedServer = server;
         }
         private ICommand _editServerCommand;
         /// <summary> Команда редактирования выбранного сервера </summary>
@@ -111,6 +99,7 @@ namespace MailSender.ViewModels
             server.Description = description;
             server.Login = login;
             server.Password = password.Encrypt();
+            _Servers.Update(server);
         }
         private ICommand _deleteServerCommand;
         /// <summary> Команда удаления сервера </summary>
@@ -123,6 +112,7 @@ namespace MailSender.ViewModels
                 return;
             Servers.Remove(server);
         }
+
         private ICommand _createSenderCommand;
         /// <summary> Команда добавления новго отправителя </summary>
         public ICommand CreateSenderCommand => _createSenderCommand ??=
@@ -134,19 +124,14 @@ namespace MailSender.ViewModels
                 out var address,
                 out var description))
                 return;
-            int newid = default;
-            if (Senders.Count != 0)
-                newid = Senders.Max(s => s.Id) + 1;
-            else
-                newid = 1;
             var sender = new Sender
             {
-                Id = newid,
                 Name = name,
                 Address = address,
                 Description = description,
             };
             Senders.Add(sender);
+            SelectedSender = sender;
         }
         private ICommand _editSenderCommand;
         /// <summary> Команда редактирования отправителя </summary>
@@ -168,6 +153,7 @@ namespace MailSender.ViewModels
             sender.Name = name;
             sender.Address = address;
             sender.Description = description;
+            _Senders.Update(sender);
         }
         private ICommand _deleteSenderCommand;
         /// <summary> Команда удвления отправителя </summary>
@@ -179,6 +165,73 @@ namespace MailSender.ViewModels
             if (!(p is Sender sender))
                 return;
             Senders.Remove(sender);
+        }
+
+        private ICommand _AddBlankRecipientCommand;
+        /// <summary> Команда добавления нового шаблона получателя </summary>
+        public ICommand AddBlankRecipientCommand => _AddBlankRecipientCommand ??=
+            new LambdaCommand(OnAddBlankRecipientCommandExecuted);
+        private void OnAddBlankRecipientCommandExecuted(object p)
+        {
+            var recipient = new Recipient
+            {
+                Name = "Шаблон",
+                Address = "test@test.ru",
+                Description = "Шаблон",
+            };
+            Recipients.Add(recipient);
+            SelectedRecipient = recipient;
+        }
+        private ICommand _SaveDataRecipientCommand;
+        /// <summary> Команда сохранения изменения в получателе </summary>
+        public ICommand SaveDataRecipientCommand => _SaveDataRecipientCommand ??=
+            new LambdaCommand(OnSaveDataRecipientCommandExecuted, CanSaveDataRecipientCommandExecute);
+        private bool CanSaveDataRecipientCommandExecute(object p) => p is Recipient;
+        private void OnSaveDataRecipientCommandExecuted(object p)
+        {
+            _Recipients.Update(SelectedRecipient);
+        }
+        private ICommand _DeleteSelectedRecipientCommand;
+        /// <summary> Команда удаления выбранного получателя </summary>
+        public ICommand DeleteSelectedRecipientCommand => _DeleteSelectedRecipientCommand ??=
+            new LambdaCommand(OnDeleteSelectedRecipientCommandExecuted, CanDeleteSelectedRecipientCommandExecute);
+        private bool CanDeleteSelectedRecipientCommandExecute(object p) => p is Recipient;
+        private void OnDeleteSelectedRecipientCommandExecuted(object p)
+        {
+            Recipients.Remove(SelectedRecipient);
+        }
+        
+        private ICommand _AddMessageCommand;
+        /// <summary> Команда добавления нового письма </summary>
+        public ICommand AddMessageCommand => _AddMessageCommand ??=
+            new LambdaCommand(OnAddMessageCommandExecuted);
+        private void OnAddMessageCommandExecuted(object p)
+        {
+            var message = new Message
+            {
+                Subject = "Шаблон",
+                Text = "Шаблонный текст",
+            };
+            Messages.Add(message);
+            SelectedMessage = message;
+        }
+        private ICommand _SaveMessageCommand;
+        /// <summary> Команда сохранения сообщения </summary>
+        public ICommand SaveMessageCommand => _SaveMessageCommand ??=
+            new LambdaCommand(OnSaveMessageCommandExecuted, CanSaveMessageCommandExecute);
+        private bool CanSaveMessageCommandExecute(object p) => p is Message;
+        private void OnSaveMessageCommandExecuted(object p)
+        {
+            _Messages.Update(SelectedMessage);
+        }
+        private ICommand _DeleteMessageCommand;
+        /// <summary> Команда удаления сообщения </summary>
+        public ICommand DeleteMessageCommand => _DeleteMessageCommand ??=
+            new LambdaCommand(OnDeleteMessageCommandExecuted, CanDeleteMessageCommandExecute);
+        private bool CanDeleteMessageCommandExecute(object p) => p is Message;
+        private void OnDeleteMessageCommandExecuted(object p)
+        {
+            Messages.Remove(SelectedMessage);
         }
 
         #endregion
@@ -344,7 +397,6 @@ namespace MailSender.ViewModels
 
         #endregion
 
-
         #region Команда планирования отправки сообщений
 
         private ICommand _schedulerSendMailMessageCommand;
@@ -362,19 +414,30 @@ namespace MailSender.ViewModels
             var server = SelectedServer;
             var client = _MailService.GetSender(server.Address, server.Port, server.UseSsl, server.Login,
                 server.Password);
-            var scheduler = _SchedulerService.GetScheduler(client);
-            var sender = SelectedSender;
-            var recipients = ((IList) p).Cast<Recipient>().Select(l => l.Address).ToArray();
-            var message = SelectedMessage;
+            var schedulerMailSender = _SchedulerService.GetScheduler(client);
+            var recipients = ((IList) p).Cast<Recipient>().ToArray();
             var date = SelectedDate;
-            scheduler.AddTask(date, sender.Address, recipients, message.Subject, message.Text);
+            var scheduler = new Scheduler
+            {
+                DateTimeSend = date,
+                Server = SelectedServer,
+                Sender = SelectedSender,
+                Recipients = recipients,
+                Message = SelectedMessage,
+            };
+            schedulerMailSender.Start(scheduler);
 
             var context = SynchronizationContext.Current;
-            scheduler.EmailSended += (_, _) =>
+            schedulerMailSender.MissionCompleted += (_, _) =>
             {
-                context?.Send(x => SchedulerMailSenders.Remove((SchedulerMailSender) scheduler), null);
+                context?.Send(x =>
+                {
+                    _Schedulers.Delete(scheduler.Id);
+                    SchedulerMailSenders.Remove((SchedulerMailSender) schedulerMailSender);
+                }, null);
             };
-            SchedulerMailSenders.Add((SchedulerMailSender)scheduler);
+            _Schedulers.Add(scheduler);
+            SchedulerMailSenders.Add((SchedulerMailSender)schedulerMailSender);
         }
 
         private ICommand _SchedulerDeleteMessageCommand;
@@ -389,6 +452,7 @@ namespace MailSender.ViewModels
         {
             if (!(p is SchedulerMailSender scheduler))
                 return;
+            _Schedulers.Delete(scheduler.Scheduler.Id);
             scheduler.Stop();
             SchedulerMailSenders.Remove(scheduler);
         }
@@ -424,12 +488,69 @@ namespace MailSender.ViewModels
             tabItem.IsSelected = true;
         }
 
+        private ICommand _GenerateRecipientsRaportCommand;
+
+        /// <summary> Команда создания отчета о получателях </summary>
+        public ICommand GenerateRecipientsRaportCommand => _GenerateRecipientsRaportCommand ??=
+            new LambdaCommand(OnGenerateRecipientsRaportCommandExecuted, CanGenerateRecipientsRaportCommandExecute);
+
+        private bool CanGenerateRecipientsRaportCommandExecute(object p) => Recipients.Count > 0;
+
+        private void OnGenerateRecipientsRaportCommandExecuted(object p)
+        {
+            SaveFileDialog dialog = new SaveFileDialog
+            {
+                Title = "Файл в который записать получателей в формате Word",
+                FileName = "Мой отчет.docx",
+                Filter = "Word (*.docx)|*.docx|Все файлы (*.*)|*.*",
+            };
+            if (dialog.ShowDialog() == false)
+                return;
+
+            var raport = new RecipientsRaport();
+            raport.Recipients = Recipients.Select(r => new RecipientsRaport.WordRaport
+            {
+                Name = r.Name,
+                Address = r.Address,
+            });
+            raport.CreatePackage(dialog.FileName);
+        }
+
         #endregion
 
         #endregion
 
         #region Вспомогательные методы
 
+ 
+        /// <summary> Загрузка данных </summary>
+        private void LoadData()
+        {
+            UnmountLinks();
+            Load(Servers, _Servers);
+            Load(Senders, _Senders);
+            Load(Recipients, _Recipients);
+            Load(Messages, _Messages);
+            LoadSchedulers(SchedulerMailSenders, _Schedulers, _MailService, _SchedulerService);
+            MountLinks();
+        }
+        /// <summary> Монтаж связей между коллекциями и базами данных </summary>
+        private void MountLinks()
+        {
+            Servers.CollectionChanged += ServersOnCollectionChanged;
+            Senders.CollectionChanged += SendersOnCollectionChanged;
+            Recipients.CollectionChanged += RecipientsOnCollectionChanged;
+            Messages.CollectionChanged += MessagesOnCollectionChanged;
+        }
+        /// <summary> Демонтаж связей между коллекциями и базами данных </summary>
+        private void UnmountLinks()
+        {
+            Servers.CollectionChanged -= ServersOnCollectionChanged;
+            Senders.CollectionChanged -= SendersOnCollectionChanged;
+            Recipients.CollectionChanged -= RecipientsOnCollectionChanged;
+            Messages.CollectionChanged -= MessagesOnCollectionChanged;
+        }
+        /// <summary> Загрузка информации из базы данных в коллекцию </summary>
         private static void Load<T>(ObservableCollection<T> collection, IRepository<T> repository) where T : Entity
         {
             collection.Clear();
@@ -437,20 +558,31 @@ namespace MailSender.ViewModels
                 collection.Add(item);
         }
 
-        private void LoadData()
+        private static void LoadSchedulers(ObservableCollection<SchedulerMailSender> collection,
+            IRepository<Scheduler> repository, IMailService mailService, ISchedulerMailService schedulerService)
         {
-            Load(Servers, _Servers);
-            Load(Senders, _Senders);
-            Load(Recipients, _Recipients);
-            Load(Messages, _Messages);
-        }
+            collection.Clear();
+            foreach (var scheduler in repository.GetAll())
+            {
+                var server = scheduler.Server;
+                var client = mailService.GetSender(server.Address, server.Port, server.UseSsl, server.Login,
+                    server.Password);
+                var schedulerMailSender = schedulerService.GetScheduler(client);
+                schedulerMailSender.Start(scheduler);
 
-        private void SaveData()
-        {
-            //TODO сохранение данных нужно сделать!
+                var context = SynchronizationContext.Current;
+                schedulerMailSender.MissionCompleted += (_, _) =>
+                {
+                    context?.Send(x =>
+                    {
+                        repository.Delete(scheduler.Id);
+                        collection.Remove((SchedulerMailSender) schedulerMailSender);
+                    }, null);
+                };
+                collection.Add((SchedulerMailSender)schedulerMailSender);
+            }
         }
 
         #endregion
     }
-
 }

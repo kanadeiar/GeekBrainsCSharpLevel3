@@ -2,10 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Timers;
 using MailSender.lib.Interfaces;
 using MailSender.lib.Models;
+using MailSender.lib.Service;
+using MailSender.lib.Services;
 using MailSender.ViewModels.Base;
 
 namespace MailSender.ViewModels
@@ -20,12 +23,13 @@ namespace MailSender.ViewModels
         private readonly IRepository<Sender> _Senders;
         private readonly IRepository<Recipient> _Recipients;
         private readonly IRepository<Message> _Messages;
+        private readonly IRepository<Scheduler> _Schedulers; //задания из хранилища, неактивные
         
         #region Свойства
 
         #region Вспомогательные свойства
 
-        private string _title = "Geekbrains. Домашнее задание №6. Асинхронное программирование.";
+        private string _title = "Geekbrains. Домашнее задание №7. Базы данных.";
 
         /// <summary> Заголовок главного окна </summary>
         public string Title
@@ -35,7 +39,7 @@ namespace MailSender.ViewModels
         }
 
         private string _description =
-            "Geekbrains. Домашнее задание №6. Асинхронное программирование.";
+            "Geekbrains. Домашнее задание №7. Базы данных.";
 
         /// <summary> Описание приложения </summary>
         public string Description
@@ -57,17 +61,57 @@ namespace MailSender.ViewModels
 
         /// <summary> Почтовые сервера с которых отправляется почта </summary>
         public ObservableCollection<Server> Servers { get; } = new();
-
+        private void ServersOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                _Servers.AddRange(e.NewItems?.Cast<Server>());
+            }
+            if (e.Action == NotifyCollectionChangedAction.Remove)
+            {
+                _Servers.RemoveRange(e.OldItems?.Cast<Server>());
+            }
+        }
         /// <summary> Отправители в почтовом сообщении </summary>
         public ObservableCollection<Sender> Senders { get; } = new();
-
+        private void SendersOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                _Senders.AddRange(e.NewItems?.Cast<Sender>());
+            }
+            if (e.Action == NotifyCollectionChangedAction.Remove)
+            {
+                _Senders.RemoveRange(e.OldItems?.Cast<Sender>());
+            }
+        }
         /// <summary> Получатели почтового сообщения </summary>
         public ObservableCollection<Recipient> Recipients { get; } = new();
-
+        private void RecipientsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                _Recipients.AddRange(e.NewItems?.Cast<Recipient>());
+            }
+            if (e.Action == NotifyCollectionChangedAction.Remove)
+            {
+                _Recipients.RemoveRange(e.OldItems?.Cast<Recipient>());
+            }
+        }
         /// <summary> Сообщения электронной почты </summary>
         public ObservableCollection<Message> Messages { get; } = new();
-
-        /// <summary> Задания на рассылку почты </summary>
+        private void MessagesOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                _Messages.AddRange(e.NewItems?.Cast<Message>());
+            }
+            if (e.Action == NotifyCollectionChangedAction.Remove)
+            {
+                _Messages.RemoveRange(e.OldItems?.Cast<Message>());
+            }
+        }
+        /// <summary> Задания на рассылку почты активные </summary>
         public ObservableCollection<SchedulerMailSender> SchedulerMailSenders { get; } = new();
 
 
@@ -181,13 +225,14 @@ namespace MailSender.ViewModels
         #endregion
 
         public MainWindowViewModel(IMailService mailService, IRepository<Server> Servers, IRepository<Sender> Senders,
-            IRepository<Recipient> Recipients, IRepository<Message> Messages, ISchedulerMailService SchedulerService)
+            IRepository<Recipient> Recipients, IRepository<Message> Messages, IRepository<Scheduler> Schedulers, ISchedulerMailService SchedulerService)
         {
             _Servers = Servers;
             _Senders = Senders;
             _Recipients = Recipients;
             _Messages = Messages;
             _MailService = mailService;
+            _Schedulers = Schedulers;
             _SchedulerService = SchedulerService;
             _timer = new Timer
             {
@@ -195,8 +240,11 @@ namespace MailSender.ViewModels
                 AutoReset = true,
                 Enabled = true,
             };
+            this.Servers.CollectionChanged += ServersOnCollectionChanged;
+            this.Senders.CollectionChanged += SendersOnCollectionChanged;
+            this.Recipients.CollectionChanged += RecipientsOnCollectionChanged;
+            this.Messages.CollectionChanged += MessagesOnCollectionChanged;
             _timer.Elapsed += OnTimerElapsed;
         }
     }
-
 }

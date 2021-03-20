@@ -29,7 +29,13 @@ namespace MailSender.Data.Stores.InMemory.Base
             _items.Add(item);
             return item.Id;
         }
+        public void AddRange(IEnumerable<T> items) => _items.AddRange(items);
         public abstract void Update(T item);
-        public bool Remove(int id) => _items.RemoveAll(i => i.Id == id) > 0;
+        public bool Delete(int id) => _items.RemoveAll(i => i.Id == id) > 0;
+        public void RemoveRange(IEnumerable<T> items)
+        {
+            foreach (var item in items)
+                _items.Remove(item);
+        }
     }
 }

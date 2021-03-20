@@ -1,0 +1,48 @@
+﻿<Window x:Class="Task4.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Task4"
+        mc:Ignorable="d"
+        DataContext="{Binding MainWindowViewModel, Source={StaticResource Locator}}"
+        Title="{Binding Title}" 
+        Height="500" Width="700" WindowStartupLocation="CenterScreen" Background="BlanchedAlmond" ResizeMode="CanResizeWithGrip">
+    <DockPanel>
+        <Grid DockPanel.Dock="Top" Background="PaleGreen">
+            <TextBlock Text="Задание №4. Работа с базой данных и CSV-файлом." Height="30" FontSize="18" 
+                       HorizontalAlignment="Center" Margin="0" TextWrapping="Wrap"/>
+        </Grid>
+        <Grid DockPanel.Dock="Top">
+            <TextBlock Text="Записи представляют собой значения: ФИО, почта, телефон. Необходимо написать приложение, которое: а). импортирует данный файл в базу данных; б). позволяет редактировать данные." TextWrapping="Wrap" Margin="5,0"/>
+        </Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <StackPanel Orientation="Horizontal" Margin="10,0">
+                <Button Content="Добавить данные из CSV-файла" Padding="5" Height="40" Margin="1,5"
+                        Command="{Binding AddDataFromFileCommand}"/>
+                <TextBlock Text="Редактирование:" VerticalAlignment="Center"/>
+                <Button Content="Добавить" Padding="5" Height="40" Margin="1,5"
+                        Command="{Binding AddNewPersonCommand}"/>
+                <Button Content="Редактировать" Padding="5" Height="40" Margin="1, 5"
+                        Command="{Binding EditSelectedPersonCommand}"
+                        CommandParameter="{Binding SelectedPerson}"/>
+                <Button Content="Удалить" Padding="5" Height="40" Margin="1, 5"
+                        Command="{Binding DeleteSelectedPersonCommand}"
+                        CommandParameter="{Binding SelectedPerson}"/>
+            </StackPanel>
+            <DataGrid Grid.Row="1" Margin="5" AutoGenerateColumns="False" GridLinesVisibility="Vertical" SelectionMode="Single" AlternatingRowBackground="Aquamarine" IsReadOnly="True"
+                      ItemsSource="{Binding Persons}"
+                      SelectedItem="{Binding SelectedPerson}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Ф.И.О." Binding="{Binding SNP}" Width="150"/>
+                    <DataGridTextColumn Header="Адрес" Binding="{Binding Address}" Width="150"/>
+                    <DataGridTextColumn Header="Телефон" Binding="{Binding Phone}" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </DockPanel>
+</Window>

@@ -10,7 +10,9 @@ namespace MailSender.lib.Interfaces
         IEnumerable<T> GetAll();
         T GetById(int id);
         int Add(T item);
+        void AddRange(IEnumerable<T> items);
         void Update(T item);
-        bool Remove(int id);
+        bool Delete(int id);
+        void RemoveRange(IEnumerable<T> items);
     }
 }
