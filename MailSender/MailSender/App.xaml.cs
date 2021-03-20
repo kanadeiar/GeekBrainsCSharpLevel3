@@ -36,6 +36,7 @@ namespace MailSender
                 .UseLazyLoadingProxies() //использовать ленивую загрузку
                 .UseSqlServer(host.Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddScoped<IAddinsService, AddinsService>();
             services.AddScoped<MainWindowViewModel>();
             services.AddScoped<StatisticViewModel>();
 #if DEBUG
