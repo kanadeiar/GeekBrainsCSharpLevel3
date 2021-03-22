@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Timers;
+using System.Windows;
 using MailSender.lib.Interfaces;
 using MailSender.lib.Models;
 using MailSender.lib.Service;
@@ -24,6 +25,8 @@ namespace MailSender.ViewModels
         private readonly IRepository<Recipient> _Recipients;
         private readonly IRepository<Message> _Messages;
         private readonly IRepository<Scheduler> _Schedulers; //задания из хранилища, неактивные
+
+
         
         #region Свойства
 
@@ -225,7 +228,8 @@ namespace MailSender.ViewModels
         #endregion
 
         public MainWindowViewModel(IMailService mailService, IRepository<Server> Servers, IRepository<Sender> Senders,
-            IRepository<Recipient> Recipients, IRepository<Message> Messages, IRepository<Scheduler> Schedulers, ISchedulerMailService SchedulerService)
+            IRepository<Recipient> Recipients, IRepository<Message> Messages, IRepository<Scheduler> Schedulers, 
+            ISchedulerMailService SchedulerService, IAddinsService AddinsService)
         {
             _Servers = Servers;
             _Senders = Senders;
@@ -245,6 +249,23 @@ namespace MailSender.ViewModels
             this.Recipients.CollectionChanged += RecipientsOnCollectionChanged;
             this.Messages.CollectionChanged += MessagesOnCollectionChanged;
             _timer.Elapsed += OnTimerElapsed;
+
+            GoAddins(AddinsService);
         }
+
+        #region Еще вспомогательные методы
+
+        /// <summary> Выполнение загрузки из дополнения приложения </summary>
+        /// <param name="AddinsService">сервис дополнений</param>
+        private void GoAddins(IAddinsService AddinsService)
+        {
+            var texts = AddinsService.getTextsAddin();
+            if (texts is null) return;
+            Title = texts.Title;
+            Description = texts.Description;
+            Status = texts.Status;
+        }
+
+        #endregion
     }
 }
